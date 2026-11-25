@@ -36,7 +36,7 @@ Full brief: `docs/brief.md`. Working prototype (single-file HTML, sample data): 
 Client, Perfume, Note, PerfumeNote, Region, Sale, Upload (+ AuditLog, Concept/Request for ideas).
 
 ## Design
-Warm, professional, not tech-heavy (sawaifragrances.com style): ivory, burgundy, antique gold, serif headings (Cormorant Garamond), sans body (Jost). Z-pattern layout, one main action per screen. Light/dark aware, accessible (44px targets, visible focus). Map has Hologram and Classic styles. Reuse CSS variables from the prototype.
+Light, fresh, professional, not tech-heavy: mint and aqua palette (pale mint-white ground, deep teal text, aqua-teal primary `#178582`, sky-blue secondary `#2c7fbf`, light fresh scent-family colours), serif headings (Cormorant Garamond), sans body (Jost). Replaces the earlier ivory/burgundy/gold palette at the owner's request. Z-pattern layout, one main action per screen. Light/dark aware, accessible (44px targets, visible focus). Map and olfactory graph share one Graphs page, each with a light Hologram (ice and aqua) and a Classic style. Reuse CSS variables from `docs/prototype.html`.
 
 ## Workflow and skills
 1. Spec: `/egm:egm-brainstorm` → `/egm:egm-draft` → `/egm:egm-review design_draft.md` (repeat until clean)

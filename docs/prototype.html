@@ -3,14 +3,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* VOICE work: a fragrance-oil house showing its client brands what the market uses
+/* VOICE work: a fragrance-oil house showing its client brands what the market uses (fresh mint & aqua palette)
    IDEA a perfumer's order book: ivory paper, burgundy ink, gold rules
    PICTURE "Most-used oils" ranked bars on the Market page; upload desk on Home
    COLOUR ivory ground, burgundy lead, antique gold support; muted family tints; dark = wine-black
    TYPE Cormorant Garamond headings + Jost body (from CLAUDE.md)
    LAYOUT laptop: left sidebar + content; phone: top bar + bottom tab bar */
-:root{color-scheme:light dark;--bg:light-dark(#faf7f0,#171012);--surface:light-dark(#ffffff,#211719);--sunk:light-dark(#f3eee4,#1c1315);--ink:light-dark(#2a1a1c,#f3ece2);--muted:light-dark(#6f5d5f,#b6a6a1);--line:light-dark(#e7dfd2,#372a2c);--wine:light-dark(#7a1f2b,#d97a86);--wine-ink:light-dark(#ffffff,#1a1012);--wine-soft:light-dark(#f7eaea,#3a2226);--gold:light-dark(#94742c,#d3b26a);--gold-soft:light-dark(#f4ecd7,#352c1d);--ok:light-dark(#2f6b45,#7cc596);--dot:light-dark(#dccfba,#4a3a3c);--base:light-dark(#5c4a46,#a8968f);
---holo-bg:light-dark(#1d1416,#120c0e);--holo-ink:#efe4cf;--holo-gold:#cfb06b;--holo-wine:#de8b97;--f-fresh:light-dark(#6f8a52,#9fbb82);--f-floral:light-dark(#9c3445,#e08a97);--f-woody:light-dark(#6b5444,#b59a86);--f-oriental:light-dark(#a86a26,#dba15f);--f-aromatic:light-dark(#66618f,#a9a3d6);--f-gourmand:light-dark(#b8954a,#e0c27e);--f-herbal:light-dark(#46685a,#8fb8a6)}
+:root{color-scheme:light dark;--bg:light-dark(#f5fbfa,#0f1c1f);--surface:light-dark(#ffffff,#152629);--sunk:light-dark(#e9f5f2,#12211f);--ink:light-dark(#17333a,#e6f4f1);--muted:light-dark(#587277,#9ab5b3);--line:light-dark(#d5e8e3,#24393b);--wine:light-dark(#178582,#5fd0c6);--wine-ink:light-dark(#ffffff,#0f1c1f);--wine-soft:light-dark(#dff2ef,#173a39);--gold:light-dark(#2c7fbf,#7cc0f0);--gold-soft:light-dark(#e3eefa,#1a3042);--ok:light-dark(#2e8656,#7cd6a0);--dot:light-dark(#c4e0d9,#2b4a48);--base:light-dark(#6c8a90,#a3bdbf);
+--holo-bg:light-dark(#123a40,#0b2226);--holo-ink:#effaf8;--holo-gold:#8fe0d4;--holo-wine:#ffb0c4;--f-fresh:light-dark(#3fae8f,#7fd3b8);--f-floral:light-dark(#e07a9b,#f2a7bf);--f-woody:light-dark(#a3845f,#cdb393);--f-oriental:light-dark(#e09a52,#f0bb85);--f-aromatic:light-dark(#8e83d4,#b9b1ee);--f-gourmand:light-dark(#d9b04f,#ecd08a);--f-herbal:light-dark(#5ea56f,#94cfa2)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 html,body{height:100%}
@@ -135,8 +135,8 @@ input[type=range]{width:100%;accent-color:var(--wine);min-height:44px}
 @keyframes hgping{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.9);opacity:0}}
 @media(prefers-reduced-motion:reduce){.hg-route,.hg-ping{animation:none}}
 .gw{--g-tx:var(--ink);--g-mu:var(--muted);--g-bg:var(--surface);position:relative;overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:8px}
-.gw.holo{--g-tx:#e6f6ff;--g-mu:#8fb4c9;--g-bg:#0a152b;background:radial-gradient(ellipse at 50% 45%,#10264a 0%,#0a152b 75%);border-color:#1d6f86}
-.gw.holo::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:16px;background:repeating-linear-gradient(0deg,rgba(120,240,255,.05) 0 1px,transparent 1px 3px)}
+.gw.holo{--g-tx:#123a40;--g-mu:#7aa1a6;--g-bg:#f2fbfc;background:radial-gradient(ellipse at 50% 45%,#ffffff 0%,#e4f5f7 75%);border-color:#a9dde2}
+.gw.holo::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:16px;background:repeating-linear-gradient(0deg,rgba(39,180,196,.06) 0 1px,transparent 1px 3px)}
 svg.gsvg{display:block;min-width:640px;width:100%;height:auto}
 .gfam{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
 .gfam button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:14px;min-height:40px}
@@ -145,22 +145,21 @@ svg.gsvg{display:block;min-width:640px;width:100%;height:auto}
 .gi{margin:12px 0;padding:14px 18px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;min-height:56px}
 .ghow{display:flex;flex-wrap:wrap;gap:8px 24px;font-size:14px;color:var(--muted)}.ghow span{display:inline-flex;align-items:center;gap:8px}.ghow i{display:inline-block;border-radius:50%;background:var(--gold)}
 .hm-grid{display:grid;grid-template-columns:minmax(0,2.1fr) minmax(260px,1fr);gap:20px;align-items:start}
-.hm-stage{--hm-dot:176,141,87;--hm-tx:#2a1a1c;--hm-mu:#6f5d5f;--hm-bg:#f2e9da;--hm-ac:#7a1f2b;position:relative;height:420px;border-radius:16px;overflow:hidden;background:#f2e9da;border:1px solid var(--line)}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .hm-stage:not(.holo){--hm-dot:212,178,122;--hm-tx:#f3ece2;--hm-mu:#b6a6a1;--hm-bg:#2a221d;--hm-ac:#d97a86;background:#2a221d}}
-:root[data-theme=dark] .hm-stage:not(.holo){--hm-dot:212,178,122;--hm-tx:#f3ece2;--hm-mu:#b6a6a1;--hm-bg:#2a221d;--hm-ac:#d97a86;background:#2a221d}
-.hm-stage.holo{--hm-tx:#e6f6ff;--hm-mu:#8fb4c9;--hm-bg:#0a152b;--hm-ac:#4fe3f5;background:radial-gradient(ellipse at 50% 45%,#10264a 0%,#0a152b 75%);border-color:#1d6f86;color:#e6f6ff}
-.hm-stage.holo::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(120,240,255,.05) 0 1px,transparent 1px 3px)}
+.hm-stage{--hm-dot:120,175,165;--hm-tx:#17333a;--hm-mu:#587277;--hm-bg:#eef7f4;--hm-ac:#178582;position:relative;height:420px;border-radius:16px;overflow:hidden;background:#eef7f4;border:1px solid var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .hm-stage:not(.holo){--hm-dot:90,150,140;--hm-tx:#e6f4f1;--hm-mu:#9ab5b3;--hm-bg:#12211f;--hm-ac:#5fd0c6;background:#12211f}}
+:root[data-theme=dark] .hm-stage:not(.holo){--hm-dot:90,150,140;--hm-tx:#e6f4f1;--hm-mu:#9ab5b3;--hm-bg:#12211f;--hm-ac:#5fd0c6;background:#12211f}
+.hm-stage.holo{--hm-tx:#123a40;--hm-mu:#4f7f86;--hm-bg:#f2fbfc;--hm-ac:#178582;background:radial-gradient(ellipse at 50% 45%,#ffffff 0%,#e4f5f7 75%);border-color:#a9dde2;color:#123a40}
+.hm-stage.holo::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(39,180,196,.06) 0 1px,transparent 1px 3px)}
 .hm-stage canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
 .hm-hud{position:absolute;left:12px;top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--hm-mu);max-width:calc(100% - 80px)}
 .hm-hud select{min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 10px;font-size:15px}
-.hm-stage.holo .hm-hud select{background:#0e2238;border-color:#1d3a5a;color:#e6f6ff}
+.hm-stage.holo .hm-hud select{background:#ffffff;border-color:#a9dde2;color:#123a40}
 .hm-zc{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:6px}
 .hm-zc button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-size:18px}
-.hm-stage.holo .hm-zc button{background:#0e2238;border-color:#1d3a5a;color:#e6f6ff}
+.hm-stage.holo .hm-zc button{background:#ffffff;border-color:#a9dde2;color:#123a40}
 .hm-lg{position:absolute;left:12px;bottom:10px;display:flex;flex-wrap:wrap;gap:2px 12px;font-size:13px;max-width:75%;color:var(--hm-tx)}
 .hm-lg b{font-weight:500;color:var(--hm-mu)}.hm-lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
 .hm-zoomsel{position:absolute;left:12px;top:12px;min-height:40px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 14px;cursor:pointer;font-size:14px}
-.hm-stage.holo .hm-zoomsel{background:#0e2238;border-color:#1d3a5a;color:#e6f6ff}
 .hm-side{max-height:420px;overflow-y:auto}
 .hm-mb{display:grid;grid-template-columns:6.5em minmax(0,1fr) 3.4em;gap:10px;align-items:center;margin:6px 0;font-size:14px}
 .hm-mb .t{height:10px;background:var(--sunk);border-radius:5px;overflow:hidden}.hm-mb .t b{display:block;height:100%;border-radius:5px}
@@ -381,8 +380,8 @@ function Oils({feat,products}){
 const GF=['Citrus','Fresh','Floral','Gourmand','Woody','Amber','Musk'];
 const NF={'Bergamot':0,'Lemon':0,'Grapefruit':0,'Pear':0,'Green tea':1,'Mint':1,'Sea salt':1,'Marine accord':1,'Lavender':1,'Aloe':1,'Neem leaf':1,'Lychee':1,'Jasmine':2,'Rose':2,'Peony':2,'Orange blossom':2,'Iris':2,'Geranium':2,'Frangipani':2,'Vanilla':3,'Tonka bean':3,'Coconut':3,'Sandalwood':4,'Cedar':4,'Cedarwood':4,'Driftwood':4,'Vetiver':4,'Oud':4,'Oakmoss':4,'Saffron':5,'Cardamom':5,'Amber':5,'White musk':6,'Musk':6};
 const GNOTES=Object.keys(NF).sort((a,b)=>NF[a]-NF[b]||a.localeCompare(b));
-const GPAL={Hologram:['#ffd23f','#3df2ff','#ff7ad9','#ff9f43','#7dff9a','#b388ff','#e8f4ff'],Classic:['#d9a441','#5fa8a0','#d98a9b','#c27a43','#6b5239','#a8553a','#9a8fae']};
-const GCOLS=['#ff6b6b','#d8c08a','#7aa2c8','#c78bd8'];
+const GPAL={Hologram:['#f2c14e','#27b4c4','#ee7fa6','#f29e5c','#43bf86','#9b8de0','#6f9fc8'],Classic:['#e0b65c','#5cbfae','#e99ab0','#e39a68','#9e8466','#c9866b','#a9a2cc']};
+const GCOLS=['#ef7f7f','#e9c46a','#5aa9e6','#b48ee0'];
 const LWT={top:.2,heart:.3,base:.5};
 const notesOf=p=>{const o=OILS[p.oil],out=[];['top','heart','base'].forEach(l=>o[l].forEach(([n])=>out.push([n,LWT[l]/o[l].length,l])));return out};
 const famRow=p=>{const a=Array(7).fill(0);notesOf(p).forEach(([n,w])=>a[NF[n]]+=w);return a};
@@ -407,17 +406,17 @@ function HoloMap({nodes,sty,setSty,fam,setFam,sel,setSel}){
     const paint=t=>{const{nodes,sty,fam,sel}=live.current,H=sty==='Hologram',FC=GPAL[sty],c=cs();x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);x.shadowBlur=0;
       const c0=Math.max(0,Math.floor(V.current.cx-w/2/c)),c1=Math.min(133,Math.ceil(V.current.cx+w/2/c)),r0=Math.max(0,Math.floor(V.current.cy-h/2/c)),r1=Math.min(70,Math.ceil(V.current.cy+h/2/c)),gp=c>8?1.2:Math.min(.6,c/12);
       for(let r=r0;r<=r1;r++)for(let q=c0;q<=c1;q++){if(!MASK[r][q])continue;const tw=(q*7+r*13)%23===0,u=q/134;let al,cl;
-        if(H){al=tw?.75+.25*Math.sin(t*2+q):.8;cl=`rgba(${tw?150:30},${Math.round(120+80*u)+(tw?45:0)},${Math.round(255-25*u)},${al})`}else{al=tw?.65+.3*Math.sin(t*1.5+q):.4+.08*((q*5+r*3)%4);cl=`rgba(${col.dot},${al})`}
+        if(H){al=tw?.75+.25*Math.sin(t*2+q):.8;cl=`rgba(${tw?20:60},${Math.round(150+50*u)+(tw?20:0)},${Math.round(185-15*u)},${al*(tw?.85:.55)})`}else{al=tw?.65+.3*Math.sin(t*1.5+q):.4+.08*((q*5+r*3)%4);cl=`rgba(${col.dot},${al})`}
         x.fillStyle=cl;x.fillRect(sx(q)+gp,sy(r)+gp,c-2*gp,c-2*gp)}
       const hq={x:sx(HQ[0]),y:sy(HQ[1])};
       nodes.forEach((n,j)=>{const p=pr(n.m);if(Math.hypot(p.x-hq.x,p.y-hq.y)<8)return;const mx=(hq.x+p.x)/2,my=(hq.y+p.y)/2-Math.hypot(p.x-hq.x,p.y-hq.y)*.3;
-        x.strokeStyle=H?'rgba(255,122,217,.55)':`rgba(${col.dot},.8)`;x.shadowColor='#ff7ad9';x.shadowBlur=H?8:0;x.lineWidth=1.1;x.beginPath();x.moveTo(hq.x,hq.y);x.quadraticCurveTo(mx,my,p.x,p.y);x.stroke();
-        const u=(t*.3+j*.17)%1,a=(1-u)*(1-u),b=2*u*(1-u),c2=u*u;x.shadowBlur=0;x.fillStyle=H?'#fff':col.ac;x.beginPath();x.arc(a*hq.x+b*mx+c2*p.x,a*hq.y+b*my+c2*p.y,2.5,0,7);x.fill()});
+        x.strokeStyle=H?'rgba(232,110,150,.65)':`rgba(${col.dot},.9)`;x.shadowBlur=0;x.lineWidth=1.1;x.beginPath();x.moveTo(hq.x,hq.y);x.quadraticCurveTo(mx,my,p.x,p.y);x.stroke();
+        const u=(t*.3+j*.17)%1,a=(1-u)*(1-u),b=2*u*(1-u),c2=u*u;x.shadowBlur=0;x.fillStyle=col.ac;x.beginPath();x.arc(a*hq.x+b*mx+c2*p.x,a*hq.y+b*my+c2*p.y,2.5,0,7);x.fill()});
       const val=n=>fam<0?n.tot:n.row[fam],mt=Math.max(1,...nodes.map(val)),zk=Math.min(2.4,1+.18*(V.current.k-1)),L=[];
       nodes.forEach(n=>{const p=pr(n.m),v=val(n),r=(5+9*Math.sqrt(v/mt))*zk,ti=fam<0?n.row.indexOf(Math.max(...n.row)):fam;L.push({n,p,r,ti,v});
         if(v<=0){x.setLineDash([4,3]);x.strokeStyle=col.mu;x.lineWidth=1.5;x.beginPath();x.arc(p.x,p.y,r,0,7);x.stroke();x.setLineDash([]);return}
-        const gg=x.createRadialGradient(p.x,p.y,r*.5,p.x,p.y,r*2.4);gg.addColorStop(0,H?'rgba(140,255,255,.45)':`rgba(${col.dot},.3)`);gg.addColorStop(1,H?'rgba(140,255,255,0)':`rgba(${col.dot},0)`);x.fillStyle=gg;x.beginPath();x.arc(p.x,p.y,r*2.4,0,7);x.fill();
-        x.shadowColor=FC[ti];x.shadowBlur=H?14:0;x.fillStyle=FC[ti];x.globalAlpha=.92;x.beginPath();x.arc(p.x,p.y,r,0,7);x.fill();x.globalAlpha=1;x.shadowBlur=0;x.strokeStyle=col.bg;x.lineWidth=2;x.stroke();
+        const gg=x.createRadialGradient(p.x,p.y,r*.5,p.x,p.y,r*2.4);gg.addColorStop(0,H?'rgba(39,180,196,.28)':`rgba(${col.dot},.3)`);gg.addColorStop(1,H?'rgba(39,180,196,0)':`rgba(${col.dot},0)`);x.fillStyle=gg;x.beginPath();x.arc(p.x,p.y,r*2.4,0,7);x.fill();
+        x.shadowBlur=0;x.fillStyle=FC[ti];x.globalAlpha=.92;x.beginPath();x.arc(p.x,p.y,r,0,7);x.fill();x.globalAlpha=1;x.shadowBlur=0;x.strokeStyle=col.bg;x.lineWidth=2;x.stroke();
         if(r>=13){x.fillStyle=lumTC(FC[ti]);x.font='600 11px Jost,system-ui,sans-serif';x.textAlign='center';x.fillText(Math.round(n.row[ti]/n.rsum*100)+'%',p.x,p.y+4)}
         if(n.m===sel){x.strokeStyle=col.tx;x.lineWidth=1.5;x.beginPath();x.arc(p.x,p.y,r+5+2*Math.sin(t*3),0,7);x.stroke()}});
       const used=[];x.lineJoin='round';
@@ -479,7 +478,7 @@ function OlfGraph({en,sty,staff,gr}){
   const nodes=order.map((e,k)=>{const r=(staff?16:10)+(staff?14:14)*Math.sqrt(un(e)/mu),a=pp[k],ca=Math.cos(a.a),sa=Math.sin(a.a),out=nn>1;
     const lx=out?a.x+(r+8)*ca:a.x,ly=out?a.y+(r+8)*sa+(Math.abs(ca)<.45?(sa>0?12:-2):5):a.y+r+18,anc=!out||Math.abs(ca)<.45?'middle':ca>0?'start':'end';
     return html`<g key=${e.id} data-hp=${e.id} style=${{cursor:'pointer',opacity:!act||ps.has(e.id)?1:.2,transition:'opacity .2s'}} ...${ev('p',e.id)}>
-      <circle cx=${f1(a.x)} cy=${f1(a.y)} r=${f1(r)} fill="var(--g-tx)" stroke=${e.color} strokeWidth="5"/>
+      <circle cx=${f1(a.x)} cy=${f1(a.y)} r=${f1(r)} fill="var(--g-bg)" stroke=${e.color} strokeWidth="5"/>
       <text x=${f1(lx)} y=${f1(ly)} textAnchor=${anc} style=${{...halo,fill:'var(--g-tx)',font:'600 14px Jost,sans-serif'}}>${e.label}</text></g>`});
   const fsum=fs.reduce((a,b)=>a+b,0)||1,hi=fs.indexOf(Math.max(...fs)),lo=GF.filter((f,i)=>fs[i]/fsum<.06),nu=Object.keys(used).length;
   return html`<div className="gfam">${GF.map((f,i)=>html`<button key=${f} aria-pressed=${!!(sel&&sel.k==='f'&&sel.id===i)} ...${ev('f',i)}><i style=${{background:FC[i]}}></i>${f}</button>`)}</div>

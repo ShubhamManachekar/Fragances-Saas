@@ -230,3 +230,7 @@ One page holds both visuals, each with a Hologram and a Classic style:
 2. **Olfactory graph** — products (or brands, for staff) in the centre, linked to their oil's notes on a ring grouped by scent family. Hover or click to highlight; it can be filtered by city.
 
 The Hologram style uses neon colours, gradients and glow at the owner's request. This is a deliberate exception to the earlier "no AI look" rule.
+
+### Palette update
+
+The owner moved the whole app to a light, fresh mint-and-aqua palette, replacing ivory, burgundy and gold. Both Hologram styles are now light (ice and aqua, no glow). The tokens live in `docs/prototype.html` under `:root`.
