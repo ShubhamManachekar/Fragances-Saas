@@ -1,0 +1,258 @@
+<title>Client Studio Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: a calm client portal for a perfume house
+   IDEA a perfumer's order book: ivory paper, burgundy ink, gold rules
+   PICTURE the upload desk on client home; dotted world map + olfactory rings in insights
+   COLOUR ivory ground, burgundy ink lead, antique gold support; dark = wine-black
+   TYPE Cormorant Garamond headings + Jost body (from CLAUDE.md)
+   LAYOUT laptop: header, one main action left, status right; phone: stacked */
+:root{color-scheme:light dark;--bg:light-dark(#fbf8f1,#1a1214);--surface:light-dark(#ffffff,#241a1c);--ink:light-dark(#2a1a1c,#f3ece2);--muted:light-dark(#6d5a5c,#b9a9a4);--line:light-dark(#e6ddd0,#3a2c2e);--wine:light-dark(#7a1f2b,#d06a77);--wine-ink:light-dark(#ffffff,#1a1214);--gold:light-dark(#9a7a32,#cfae63);--gold-soft:light-dark(#f3ead4,#3a3122);--wine-soft:light-dark(#f6e9e9,#3a2226);--ok:light-dark(#2f6b45,#7cc596);--dot:light-dark(#d9cdb9,#4a3a3c)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 Jost,system-ui,sans-serif;margin:0;overflow-x:clip}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;line-height:1.1;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(32px,4.4vw,46px)}h2{font-size:28px}h3{font-size:22px}
+p{margin:.3em 0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(5vw,16px,env(safe-area-inset-left,0px));padding-right:max(5vw,16px,env(safe-area-inset-right,0px))}
+header{border-bottom:1px solid var(--line);background:var(--surface)}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding-block:12px}
+.brand{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:700;color:var(--wine);margin-right:auto}
+.brand small{font:500 13px Jost,sans-serif;color:var(--muted);margin-left:8px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--bg)}
+.seg button{border:0;background:none;min-height:40px;padding:0 16px;border-radius:999px;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed=true]{background:var(--wine);color:var(--wine-ink)}
+nav{display:flex;gap:4px;flex-wrap:wrap;padding-bottom:8px}
+nav button{border:0;background:none;min-height:44px;padding:0 14px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent}
+nav button[aria-current=page]{color:var(--ink);border-color:var(--gold)}
+.note{font-size:13px;color:var(--muted)}
+.sample{display:inline-block;font-size:13px;border:1px solid var(--gold);color:var(--gold);border-radius:4px;padding:0 6px;margin-left:6px;vertical-align:middle;font-family:Jost,sans-serif;font-weight:500}
+main{padding-block:28px 56px}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:22px}
+.grid{display:grid;gap:20px;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.grid3{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(9em,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:8px;border:1px solid var(--wine);background:var(--wine);color:var(--wine-ink);cursor:pointer;font-weight:500}
+.btn.ghost{background:none;color:var(--wine)}
+.btn.small{min-height:44px;padding:0 14px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:default}
+.drop{border:1.5px dashed var(--gold);border-radius:10px;padding:34px 20px;text-align:center;background:var(--gold-soft);margin-top:16px}
+.drop.over{background:var(--wine-soft);border-color:var(--wine)}
+.drop .btn{font-size:18px;min-height:56px;padding:0 30px}
+.msg{margin-top:14px;padding:12px 14px;border-radius:8px;border:1px solid var(--line)}
+.msg.err{border-color:var(--wine);background:var(--wine-soft)}
+.msg.ok{border-color:var(--ok);color:var(--ok)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:500;color:var(--muted);font-size:14px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+select,input[type=text],textarea{min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--bg);padding:8px 10px;font-size:16px;width:100%}
+.mapsel{min-height:36px;padding:4px 6px;font-size:14px}
+.unmatched{background:var(--wine-soft)}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.list li:last-child{border-bottom:0}
+.tag{font-size:13px;color:var(--gold);font-weight:500}
+.steps{display:flex;gap:4px;margin-top:6px}
+.steps i{height:4px;width:34px;border-radius:2px;background:var(--line)}
+.steps i.on{background:var(--wine)}
+.fig{position:relative;min-height:340px}.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.olf{min-height:360px}
+.big{font-family:"Cormorant Garamond",serif;font-size:40px;font-weight:600;line-height:1;color:var(--wine);white-space:nowrap}
+.rows .r{display:grid;grid-template-columns:minmax(7em,9em) minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 0}
+.rows .t{height:12px;background:var(--line);border-radius:2px}
+.rows .t b{display:block;height:100%;background:var(--wine);border-radius:2px}
+.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;min-height:44px}
+.switch input{width:20px;height:20px;accent-color:var(--wine)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:8px;display:flex;gap:14px;align-items:center;z-index:9}
+.toast button{background:none;border:0;color:var(--gold);font-weight:600;cursor:pointer;min-height:36px}
+label.f{display:block;margin-bottom:12px;font-size:15px;color:var(--muted)}
+label.f>*{margin-top:4px;color:var(--ink)}
+.two{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.two{grid-template-columns:1fr}table{font-size:13px}th,td{padding:6px 4px}.big{font-size:32px}.card{padding:16px}}
+</style>
+
+<header>
+  <div class="wrap bar">
+    <div class="brand">Client Studio <small>Prototype · all data is sample</small></div>
+    <div class="seg" role="group" aria-label="View as">
+      <button id="r-client" aria-pressed="true">Client: Maison Aurel</button>
+      <button id="r-staff" aria-pressed="false">Manufacturer staff</button>
+    </div>
+  </div>
+  <nav class="wrap" id="nav" aria-label="Sections"></nav>
+</header>
+<main class="wrap" id="view"></main>
+<div id="toastHost"></div>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>Math.round(n).toLocaleString('en-US');
+
+/* ---------- sample data ---------- */
+const REGIONS={'GCC':[25,51],'India':[21,78],'Europe':[48,10],'United Kingdom':[53,-2],'North America':[40,-95],'Southeast Asia':[5,108]};
+const S={role:'client',tab:'home',mapStyle:'classic',perfume:'Rose Noir',pending:null,
+ sales:[['GCC','Rose Noir',1840,92000],['GCC','Saffron Veil',1320,72600],['India','Saffron Veil',2100,63000],['India','Neroli Light',900,22500],['Europe','Cedar Hymn',760,53200],['Europe','Rose Noir',540,29700],['United Kingdom','Neroli Light',610,24400],['North America','Cedar Hymn',480,36000],['Southeast Asia','Rose Noir',420,18900]],
+ uploads:[{name:'october-sales.csv',rows:31,when:'1 Nov 2026',status:'Saved'}],
+ orders:[{id:'PO-2291',item:'Rose Noir 50 ml × 4,000',step:3,label:'Filling and packing',eta:'12 Dec'},{id:'PO-2287',item:'Saffron Veil 100 ml × 2,500',step:4,label:'Shipped',eta:'2 Dec'},{id:'PO-2302',item:'Neroli Light 30 ml × 6,000',step:1,label:'Formula approved',eta:'9 Jan'}],
+ requests:[{id:1,client:'Maison Aurel',title:'Lighter summer edition of Rose Noir',family:'Floral',market:'GCC',qty:'3,000',status:'Open',reply:''},{id:2,client:'Verde Atelier',title:'Vetiver for men, under AED 250 retail',family:'Woody',market:'Europe',qty:'5,000',status:'Open',reply:''}],
+ clients:[{name:'Maison Aurel',users:4,last:'1 Nov 2026',ai:false,share:false,mfa:4},{name:'Oud & Amber Co.',users:6,last:'28 Oct 2026',ai:false,share:true,mfa:4},{name:'Verde Atelier',users:2,last:'3 Oct 2026',ai:false,share:false,mfa:2},{name:'Nordlys Parfums',users:3,last:'—',ai:false,share:false,mfa:3}],
+ attention:[{id:'a1',kind:'Client request',who:'Verde Atelier',text:'New request: Vetiver for men, under AED 250 retail',go:'requests'},{id:'a2',kind:'Account issue',who:'Oud & Amber Co.',text:'2 of 6 users have not finished authenticator setup (rule: setup unfinished after 7 days)',go:'clients'},{id:'a3',kind:'Account issue',who:'Nordlys Parfums',text:'No sales report uploaded since sign-up (rule: none after 30 days)',go:'clients'},{id:'a4',kind:'Client request',who:'Maison Aurel',text:'New request: Lighter summer edition of Rose Noir',go:'requests'}],
+ audit:[['25 Nov 2026 09:12','staff@manufacturer (sample)','Turned sharing on for Oud & Amber Co.']]};
+const NOTES={'Rose Noir':{Top:[['Pink pepper',35],['Bergamot',40],['Blackcurrant',25]],Heart:[['Damask rose',50],['Peony',20],['Violet leaf',30]],Base:[['Patchouli',40],['Oud',25],['Musk',35]]},
+ 'Saffron Veil':{Top:[['Saffron',55],['Cardamom',45]],Heart:[['Rose absolute',40],['Jasmine',35],['Leather accord',25]],Base:[['Amber',45],['Sandalwood',35],['Vanilla',20]]},
+ 'Cedar Hymn':{Top:[['Juniper',40],['Grapefruit',60]],Heart:[['Cedarwood',55],['Iris',45]],Base:[['Vetiver',50],['Ambroxan',30],['Moss',20]]},
+ 'Neroli Light':{Top:[['Neroli',50],['Mandarin',30],['Petitgrain',20]],Heart:[['Orange blossom',60],['Lily of the valley',40]],Base:[['White musk',70],['Cedar',30]]}};
+
+/* ---------- world outline (rough, for the prototype only) ---------- */
+const LAND=[[[-168,66],[-140,70],[-95,72],[-80,63],[-60,55],[-55,48],[-70,43],[-76,35],[-81,25],[-97,26],[-97,18],[-87,15],[-80,8],[-92,15],[-105,20],[-117,32],[-124,40],[-125,49],[-135,58],[-150,60],[-165,60]],[[-55,60],[-43,60],[-20,70],[-20,80],[-60,82],[-70,77]],[[-80,8],[-60,10],[-50,0],[-35,-6],[-40,-22],[-48,-28],[-58,-38],[-65,-55],[-72,-50],[-72,-30],[-71,-18],[-81,-5]],[[-10,36],[-9,43],[-2,44],[-5,48],[2,51],[8,54],[5,58],[10,63],[20,70],[30,71],[40,67],[45,55],[40,45],[28,41],[23,37],[12,38],[15,45],[5,43],[-5,36]],[[-17,15],[-17,21],[-10,30],[-5,36],[10,37],[20,32],[32,31],[35,28],[43,12],[51,12],[40,-5],[40,-15],[35,-25],[20,-35],[15,-28],[12,-15],[9,-1],[8,4],[-8,4],[-15,10]],[[28,41],[36,36],[35,31],[43,13],[53,16],[57,23],[60,25],[67,24],[73,20],[77,8],[80,13],[88,22],[92,22],[98,16],[100,8],[104,1],[106,10],[109,19],[117,23],[122,30],[121,40],[130,43],[140,50],[143,59],[160,60],[180,66],[180,72],[140,73],[110,77],[80,73],[68,70],[60,68],[45,55],[40,45]],[[-6,50],[2,51],[0,54],[-3,58],[-6,57]],[[130,31],[141,36],[142,44],[139,40]],[[95,5],[106,-6],[120,-9],[141,-9],[141,-2],[118,5],[105,0]],[[114,-22],[122,-18],[131,-12],[137,-12],[142,-11],[146,-19],[153,-28],[150,-37],[140,-38],[132,-32],[115,-34]]];
+const inPoly=(x,y,p)=>{let c=false;for(let i=0,j=p.length-1;i<p.length;j=i++){const[xi,yi]=p[i],[xj,yj]=p[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c};
+const DOTS=[];for(let lat=78;lat>=-54;lat-=3)for(let lon=-177;lon<=180;lon+=3)if(LAND.some(p=>inPoly(lon,lat,p)))DOTS.push([lon,lat]);
+
+/* ---------- column matching: synonym rules ---------- */
+const FIELDS={month:['month','date','period','week'],perfume:['perfume','product','fragrance','sku','item'],region:['region','country','market','territory'],units:['units','qty','quantity','sold','pcs'],revenue:['revenue','sales','amount','value','total']};
+const LABEL={month:'Month',perfume:'Perfume',region:'Region',units:'Units sold',revenue:'Revenue (USD)'};
+const match=h=>{const k=h.toLowerCase().replace(/[^a-z]/g,'');for(const f in FIELDS)if(FIELDS[f].some(s=>k===s))return f;return ''};
+const SAMPLE_CSV='Month,Fragrance,Market,Qty,Net value\n'+[['Nov 2026','Rose Noir','GCC',640,32000],['Nov 2026','Rose Noir','Europe',210,11550],['Nov 2026','Saffron Veil','GCC',380,20900],['Nov 2026','Saffron Veil','India',720,21600],['Nov 2026','Neroli Light','United Kingdom',260,10400],['Nov 2026','Cedar Hymn','North America',190,14250],['Nov 2026','Rose Noir','Southeast Asia',150,6750]].map(r=>r.join(',')).join('\n');
+
+/* ---------- shell ---------- */
+const TABS={client:[['home','Home'],['insights','Insights'],['ideas','Ideas']],staff:[['attention','Needs attention'],['clients','Clients'],['requests','Requests']]};
+function setRole(r){S.role=r;S.tab=TABS[r][0][0];$('#r-client').setAttribute('aria-pressed',r==='client');$('#r-staff').setAttribute('aria-pressed',r==='staff');render()}
+$('#r-client').onclick=()=>setRole('client');$('#r-staff').onclick=()=>setRole('staff');
+function render(){
+  $('#nav').innerHTML=TABS[S.role].map(([k,l])=>`<button data-tab="${k}" ${S.tab===k?'aria-current="page"':''}>${l}${k==='attention'?` (${S.attention.length})`:''}</button>`).join('');
+  $('#nav').querySelectorAll('button').forEach(b=>b.onclick=()=>{S.tab=b.dataset.tab;render()});
+  ({home,insights,ideas,attention,clients,requests})[S.tab]();
+}
+function toast(text,undo){const h=$('#toastHost');h.innerHTML=`<div class="toast" role="status">${esc(text)}${undo?'<button id="undo">Undo</button>':''}</div>`;if(undo)$('#undo').onclick=()=>{undo();h.innerHTML=''};clearTimeout(toast.t);toast.t=setTimeout(()=>h.innerHTML='',5000)}
+function log(what){const d=new Date();S.audit.unshift([d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+' '+d.toTimeString().slice(0,5),'staff@manufacturer (sample)',what])}
+
+/* ---------- client: home ---------- */
+function home(){
+  const v=$('#view');
+  v.innerHTML=`<div class="head"><div><h1>Good morning, Maison Aurel</h1><p class="note">Your November sales report is due. Upload it in CSV format; it takes about a minute.</p></div></div>
+  <div class="grid">
+   <section class="card" aria-labelledby="up-h"><h2 id="up-h">Upload sales report</h2>
+    <div class="drop" id="drop"><button class="btn" id="pick">Upload sales report</button><p class="note" style="margin-top:10px">or drag a file here · CSV up to 5 MB · <button class="btn ghost small" id="useSample" style="min-height:36px;border:0">use a sample file</button></p><input type="file" id="file" accept=".csv,text/csv" hidden></div>
+    <div id="upOut"></div>
+    <h3 style="margin-top:22px">Recent uploads</h3><ul class="list">${S.uploads.map(u=>`<li><span>${esc(u.name)} <span class="note">· ${u.rows} rows · ${esc(u.when)}</span></span><span class="tag">${esc(u.status)}</span></li>`).join('')}</ul>
+   </section>
+   <section class="card" aria-labelledby="or-h"><h2 id="or-h">Your orders <span class="sample">Sample</span></h2>
+    <ul class="list">${S.orders.map(o=>`<li><div><strong>${o.id}</strong> <span class="note">· due ${o.eta}</span><div>${esc(o.item)}</div><div class="steps" aria-label="Step ${o.step} of 4">${[1,2,3,4].map(i=>`<i class="${i<=o.step?'on':''}"></i>`).join('')}</div><div class="note">${o.label}</div></div></li>`).join('')}</ul>
+    <p class="note">At first launch this panel is hidden until the CRM is connected.</p>
+   </section>
+  </div>`;
+  const f=$('#file'),drop=$('#drop');
+  $('#pick').onclick=()=>f.click();
+  f.onchange=()=>f.files[0]&&readFile(f.files[0]);
+  $('#useSample').onclick=()=>readFile(new File([SAMPLE_CSV],'november-sales.csv',{type:'text/csv'}));
+  drop.ondragover=e=>{e.preventDefault();drop.classList.add('over')};drop.ondragleave=()=>drop.classList.remove('over');
+  drop.ondrop=e=>{e.preventDefault();drop.classList.remove('over');e.dataTransfer.files[0]&&readFile(e.dataTransfer.files[0])};
+  if(S.pending)showPreview();
+}
+function readFile(file){
+  const out=$('#upOut');
+  if(!/\.csv$/i.test(file.name)){out.innerHTML=`<div class="msg err">"${esc(file.name)}" is not a CSV file. In this prototype, save the sheet as CSV and try again. (Excel and PDF are accepted in the real app.)</div>`;return}
+  if(file.size>5*1024*1024){out.innerHTML=`<div class="msg err">This file is ${(file.size/1048576).toFixed(1)} MB. The limit is 5 MB. Split it by month and upload each part.</div>`;return}
+  file.text().then(txt=>{const all=parseCSV(txt);const heads=(all.shift()||[]).map(h=>h.trim());
+    const rows=all.filter(r=>r.some(c=>c.trim())).map(r=>Object.fromEntries(heads.map((h,i)=>[h,(r[i]||'').trim()])));
+    if(!heads.length||!rows.length){out.innerHTML='<div class="msg err">This file has no rows. Check that it is the right report.</div>';return}
+    S.pending={name:file.name,heads,rows,map:Object.fromEntries(heads.map(h=>[h,match(h)]))};showPreview()});
+}
+function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'&&t[i+1]==='"'){f+='"';i++}else if(c==='"')q=false;else f+=c}else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f=''}else f+=c}if(f||row.length){row.push(f);rows.push(row)}return rows}
+function showPreview(){
+  const p=S.pending,out=$('#upOut');
+  const used=Object.values(p.map).filter(Boolean);const missing=Object.keys(FIELDS).filter(f=>!used.includes(f));
+  out.innerHTML=`<div class="msg"><strong>${esc(p.name)}</strong> · ${p.rows.length} rows. Check the columns, then confirm. Nothing is saved yet.</div>
+  ${missing.length?`<div class="msg err">We could not recognise ${missing.length===1?'one column':'some columns'}. Choose which field ${missing.map(m=>'<strong>'+LABEL[m]+'</strong>').join(', ')} ${missing.length===1?'is':'are'} in the highlighted header.</div>`:''}
+  <div class="scroll" style="margin-top:12px"><table><thead><tr>${p.heads.map(h=>`<th class="${p.map[h]?'':'unmatched'}">${esc(h)}<br><select class="mapsel" data-h="${esc(h)}" aria-label="Field for column ${esc(h)}"><option value="">Ignore</option>${Object.keys(FIELDS).map(f=>`<option value="${f}" ${p.map[h]===f?'selected':''}>${LABEL[f]}</option>`).join('')}</select></th>`).join('')}</tr></thead>
+  <tbody>${p.rows.slice(0,4).map(r=>`<tr>${p.heads.map(h=>`<td>${esc(r[h]??'')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn" id="confirm" ${missing.length?'disabled':''}>Confirm and save ${p.rows.length} rows</button><button class="btn ghost" id="cancel">Cancel</button></div>`;
+  out.querySelectorAll('select').forEach(s=>s.onchange=()=>{p.map[s.dataset.h]=s.value;showPreview()});
+  $('#cancel').onclick=()=>{S.pending=null;out.innerHTML=''};
+  $('#confirm').onclick=()=>{const b=$('#confirm');b.disabled=true;b.textContent='Saving…';
+    setTimeout(()=>{const col=f=>Object.keys(p.map).find(h=>p.map[h]===f);let n=0;
+      p.rows.forEach(r=>{const reg=r[col('region')],u=parseFloat(String(r[col('units')]).replace(/,/g,'')),rev=parseFloat(String(r[col('revenue')]).replace(/,/g,''));if(REGIONS[reg]&&u>=0&&rev>=0){S.sales.push([reg,r[col('perfume')],u,rev]);n++}});
+      S.uploads.unshift({name:p.name,rows:n,when:'Today',status:'Saved'});S.pending=null;home();
+      $('#upOut').innerHTML=`<div class="msg ok">Saved. ${n} rows added${n<p.rows.length?`; ${p.rows.length-n} rows skipped because the region was not recognised`:''}. Your insights are updated.</div>`},900)};
+}
+
+/* ---------- client: insights ---------- */
+function insights(){
+  const byReg={},byPerf={};let units=0,rev=0;
+  S.sales.forEach(([r,p,u,v])=>{byReg[r]=(byReg[r]||0)+v;byPerf[p]=(byPerf[p]||0)+v;units+=u;rev+=v});
+  const top=Object.entries(byReg).sort((a,b)=>b[1]-a[1])[0];const perf=Object.entries(byPerf).sort((a,b)=>b[1]-a[1]);const max=perf[0][1];
+  $('#view').innerHTML=`<div class="head"><div><h1>${esc(top[0])} brings ${Math.round(top[1]/rev*100)}% of your revenue</h1><p class="note">All uploads to date · sample data</p></div>
+   <div class="seg" role="group" aria-label="Map style"><button id="ms-c" aria-pressed="${S.mapStyle==='classic'}">Classic</button><button id="ms-h" aria-pressed="${S.mapStyle==='hologram'}">Hologram</button></div></div>
+  <div class="grid3" style="margin-bottom:20px"><div class="card"><div class="note">Revenue</div><div class="big">$${fmt(rev/1000)}k</div></div><div class="card"><div class="note">Units sold</div><div class="big">${fmt(units)}</div></div><div class="card"><div class="note">Markets</div><div class="big">${Object.keys(byReg).length}</div></div></div>
+  <div class="grid"><section class="card"><h2>Revenue by market</h2><div class="fig" id="map" role="img" aria-label="World map of revenue by market"></div><p class="note">Prototype drawing. The real app uses MapLibre with OpenStreetMap data (© OpenStreetMap contributors).</p></section>
+   <section class="card"><h2>Top perfumes</h2><div class="rows">${perf.map(([p,v])=>`<div class="r"><span>${esc(p)}</span><div class="t"><b style="width:${v/max*100}%"></b></div><span class="num">$${fmt(v/1000)}k</span></div>`).join('')}</div></section></div>
+  <section class="card" style="margin-top:20px"><div class="head" style="margin-bottom:8px"><h2>Olfactory structure</h2><select id="perfSel" style="width:auto">${Object.keys(NOTES).map(p=>`<option ${p===S.perfume?'selected':''}>${p}</option>`).join('')}</select></div>
+   <div class="grid"><div class="fig olf" id="olf" role="img" aria-label="Note structure rings"></div><div id="olfList"></div></div></section>`;
+  $('#ms-c').onclick=()=>{S.mapStyle='classic';insights()};$('#ms-h').onclick=()=>{S.mapStyle='hologram';insights()};
+  $('#perfSel').onchange=e=>{S.perfume=e.target.value;drawOlf()};
+  const m=$('#map');const LBL={'United Kingdom':'nw','Europe':'ne','GCC':'w','India':'e','Southeast Asia':'e','North America':'n'};
+  const drawMap=()=>{const W=m.clientWidth,H=m.clientHeight,k=Math.min(W/360,H/136),ox=(W-360*k)/2,oy=(H-136*k)/2;const X=lon=>ox+(lon+180)*k,Y=lat=>oy+(80-lat)*k;const holo=S.mapStyle==='hologram';const mx=Math.max(...Object.values(byReg));const r0=Math.max(12,k*15),dr=Math.max(1,k*.75);
+    const pts=Object.entries(byReg).map(([nm,v])=>{const[la,lo]=REGIONS[nm];return{nm,v,x:X(lo),y:Y(la),r:Math.max(4,Math.sqrt(v/mx)*r0)}});
+    const short=nm=>W<520?nm.replace('United Kingdom','UK').replace('Southeast Asia','SE Asia').replace('North America','N. America'):nm;
+    const lab=({nm,v,x,y,r})=>{const d=LBL[nm]||'n';const[a,tx,ty]=d==='nw'?['end',x-r*.6,y-r-4]:d==='w'?['end',x-r-5,y+4]:d==='e'?['start',x+r+5,y+4]:d==='ne'?['start',x+r*.7+3,y-r*.7-3]:['middle',x,y-r-6];return`<text x="${tx}" y="${ty}" text-anchor="${a}" font-size="13" fill="var(--ink)" style="paint-order:stroke;stroke:var(--surface);stroke-width:4px">${esc(short(nm))} $${fmt(v/1000)}k</text>`};
+    m.innerHTML=`<svg viewBox="0 0 ${W} ${H}">${DOTS.map(([lo,la])=>holo?`<circle cx="${X(lo)}" cy="${Y(la)}" r="${dr}" fill="none" stroke="var(--gold)" stroke-opacity=".55"/>`:`<circle cx="${X(lo)}" cy="${Y(la)}" r="${dr}" fill="var(--dot)"/>`).join('')}
+    ${pts.map(({x,y,r})=>holo?`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="var(--wine)" stroke-width="1.5"/><circle cx="${x}" cy="${y}" r="${r*.55}" fill="none" stroke="var(--wine)" stroke-opacity=".5"/><circle cx="${x}" cy="${y}" r="2.5" fill="var(--wine)"/>`:`<circle cx="${x}" cy="${y}" r="${r}" fill="var(--wine)" fill-opacity=".8" stroke="var(--surface)" stroke-width="1"/>`).join('')}
+    ${pts.map(lab).join('')}</svg>`};
+  new ResizeObserver(drawMap).observe(m);drawOlf();
+}
+function drawOlf(){
+  const o=$('#olf'),n=NOTES[S.perfume];const tiers=[['Top','var(--gold)'],['Heart','var(--wine)'],['Base','var(--muted)']];
+  const draw=()=>{const W=o.clientWidth,H=o.clientHeight,cx=W/2,cy=H/2,R=Math.min(W,H)/2-14;const arc=(r1,r2,a1,a2)=>{const p=(r,a)=>[cx+r*Math.sin(a),cy-r*Math.cos(a)];const L=a2-a1>Math.PI?1:0;const[a,b]=[p(r2,a1),p(r2,a2)],[c,d]=[p(r1,a2),p(r1,a1)];return`M${a}A${r2},${r2} 0 ${L} 1 ${b}L${c}A${r1},${r1} 0 ${L} 0 ${d}Z`};
+    let svg='';tiers.forEach(([t,col],i)=>{const r2=R-i*R*.22,r1=r2-R*.19;let a=0;const tot=n[t].reduce((s,x)=>s+x[1],0);n[t].forEach(([name,w],j)=>{const span=w/tot*Math.PI*2;svg+=`<path d="${arc(r1,r2,a+.015,a+span-.015)}" fill="${col}" fill-opacity="${.9-j*.22}"><title>${esc(t)}: ${esc(name)} ${Math.round(w/tot*100)}%</title></path>`;a+=span})});
+    o.innerHTML=`<svg viewBox="0 0 ${W} ${H}">${svg}<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="Cormorant Garamond,serif" font-size="22" font-weight="600" fill="var(--ink)">${esc(S.perfume)}</text></svg>`};
+  new ResizeObserver(draw).observe(o);
+  $('#olfList').innerHTML='<p class="note">Outer ring: top notes, the first impression. Middle: heart. Inner ring: base notes, what lasts.</p>'+tiers.map(([t,col])=>{const tot=n[t].reduce((s,x)=>s+x[1],0);return`<h3 style="margin-top:8px">${t} notes</h3><div class="rows">${n[t].map(([nm,w])=>`<div class="r"><span>${esc(nm)}</span><div class="t"><b style="width:${w/tot*100}%;background:${col}"></b></div><span class="num">${Math.round(w/tot*100)}%</span></div>`).join('')}</div>`}).join('');
+}
+
+/* ---------- client: ideas ---------- */
+function ideas(){
+  const mine=S.requests.filter(r=>r.client==='Maison Aurel');
+  $('#view').innerHTML=`<div class="head"><div><h1>Request a new fragrance idea</h1><p class="note">Tell us what you have in mind. Our perfumers reply within the dashboard.</p></div></div>
+  <div class="grid"><form class="card" id="reqForm"><label class="f">What should it be?<input type="text" id="rq-title" placeholder="For example: a lighter summer edition of Rose Noir" required></label>
+   <div class="two"><label class="f">Scent family<select id="rq-fam"><option>Floral</option><option>Woody</option><option>Oriental</option><option>Fresh</option><option>Gourmand</option></select></label><label class="f">Main market<select id="rq-mkt">${Object.keys(REGIONS).map(r=>`<option>${r}</option>`).join('')}</select></label></div>
+   <label class="f">First order size (bottles)<input type="text" id="rq-qty" inputmode="numeric" placeholder="3,000"></label>
+   <button class="btn" type="submit">Send request</button><div id="rqOut"></div></form>
+   <section class="card"><h2>Your requests</h2><ul class="list">${mine.map(r=>`<li><div><strong>${esc(r.title)}</strong><div class="note">${esc(r.family)} · ${esc(r.market)} · ${esc(r.qty)} bottles</div>${r.reply?`<div style="margin-top:6px">Reply: ${esc(r.reply)}</div>`:''}</div><span class="tag">${esc(r.status)}</span></li>`).join('')||'<li class="note">No requests yet.</li>'}</ul></section></div>`;
+  $('#reqForm').onsubmit=e=>{e.preventDefault();const t=$('#rq-title').value.trim();if(!t){$('#rqOut').innerHTML='<div class="msg err">Please describe the idea in a few words.</div>';return}
+    const r={id:Date.now(),client:'Maison Aurel',title:t,family:$('#rq-fam').value,market:$('#rq-mkt').value,qty:$('#rq-qty').value||'—',status:'Open',reply:''};S.requests.unshift(r);S.attention.unshift({id:'a'+r.id,kind:'Client request',who:'Maison Aurel',text:'New request: '+t,go:'requests'});ideas();toast('Request sent. Our team will reply here.')};
+}
+
+/* ---------- staff ---------- */
+function attention(){
+  $('#view').innerHTML=`<div class="head"><div><h1>${S.attention.length?`${S.attention.length} things need your attention`:'Nothing needs your attention'}</h1><p class="note">Sorted by type: client requests first, then account issues. Each item shows the rule that raised it.</p></div></div>
+  <section class="card"><ul class="list">${S.attention.map(a=>`<li><div><span class="tag">${esc(a.kind)}</span> <strong>${esc(a.who)}</strong><div>${esc(a.text)}</div></div><div style="display:flex;gap:8px"><button class="btn small" data-go="${a.go}">Open</button><button class="btn ghost small" data-done="${a.id}">Mark done</button></div></li>`).join('')||'<li class="note">All clear. New requests and account issues appear here.</li>'}</ul></section>`;
+  document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{S.tab=b.dataset.go;render()});
+  document.querySelectorAll('[data-done]').forEach(b=>b.onclick=()=>{const i=S.attention.findIndex(a=>a.id===b.dataset.done);const [it]=S.attention.splice(i,1);render();toast('Marked done.',()=>{S.attention.splice(i,0,it);render()})});
+}
+function clients(){
+  $('#view').innerHTML=`<div class="head"><div><h1>Clients</h1><p class="note">Every change here is written to the audit log and cannot be edited.</p></div></div>
+  <section class="card"><div class="scroll"><table><thead><tr><th>Client</th><th class="num">Users</th><th class="num">MFA set up</th><th>Last upload</th><th>AI column matching</th><th>Share in insights</th></tr></thead>
+  <tbody>${S.clients.map((c,i)=>`<tr><td>${esc(c.name)}</td><td class="num">${c.users}</td><td class="num">${c.mfa} of ${c.users}</td><td>${esc(c.last)}</td><td><label class="switch"><input type="checkbox" data-ai="${i}" ${c.ai?'checked':''}>${c.ai?'On':'Off'}</label></td><td><label class="switch"><input type="checkbox" data-sh="${i}" ${c.share?'checked':''}>${c.share?'Yes':'No'}</label></td></tr>`).join('')}</tbody></table></div>
+  <p class="note">AI matching and cross-client insights are later features; the switches exist so each client's choice is recorded now.</p></section>
+  <section class="card" style="margin-top:20px"><h2>Audit log</h2><div class="scroll"><table><thead><tr><th>When</th><th>Who</th><th>What</th></tr></thead><tbody>${S.audit.map(a=>`<tr><td>${esc(a[0])}</td><td>${esc(a[1])}</td><td>${esc(a[2])}</td></tr>`).join('')}</tbody></table></div></section>`;
+  document.querySelectorAll('[data-ai]').forEach(b=>b.onchange=()=>{const c=S.clients[b.dataset.ai];c.ai=b.checked;log(`Turned AI column matching ${c.ai?'on':'off'} for ${c.name}`);clients()});
+  document.querySelectorAll('[data-sh]').forEach(b=>b.onchange=()=>{const c=S.clients[b.dataset.sh];c.share=b.checked;log(`Turned sharing ${c.share?'on':'off'} for ${c.name}`);clients()});
+}
+function requests(){
+  $('#view').innerHTML=`<div class="head"><div><h1>Client requests</h1><p class="note">Reply to a request to move it to "Answered". The client sees your reply in their portal.</p></div></div>
+  <section class="card"><ul class="list">${S.requests.map(r=>`<li style="display:block"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><strong>${esc(r.title)}</strong><div class="note">${esc(r.client)} · ${esc(r.family)} · ${esc(r.market)} · ${esc(r.qty)} bottles</div></div><span class="tag">${esc(r.status)}</span></div>
+   ${r.status==='Open'?`<form data-rid="${r.id}" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><input type="text" placeholder="Write a reply" aria-label="Reply to ${esc(r.client)}" style="flex:1 1 16em"><button class="btn small">Send reply</button></form>`:`<p style="margin-top:6px">Reply: ${esc(r.reply)}</p>`}</li>`).join('')}</ul></section>`;
+  document.querySelectorAll('[data-rid]').forEach(f=>f.onsubmit=e=>{e.preventDefault();const t=f.querySelector('input').value.trim();if(!t)return;const r=S.requests.find(x=>x.id==f.dataset.rid);r.reply=t;r.status='Answered';S.attention=S.attention.filter(a=>!(a.kind==='Client request'&&a.text.endsWith(r.title)));log(`Replied to request "${r.title}" from ${r.client}`);requests();toast('Reply sent.')});
+}
+render();
+}
+</script>

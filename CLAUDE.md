@@ -49,5 +49,5 @@ Warm, professional, not tech-heavy (sawaifragrances.com style): ivory, burgundy,
 8. Later: `/egm:egm-drift-report docs/designs/` to check code against spec
 
 ## Current state
-- Prototype done and tested (role switch, live feed, CSV upload, hologram/classic map).
+- Prototype: `docs/prototype.html` (clickable, sample data, matches the first-build brief). Published privately at https://claude.ai/artifact/QpWdGHLGpPeM3u43TXokGm
 - Stack chosen. EGM plugin installed. Next: brainstorm → spec → plan.
