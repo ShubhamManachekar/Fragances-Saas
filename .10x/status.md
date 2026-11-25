@@ -1,6 +1,6 @@
 # Status
 
-**Phase:** 0 — Brainstorming (Goldfish review done; concepts_brief.md written; all decisions resolved)
+**Phase:** 0 — Brainstorming complete; brief published as RFC (docs/designs/client-studio-first-build.md)
 **Feature:** client-studio-production
 
 ## Answers from owner

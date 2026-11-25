@@ -1,5 +1,6 @@
 # Handoff
 
-Current role: Product Manager / CTO (Phase 0 brainstorming).
-Context: Repo has only CLAUDE.md. EGM brainstorm (`/egm:egm-brainstorm`) started in parallel; its output `concepts_brief.md` will become the Phase 0 spec in `.10x/specs/`.
-Next: get brief + prototype, then answer open questions in status.md one at a time.
+Current role: Product Manager / Architect (end of Phase 0 brainstorming).
+Brief published as RFC: `docs/designs/client-studio-first-build.md` (copy of `concepts_brief.md`).
+Next: gather feedback, then `/egm:egm-draft docs/designs/client-studio-first-build.md` → `/egm:egm-review` → save approved spec to `.10x/specs/`, then Phase 1.
+Spec order: tenancy → sign-in → environments → design system → upload → orders → staff list → map/charts/olfactory.
