@@ -1,15 +1,19 @@
 # Status
 
-**Phase:** 0 — Brainstorming (in progress)
-**Feature:** client-studio-production — harden the existing plan into a production-ready, low-latency SaaS with a non-technical UI, no deviation from the plan.
+**Phase:** 0 — Brainstorming (clarification done, awaiting Goldfish review)
+**Feature:** client-studio-production
 
-## Blockers
-- `docs/brief.md` and `docs/prototype.html` not yet in repo; the plan can't be checked against them.
+## Answers from owner
+- Plan source: CLAUDE.md only (brief/prototype not provided)
+- Users: worldwide; home region Mumbai (Supabase ap-south-1, Vercel bom1); edge cache for static
+- Non-technical: both client brands and manufacturer staff
+- Banned "AI look": gradients & glow, sparkle/bot icons. Hologram kept but rebuilt muted, no glow; Classic default
+- Map: MapLibre GL + Protomaps (self-hosted OSM tiles file, no API key)
+- Scale +1 yr: small (<50 clients, <500 users, uploads <10k rows)
+- Budget: $0 until first paying client, then paid tiers per plan (Vercel Pro + Supabase Pro)
+- Speed: "feels instant" — no hard number; skeletons, cache, optimistic UI
+- Client home: orders + upload. Staff home: sales, requests, client management (conflicts with "one main action" — to resolve)
+- MFA: staff via company SSO (MFA enforced by IdP); clients via authenticator app (TOTP)
 
-## Open questions (asked in EGM brainstorm)
-1. Brief + prototype
-2. User locations + "fast" target
-3. Who is non-technical + their top task
-4. Scale at launch / +1 year
-5. What counts as "AI look" (Hologram map stays?)
-6. Paid tiers confirmed at launch?
+## Deviations from plan (approved)
+- Map engine: custom canvas/SVG → MapLibre + Protomaps (both styles kept)
