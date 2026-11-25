@@ -1,6 +1,6 @@
 # Status
 
-**Phase:** 0 — Brainstorming (clarification done, awaiting Goldfish review)
+**Phase:** 0 — Brainstorming (Goldfish review done; concepts_brief.md written; 5 open decisions)
 **Feature:** client-studio-production
 
 ## Answers from owner
