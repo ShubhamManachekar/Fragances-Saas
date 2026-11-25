@@ -110,17 +110,17 @@ Each user opens a screen and the one right next step is already shown, with its 
   * Environments: dev and staging on Free, production on Pro, all built from repo scripts; caching rules; backups; monitoring; free-to-paid switch checklist.
   * Design system: colour and font tokens (light and dark), components, banned list, accessibility rules.
   * Sales upload: CSV and XLSX parsed and saved; PDF accepted and stored for staff to look at.
-  * Orders view, from an interim source (decision pending).
+  * Order table and staff order entry (dev only); client Orders panel hidden at first launch until the CRM is connected.
+  * Olfactory graph, professional style.
   * Staff "Needs attention" list: open requests and account issues.
   * Client requests (ideas) and client management for staff.
   * Map: MapLibre, Classic and muted Hologram themes, regions shaded by sales.
 * **Out-of-Scope Non-Goals (later features, data model kept ready):**
-  * ProcessWare ERP sync, and with it the Realtime live order feed (refresh on focus or on a timer until then).
+  * CRM order sync, ProcessWare ERP sync, and with them the Realtime live order feed (refresh on focus or on a timer until then).
   * Reading tables out of PDFs.
   * AI (Claude) column matching. The per-client AI switch column exists but is off.
   * Cross-client insights. The `share` column exists.
   * "Notable sales changes" in the Needs attention list.
-  * Olfactory graph (pending owner decision).
   * SMS codes, SAML SSO, more than one manufacturer, users belonging to more than one client company.
 
 ## Alternatives Weighed
@@ -150,13 +150,13 @@ Each user opens a screen and the one right next step is already shown, with its 
 7. Only public static files go through the edge cache.
 8. Optimistic updates only for small, reversible actions.
 
-**Open — needs owner decision before `/egm:egm-draft`:**
+9. Orders: a separate CRM (not ProcessWare) will supply orders later. The Order table is designed to match that future feed. During development the panel shows labelled sample data and staff can enter orders by hand. At first launch the Orders panel is hidden, so the client home shows only the "Upload sales report" action, until the CRM is connected.
+10. Staff sign in with Google Workspace (free Supabase Google sign-in, restricted to the manufacturer's domain). Their Google account enforces MFA.
+11. Email: Resend (new dependency, approved), with the manufacturer's sending domain set up with SPF/DKIM.
+12. Olfactory graph is in the first build. Style: professional, not cartoonish — thin lines, muted brand colours, serif labels, no bubbly shapes, bright fills or animation for its own sake.
+13. Production data loss target: minutes. Use Supabase point-in-time restore (paid add-on, adds to the day-one cost) plus a separate encrypted backup of uploaded files and a recorded restore drill.
 
-1. Where order data comes from in the first build (staff entry, CSV import by staff, or sample only).
-2. Which work-account system the manufacturer's staff use (Google Workspace, Microsoft 365, or other).
-3. Which outside email service to add (new dependency).
-4. Whether the olfactory graph is in the first build.
-5. Acceptable data loss and restore time for production, and whether to pay for point-in-time restore.
+**Open — none blocking `/egm:egm-draft`.** Remaining details (thresholds, signed-link expiry, row caps) are settled inside each sub-project spec.
 
 **Suggested spec order** (one spec per sub-project, matching "one feature per session"):
 
@@ -166,6 +166,6 @@ Each user opens a screen and the one right next step is already shown, with its 
 3. Environments, hosting, caching, backups, monitoring (can run alongside 2).
 4. Design system (can start alongside 1–3).
 5. Sales upload.
-6. Orders view.
+6. Orders (Order table, staff entry, hidden client panel until CRM).
 7. Staff "Needs attention" list, requests and client management.
-8. Map and charts.
+8. Map, charts and olfactory graph.
