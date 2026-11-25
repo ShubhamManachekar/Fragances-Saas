@@ -194,7 +194,7 @@ Template: `docs/templates/client-portfolio-template.csv`. Column names may diffe
 
 ### Analytics shown to clients
 
-1. **Most-used oils** — share of units by oil, overall and per category. Each oil shows how many brands use it and whether this client uses it.
+1. **Most-used oils** — share of units by oil across all categories combined (no per-category filter on screen). Each oil shows how many brands use it and whether this client uses it.
 2. **Rising oils** — biggest gains in share since the previous period.
 3. **Gaps in your range** — popular oils in the client's own categories that the client does not use, plus featured oils. Each has an "Ask for a sample" action.
 4. **Scent families** — the client's family mix next to the market's.

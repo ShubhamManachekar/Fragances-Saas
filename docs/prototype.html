@@ -262,13 +262,13 @@ function Home({products,uploads,feat,onSaved,go}){
 
 /* ================= client: market ================= */
 function Market({products,feat,ask}){
-  const[cat,setCat]=useState('All');
+  const cat='All';
   const stats=useMemo(()=>oilStats(products,CUR,cat),[products,cat]);const ris=useMemo(()=>rising(products,cat),[products,cat]);const gp=useMemo(()=>gaps(products,feat),[products,feat]);
   const fm=families(products,cat),fy=families(products,cat,ME);const max=Math.max(...stats.map(s=>s.share));const brands=new Set(products.filter(p=>cat==='All'||p.cat===cat).map(p=>p.brand)).size;
   const lead=stats.find(s=>!s.hidden);
   return html`<div className="head"><div><h1>${!lead?'Market view':!stats.some(s=>s.hidden)?`${OILS[lead.code].name} leads ${cat==='All'?'the market':cat.toLowerCase()+'s'} with ${pct(lead.share)} of units`:`${OILS[lead.code].name} is the top oil shared by several ${cat==='All'?'brands':cat.toLowerCase()+' brands'}, with ${pct(lead.share)} of units`}</h1>
     <p className="lead">Built from the portfolios of ${brands} brands, ${CUR}. Brand names are never shown. A figure is hidden when only one other brand is behind it. Sample data.</p></div>
-    <${Seg} value=${cat} set=${setCat} opts=${['All',...CATS]} label="Category"/></div>
+    </div>
   <section className="card" style=${{marginBottom:'20px'}}><h2>Most-used oils</h2><p className="sub">Share of units${cat==='All'?'':' in '+cat.toLowerCase()}, among oils used by two or more brands (plus your own). Oils used by only one other brand are listed last, without numbers.</p>
     <div style=${{marginTop:'10px'}}>${stats.map(s=>html`<div key=${s.code} className="oilrow"><div><${OilName} code=${s.code}/><div className="sub">${s.hidden?'Used by 1 brand':`Used by ${s.brands.size} ${s.brands.size===1?'brand':'brands'}`}${s.mine?html` · <span style=${{color:'var(--wine)',fontWeight:500}}>you use this</span>`:''}</div></div>
       ${s.hidden?html`<div className="hid">Hidden to protect another brand</div><span></span>`:html`<div className="t"><b style=${{width:s.share/max*100+'%',background:s.mine?'var(--wine)':FAM[OILS[s.code].fam]}}></b></div><span className="num">${pct(s.share)}</span>`}</div>`)}</div></section>
