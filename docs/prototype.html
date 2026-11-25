@@ -134,6 +134,16 @@ input[type=range]{width:100%;accent-color:var(--wine);min-height:44px}
 @keyframes hgflow{to{stroke-dashoffset:-18}}
 @keyframes hgping{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.9);opacity:0}}
 @media(prefers-reduced-motion:reduce){.hg-route,.hg-ping{animation:none}}
+.gw{--g-tx:var(--ink);--g-mu:var(--muted);--g-bg:var(--surface);position:relative;overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:8px}
+.gw.holo{--g-tx:#e6f6ff;--g-mu:#8fb4c9;--g-bg:#0a152b;background:radial-gradient(ellipse at 50% 45%,#10264a 0%,#0a152b 75%);border-color:#1d6f86}
+.gw.holo::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:16px;background:repeating-linear-gradient(0deg,rgba(120,240,255,.05) 0 1px,transparent 1px 3px)}
+svg.gsvg{display:block;min-width:640px;width:100%;height:auto}
+.gfam{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center}
+.gfam button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:14px;min-height:40px}
+.gfam button[aria-pressed=true]{border-color:var(--wine);box-shadow:inset 0 0 0 1px var(--wine)}
+.gfam i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}
+.gi{margin:12px 0;padding:14px 18px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;min-height:56px}
+.ghow{display:flex;flex-wrap:wrap;gap:8px 24px;font-size:14px;color:var(--muted)}.ghow span{display:inline-flex;align-items:center;gap:8px}.ghow i{display:inline-block;border-radius:50%;background:var(--gold)}
 .tabbar{display:none}
 @media(min-width:861px){.toast{bottom:24px}}
 @media(max-width:1000px){.grid,.grid2{grid-template-columns:minmax(0,1fr)}.phases{grid-template-columns:minmax(0,1fr)}}
@@ -232,7 +242,7 @@ function checkRow(r,map,n){const g=k=>(r[map[k]]||'').trim();const e=[];
   return e.length?{n,e}:null}
 
 /* ================= small pieces ================= */
-const P={home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',box:'M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10',drop:'M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z',idea:'M9 18h6M10 21h4M12 3a6 6 0 0 0-3 11.2V16h6v-1.8A6 6 0 0 0 12 3z',bell:'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4',users:'M16 20v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 20v-1a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',star:'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z',inbox:'M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z'};
+const P={home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',box:'M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10',drop:'M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z',idea:'M9 18h6M10 21h4M12 3a6 6 0 0 0-3 11.2V16h6v-1.8A6 6 0 0 0 12 3z',bell:'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4',users:'M16 20v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 20v-1a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',star:'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z',graph:'M12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM5 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM19 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM5 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM19 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM6.5 6.5l4 4M17.5 6.5l-4 4M6.5 17.5l4-4M17.5 17.5l-4-4',inbox:'M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z'};
 const Icon=({n,s=22})=>html`<svg width=${s} height=${s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d=${P[n]}/></svg>`;
 function useSize(){const ref=useRef(null);const[sz,set]=useState({w:0,h:0});useEffect(()=>{const ro=new ResizeObserver(([e])=>set({w:e.contentRect.width,h:e.contentRect.height}));ro.observe(ref.current);return()=>ro.disconnect()},[]);return[ref,sz]}
 const OilName=({code})=>html`<span><span className="fdot" style=${{background:FAM[OILS[code].fam]}}></span><b style=${{fontWeight:500}}>${OILS[code].name}</b> <span className="code">${code}</span></span>`;
@@ -414,6 +424,67 @@ function Oils({feat,products}){
   </section>`;
 }
 
+/* ================= olfactory graph (ported from Global Fragrance Portal) ================= */
+const GF=['Citrus','Fresh','Floral','Gourmand','Woody','Amber','Musk'];
+const NF={'Bergamot':0,'Lemon':0,'Grapefruit':0,'Pear':0,'Green tea':1,'Mint':1,'Sea salt':1,'Marine accord':1,'Lavender':1,'Aloe':1,'Neem leaf':1,'Lychee':1,'Jasmine':2,'Rose':2,'Peony':2,'Orange blossom':2,'Iris':2,'Geranium':2,'Frangipani':2,'Vanilla':3,'Tonka bean':3,'Coconut':3,'Sandalwood':4,'Cedar':4,'Cedarwood':4,'Driftwood':4,'Vetiver':4,'Oud':4,'Oakmoss':4,'Saffron':5,'Cardamom':5,'Amber':5,'White musk':6,'Musk':6};
+const GNOTES=Object.keys(NF).sort((a,b)=>NF[a]-NF[b]||a.localeCompare(b));
+const GPAL={Hologram:['#ffd23f','#3df2ff','#ff7ad9','#ff9f43','#7dff9a','#b388ff','#e8f4ff'],Classic:['#d9a441','#5fa8a0','#d98a9b','#c27a43','#6b5239','#a8553a','#9a8fae']};
+const GCOLS=['#ff6b6b','#d8c08a','#7aa2c8','#c78bd8'];
+const LWT={top:.2,heart:.3,base:.5};
+const notesOf=p=>{const o=OILS[p.oil],out=[];['top','heart','base'].forEach(l=>o[l].forEach(([n])=>out.push([n,LWT[l]/o[l].length,l])));return out};
+const pid=p=>p.brand+'|'+p.name;
+function OlfGraph({products,role,go}){
+  const staff=role==='staff';const[sty,setSty]=useState('Hologram'),[gr,setGr]=useState('All'),[hov,setHov]=useState(null),[sel,setSel]=useState(null);
+  const FC=GPAL[sty],act=hov||sel,f1=v=>v.toFixed(1);
+  const en=(staff?products:products.filter(p=>p.brand===ME)).filter(p=>(p.units[CUR]||0)>0);
+  const brandIx=Object.fromEntries(Object.keys(BRANDS).map((b,i)=>[b,i]));
+  const un=p=>gr==='All'||p.market===gr?(p.units[CUR]||0):0,mxr=Math.max(1,...en.map(un)),ws=p=>gr==='All'?1:un(p)/mxr;
+  const used={},fs=Array(7).fill(0),np={},pn={};
+  en.forEach(p=>{pn[pid(p)]=notesOf(p).map(x=>x[0]);notesOf(p).forEach(([n,w])=>{used[n]=(used[n]||0)+w*ws(p);fs[NF[n]]+=w*ws(p);(np[n]=np[n]||[]).push(pid(p))})});
+  const cx=500,RN=330,SL=360/(GNOTES.length+7),pos={},ang=[[],[],[],[],[],[],[]];let slot=0,last=-1;
+  GNOTES.forEach(n=>{const f=NF[n];if(last>=0&&f!==last)slot++;last=f;const a=-90+(slot+.5)*SL;pos[n]={a,x:cx+RN*Math.cos(a*Math.PI/180),y:cx+RN*Math.sin(a*Math.PI/180)};ang[f].push(a);slot++});
+  const nn=en.length,rp=nn<4?80:nn<7?130:nn<11?165:195,mu=Math.max(1,...en.map(un));
+  const pp=en.map((e,k)=>{const a=(-90+k*360/nn)*Math.PI/180;return{x:cx+(nn>1?rp*Math.cos(a):0),y:cx+(nn>1?rp*Math.sin(a):0)}});
+  const ns=new Set(),ps=new Set();
+  if(act&&act.k==='n'){ns.add(act.id);(np[act.id]||[]).forEach(x=>ps.add(x))}
+  if(act&&act.k==='p'){ps.add(act.id);(pn[act.id]||[]).forEach(n=>ns.add(n))}
+  if(act&&act.k==='f'){GNOTES.forEach(n=>{if(NF[n]===act.id){ns.add(n);(np[n]||[]).forEach(x=>ps.add(x))}})}
+  const byId=Object.fromEntries(en.map(p=>[pid(p),p]));
+  let info='Hover or tap a note or a product to see how they connect. Click to keep it selected.';
+  if(act&&act.k==='n'){const u=[...ps].map(x=>byId[x].name);info=`${act.id}: ${GF[NF[act.id]].toLowerCase()} family. ${u.length?'Used in '+u.join(', ')+'.':'Not used in any product yet.'}`}
+  if(act&&act.k==='p'){const p=byId[act.id],o=OILS[p.oil];info=`${p.name} uses ${o.name} (${p.oil}). Top: ${o.top.map(x=>x[0]).join(', ')}. Heart: ${o.heart.map(x=>x[0]).join(', ')}. Base: ${o.base.map(x=>x[0]).join(', ')}. ${fmt(un(p))} units${gr==='All'?'':' in '+gr}.`}
+  if(act&&act.k==='f'){const inFam=GNOTES.filter(n=>NF[n]===act.id);info=`${GF[act.id]}: ${inFam.filter(n=>np[n]).length} of ${inFam.length} notes are in use.`}
+  const onEnter=(k,id)=>()=>setHov({k,id}),onLeave=()=>setHov(null),onClick=(k,id)=>()=>setSel(sel&&sel.k===k&&sel.id===id?null:{k,id});
+  const lab={paintOrder:'stroke',stroke:'var(--g-bg)',strokeWidth:'5px',strokeLinejoin:'round'};
+  const lines=[];en.forEach((p,k)=>notesOf(p).forEach(([n,w])=>{const a=pp[k],b=pos[n],mx=(a.x+b.x)/2*.55+cx*.45,my=(a.y+b.y)/2*.55+cx*.45;
+    const ok=!act||(act.k==='n'&&act.id===n)||(act.k==='p'&&act.id===pid(p))||(act.k==='f'&&act.id===NF[n]);
+    lines.push(html`<path key=${pid(p)+n} d=${`M${f1(a.x)} ${f1(a.y)}Q${f1(mx)} ${f1(my)} ${f1(b.x)} ${f1(b.y)}`} fill="none" stroke=${FC[NF[n]]} strokeWidth=${f1(.8+w*ws(p)*7)} style=${{opacity:ok?.85:.04,transition:'opacity .2s'}}/>`)}));
+  const arcs=ang.map((a,f)=>{if(!a.length)return null;const a0=(Math.min(...a)-SL*.35)*Math.PI/180,a1=(Math.max(...a)+SL*.35)*Math.PI/180,r=322,mid=(Math.min(...a)+Math.max(...a))/2*Math.PI/180;
+    return html`<g key=${'f'+f}><path d=${`M${f1(cx+r*Math.cos(a0))} ${f1(cx+r*Math.sin(a0))}A${r} ${r} 0 0 1 ${f1(cx+r*Math.cos(a1))} ${f1(cx+r*Math.sin(a1))}`} fill="none" stroke=${FC[f]} strokeWidth="7" strokeLinecap="round"/>
+      <text x=${f1(cx+292*Math.cos(mid))} y=${f1(cx+292*Math.sin(mid)+4)} textAnchor="middle" style=${{...lab,fill:'var(--g-tx)',font:'600 13px Jost,sans-serif',letterSpacing:'.12em'}}>${GF[f].toUpperCase()}</text></g>`});
+  const notes=GNOTES.map(n=>{const o=pos[n],u=used[n]||0,right=Math.cos(o.a*Math.PI/180)>=0,rot=right?o.a:o.a+180;const op=act?(ns.has(n)?1:.18):(u?1:.5);
+    return html`<g key=${n} style=${{cursor:'pointer',opacity:op,transition:'opacity .2s'}} onMouseEnter=${onEnter('n',n)} onMouseLeave=${onLeave} onClick=${onClick('n',n)} data-hn=${n}>
+      <circle cx=${f1(o.x)} cy=${f1(o.y)} r=${f1(u?4+9*Math.sqrt(Math.min(u,1.3)):3)} fill=${FC[NF[n]]} style=${{stroke:'var(--g-bg)',strokeWidth:'2px'}}/>
+      <text transform=${`translate(${f1(o.x)},${f1(o.y)}) rotate(${f1(rot)})`} x=${right?16:-16} y="5" textAnchor=${right?'start':'end'} style=${{fill:u?'var(--g-tx)':'var(--g-mu)',font:`${u?600:400} 15px Jost,sans-serif`}}>${n}</text></g>`});
+  const prods=en.map((p,k)=>{const r=(nn>8?8:10)+(nn>8?11:15)*Math.sqrt(un(p)/mu),a=pp[k],ly=nn>6&&k%2?a.y-r-8:a.y+r+17,id=pid(p);
+    return html`<g key=${id} style=${{cursor:'pointer',opacity:!act||ps.has(id)?1:.2,transition:'opacity .2s'}} onMouseEnter=${onEnter('p',id)} onMouseLeave=${onLeave} onClick=${onClick('p',id)} data-hp=${id}>
+      <circle cx=${f1(a.x)} cy=${f1(a.y)} r=${f1(r)} fill="var(--g-tx)" style=${{stroke:GCOLS[(staff?brandIx[p.brand]:0)%4],strokeWidth:'5px'}}/>
+      <text x=${f1(a.x)} y=${f1(ly)} textAnchor="middle" style=${{...lab,fill:'var(--g-tx)',font:'600 14px Jost,sans-serif'}}>${p.name}</text></g>`});
+  const fsum=fs.reduce((a,b)=>a+b,0)||1,hi=fs.indexOf(Math.max(...fs)),lo=GF.filter((f,i)=>fs[i]/fsum<.06),nu=Object.keys(used).length;
+  const markets=[...new Set(en.map(p=>p.market))];
+  return html`<div className="head"><div><h1>${staff?'All client products and their notes':'How your range is built'}</h1><p className="lead">${gr==='All'?'Each line joins one of your products (centre) to a note in the oil it uses (outer ring, grouped by scent family). Pick a market to see which notes sell there.':'Showing what sells in '+gr+'. Thicker lines and bigger dots mean more units sold there.'}</p></div></div>
+  <div style=${{display:'flex',gap:'16px',flexWrap:'wrap',alignItems:'center',marginBottom:'12px'}}>
+    <label className="sub">Where <select className="field" style=${{display:'inline-block',width:'auto',marginLeft:'6px'}} value=${gr} onChange=${e=>{setGr(e.target.value);setSel(null)}}><option value="All">All markets</option>${markets.map(m=>html`<option key=${m}>${m}</option>`)}</select></label>
+    <${Seg} value=${sty} set=${setSty} opts=${['Hologram','Classic']} label="Graph style"/></div>
+  <div className="gfam">${GF.map((f,i)=>html`<button key=${f} aria-pressed=${!!(sel&&sel.k==='f'&&sel.id===i)} onMouseEnter=${onEnter('f',i)} onMouseLeave=${onLeave} onClick=${onClick('f',i)}><i style=${{background:FC[i]}}></i>${f}</button>`)}
+    ${staff&&Object.entries(BRANDS).map(([b,n],i)=>html`<span key=${b} className="sub"><i style=${{display:'inline-block',width:'10px',height:'10px',borderRadius:'50%',margin:'0 6px 0 8px',background:GCOLS[i%4]}}></i>${n}</span>`)}</div>
+  <div className=${'gw'+(sty==='Hologram'?' holo':'')}><svg className="gsvg" viewBox="0 0 1000 1000" role="img" aria-label="Olfactory graph: products in the centre joined by lines to their notes, which are grouped by scent family around the ring">${lines}${arcs}${notes}${prods}</svg></div>
+  <div className="gi" aria-live="polite">${info}</div>
+  <div className="ghow"><span><i style=${{width:'18px',height:'18px'}}></i>Inner circles = products (bigger = more units)</span><span>Outer ring = notes, grouped by family</span><span>Bigger dot = note used more</span><span>Faded notes = not used yet</span></div>
+  <div className="grid2" style=${{marginTop:'20px'}}><section className="card"><h3>Where ${staff?'the market':'your range'} is heavy or light</h3><ul className="list"><li><span><b style=${{fontWeight:500}}>Heaviest family.</b> ${GF[hi]}, ${pct(fs[hi]/fsum)} of the weight${gr==='All'?'':' in '+gr}.</span></li><li><span><b style=${{fontWeight:500}}>Light or missing.</b> ${lo.length?lo.join(', '):'None, every family is covered.'}</span></li><li><span><b style=${{fontWeight:500}}>Notes in use.</b> ${nu} of ${GNOTES.length}.</span></li></ul></section>
+   <section className="card" style=${{background:'var(--wine-soft)',borderColor:'transparent'}}><h3>${staff?'Push an oil that fills a gap':'Fill the gaps'}</h3><p className="sub">${staff?'Feature an oil from a light family so every client sees it.':'See which oils the market uses in the families you are missing.'}</p><button className="btn" style=${{marginTop:'12px'}} onClick=${()=>go(staff?'featured':'market')}>${staff?'Open featured oils':'Open the market view'}</button></section></div>`;
+}
+
 /* ================= client: requests ================= */
 function Ideas({requests,addRequest}){
   const[f,setF]=useState({title:'',cat:'Deodorant',qty:''});const[err,setErr]=useState('');const mine=requests.filter(r=>r.client===BRANDS[ME]);
@@ -455,7 +526,7 @@ function Requests({requests,reply}){
 }
 
 /* ================= app shell ================= */
-const NAV={client:[['home','Home','home','Upload your portfolio'],['market','Market view','chart','What the market uses'],['portfolio','Portfolio','box','Your products and oils'],['oils','Our oils','drop','Catalog and scent'],['ideas','Ask us','idea','Samples and new oils']],staff:[['attention','Needs attention','bell','Your to-do list'],['clients','Clients','users','Brands and settings'],['featured','Featured oils','star','What to push'],['requests','Requests','inbox','Reply to clients']]};
+const NAV={client:[['home','Home','home','Upload your portfolio'],['market','Market view','chart','What the market uses'],['portfolio','Portfolio','box','Your products and oils'],['graph','Olfactory graph','graph','How your range is built'],['oils','Our oils','drop','Catalog and scent'],['ideas','Ask us','idea','Samples and new oils']],staff:[['attention','Needs attention','bell','Your to-do list'],['clients','Clients','users','Brands and settings'],['graph','Olfactory graph','graph','All brands, all notes'],['featured','Featured oils','star','What to push'],['requests','Requests','inbox','Reply to clients']]};
 const stamp=()=>{const d=new Date();return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+' '+d.toTimeString().slice(0,5)};
 const REQ0=[{id:1,client:'Nimbus Hygiene',title:'Sample of a fresher oil for our sport deodorant',cat:'Deodorant',qty:'60,000',status:'Waiting for reply',reply:''},{id:2,client:'Verde Home & Body',title:'Coconut oil with longer-lasting base for soap',cat:'Soap',qty:'200,000',status:'Waiting for reply',reply:''}];
 const ATT0=[{id:'a1',kind:'Request',who:'Nimbus Hygiene',text:'Asked for a sample of a fresher oil for their sport deodorant.',why:'Every new client request appears here.',go:'requests'},{id:'a2',kind:'Account',who:'Coastline Cosmetics',text:`No ${CUR} portfolio uploaded yet.`,why:'Shown when a quarter ends without an upload.',go:'clients'},{id:'a3',kind:'Request',who:'Verde Home & Body',text:'Asked for a coconut oil with a longer-lasting base for soap.',why:'Every new client request appears here.',go:'requests'}];
@@ -474,6 +545,7 @@ function App(){
   if(page==='home')view=html`<${Home} products=${products} uploads=${uploads} feat=${feat} onSaved=${onSaved} go=${go}/>`;
   else if(page==='market')view=html`<${Market} products=${products} feat=${feat} ask=${(code,cat)=>addRequest({title:`Sample of ${code} ${OILS[code].name}`+(cat?` for our ${cat.toLowerCase()}`:''),cat:cat||'Deodorant',qty:'—'})}/>`;
   else if(page==='portfolio')view=html`<${Portfolio} products=${products} useOurSales=${clients[ME].ourSales} setUseOurSales=${v=>{setClients(c=>({...c,[ME]:{...c[ME],ourSales:v}}));log('client@aurel (sample)',`${v?'Allowed':'Stopped'} use of oil sales records to fill in volumes`);say(v?'Saved. We may now fill in your volumes from our sales records.':'Saved. We will only use the numbers you upload.')}}/>`;
+  else if(page==='graph')view=html`<${OlfGraph} products=${products} role=${role} go=${go}/>`;
   else if(page==='oils')view=html`<${Oils} feat=${feat} products=${products}/>`;
   else if(page==='ideas')view=html`<${Ideas} requests=${requests} addRequest=${addRequest}/>`;
   else if(page==='attention')view=html`<${Attention} items=${att} go=${go} done=${id=>{const i=att.findIndex(a=>a.id===id),it=att[i];setAtt(a=>a.filter(x=>x.id!==id));say('Marked done.',()=>setAtt(a=>{const n=[...a];n.splice(i,0,it);return n}))}}/>`;
@@ -486,7 +558,7 @@ function App(){
     <nav className="nav" aria-label="Sections">${nav.map(([k,l,ic,hint])=>html`<button key=${k} data-tab=${k} aria-current=${page===k?'page':undefined} onClick=${()=>go(k)}><${Icon} n=${ic}/><span>${l}<br/><span className="sub">${hint}</span></span>${k==='attention'&&att.length>0&&html`<span className="count">${att.length}</span>`}</button>`)}</nav>
     <div className="foot">Prototype for review. Four sample brands. Changes reset when you reload.</div></aside>
    <main>${view}</main>
-   <nav className="tabbar" aria-label="Sections">${nav.map(([k,l,ic])=>html`<button key=${k} data-mtab=${k} aria-current=${page===k?'page':undefined} onClick=${()=>go(k)}><${Icon} n=${ic}/>${({'Market view':'Market','Our oils':'Oils','Needs attention':'To do','Featured oils':'Featured'})[l]||l}</button>`)}</nav>
+   <nav className="tabbar" aria-label="Sections">${nav.map(([k,l,ic])=>html`<button key=${k} data-mtab=${k} aria-current=${page===k?'page':undefined} onClick=${()=>go(k)}><${Icon} n=${ic}/>${({'Market view':'Market','Olfactory graph':'Graph','Our oils':'Oils','Needs attention':'To do','Featured oils':'Featured'})[l]||l}</button>`)}</nav>
    ${toast&&html`<div className="toast" role="status">${toast.text}${toast.undo&&html`<button onClick=${()=>{toast.undo();setToast(null)}}>Undo</button>`}</div>`}</div>`;
 }
 ReactDOM.createRoot(document.getElementById('root')).render(html`<${App}/>`);
