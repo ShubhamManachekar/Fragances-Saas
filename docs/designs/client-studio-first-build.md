@@ -169,3 +169,55 @@ Each user opens a screen and the one right next step is already shown, with its 
 6. Orders (Order table, staff entry, hidden client panel until CRM).
 7. Staff "Needs attention" list, requests and client management.
 8. Map, charts and olfactory graph.
+
+## Update: product focus — oil-usage analytics
+
+*Added after the owner clarified the core purpose. This section takes priority over earlier sections where they differ.*
+
+### What the product is for
+
+We supply fragrance oils to client brands that make finished goods such as deodorants, soaps, body washes and shampoos. Each client sends us a portfolio file in our standard format. It lists their products, which of our oils each product uses, where it sells and how many units sold. Client Studio combines every client's portfolio into one nameless market view. Each client then sees which oils are most used, which are rising, where their range differs from the market, and how scent families compare. Our team also features oils it wants to push: new inspirations and ready stock.
+
+### Standard input file (one row per product per period)
+
+| Column | Content | Example |
+| --- | --- | --- |
+| product_name | Client's product name | Fresh Deo |
+| category | Deodorant, Soap, Body wash or Shampoo (list kept by staff) | Deodorant |
+| oil_code | Our oil code from the catalog | CS-101 |
+| market | One of our market regions | GCC |
+| launch_date | YYYY-MM | 2025-03 |
+| period | Quarter, e.g. Q4 2026 | Q4 2026 |
+| units_sold | Whole number; may be left empty if the client lets us fill it from our oil sales | 45000 |
+
+Template: `docs/templates/client-portfolio-template.csv`. Column names may differ; the upload screen matches them. Rows with an unknown oil code, category, market or period are skipped and listed in plain language. Re-uploading a period replaces that period's figures for the matched products.
+
+### Analytics shown to clients
+
+1. **Most-used oils** — share of units by oil, overall and per category. Each oil shows how many brands use it and whether this client uses it.
+2. **Rising oils** — biggest gains in share since the previous period.
+3. **Gaps in your range** — popular oils in the client's own categories that the client does not use, plus featured oils. Each has an "Ask for a sample" action.
+4. **Scent families** — the client's family mix next to the market's.
+
+All figures are calculated in the database (SQL), never by an LLM.
+
+### Privacy rule for the market view (replaces "≥ N sharing clients")
+
+* Brand names are never shown to clients. Staff can see names.
+* A figure is shown only when at least two brands are behind it, or when it is the client's own data. Oils and scent families used by only one other brand are listed last with no numbers, or left out of the family bar.
+* Shares are worked out among visible items only, so a hidden brand's volume cannot be found by subtracting from 100%.
+* Every client's products count towards the market view. There is no opt-out in the first build.
+* **Residual risk:** with four clients, a client can still guess who is behind a figure from what they know of the market. Owners must accept this in client contracts.
+* This replaces the `CLAUDE.md` rule "only when ≥ N share (≥ 5 in production)". **Needs owner confirmation**, and `CLAUDE.md` must be updated once confirmed.
+
+### Our oil sales as a data source
+
+A client may allow us to fill in their volumes from our own oil sales records. This is off by default, the client sets it on their Portfolio page, and every change goes into the audit log. Without it, only the numbers in the client's file are used.
+
+### Featured oils
+
+Staff mark any catalog oil as "New inspiration" or "Ready stock". Featured oils appear on every client's home page and in their gaps list. Staff also see which brands do not use each oil yet.
+
+### Data model additions
+
+`Oil` (code, name, family, notes), `Product` (client_id, name, category, oil_code, market, launch_date), `ProductPeriod` (product_id, period, units, source: client_file or our_sales), `FeaturedOil` (oil_code, tag), `Client.use_our_sales` (boolean). The earlier `Perfume`/`PerfumeNote` tables become `Oil`/`OilNote`.

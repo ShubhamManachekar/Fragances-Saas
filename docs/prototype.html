@@ -3,13 +3,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* VOICE work: a calm portal for a perfume house and its client brands
+/* VOICE work: a fragrance-oil house showing its client brands what the market uses
    IDEA a perfumer's order book: ivory paper, burgundy ink, gold rules
-   PICTURE client home: the 3-step upload desk; perfumes: "what you smell over time" chart with a time slider
-   COLOUR ivory ground, burgundy lead, antique gold support; dark = wine-black
+   PICTURE "Most-used oils" ranked bars on the Market page; upload desk on Home
+   COLOUR ivory ground, burgundy lead, antique gold support; muted family tints; dark = wine-black
    TYPE Cormorant Garamond headings + Jost body (from CLAUDE.md)
-   LAYOUT laptop: left sidebar nav + content; phone: top bar + bottom tab bar */
-:root{color-scheme:light dark;--bg:light-dark(#faf7f0,#171012);--surface:light-dark(#ffffff,#211719);--sunk:light-dark(#f3eee4,#1c1315);--ink:light-dark(#2a1a1c,#f3ece2);--muted:light-dark(#6f5d5f,#b6a6a1);--line:light-dark(#e7dfd2,#372a2c);--wine:light-dark(#7a1f2b,#d97a86);--wine-ink:light-dark(#ffffff,#1a1012);--wine-soft:light-dark(#f7eaea,#3a2226);--gold:light-dark(#94742c,#d3b26a);--gold-soft:light-dark(#f4ecd7,#352c1d);--ok:light-dark(#2f6b45,#7cc596);--dot:light-dark(#dccfba,#4a3a3c);--base:light-dark(#5c4a46,#a8968f)}
+   LAYOUT laptop: left sidebar + content; phone: top bar + bottom tab bar */
+:root{color-scheme:light dark;--bg:light-dark(#faf7f0,#171012);--surface:light-dark(#ffffff,#211719);--sunk:light-dark(#f3eee4,#1c1315);--ink:light-dark(#2a1a1c,#f3ece2);--muted:light-dark(#6f5d5f,#b6a6a1);--line:light-dark(#e7dfd2,#372a2c);--wine:light-dark(#7a1f2b,#d97a86);--wine-ink:light-dark(#ffffff,#1a1012);--wine-soft:light-dark(#f7eaea,#3a2226);--gold:light-dark(#94742c,#d3b26a);--gold-soft:light-dark(#f4ecd7,#352c1d);--ok:light-dark(#2f6b45,#7cc596);--dot:light-dark(#dccfba,#4a3a3c);--base:light-dark(#5c4a46,#a8968f);
+--f-fresh:light-dark(#6f8a52,#9fbb82);--f-floral:light-dark(#9c3445,#e08a97);--f-woody:light-dark(#6b5444,#b59a86);--f-oriental:light-dark(#a86a26,#dba15f);--f-aromatic:light-dark(#66618f,#a9a3d6);--f-gourmand:light-dark(#b8954a,#e0c27e);--f-herbal:light-dark(#46685a,#8fb8a6)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 html,body{height:100%}
@@ -24,7 +25,7 @@ aside{background:var(--surface);border-right:1px solid var(--line);padding:22px 
 .brand{font-family:"Cormorant Garamond",serif;font-size:26px;font-weight:700;color:var(--wine);padding:0 8px}
 .brand small{display:block;font:500 13px Jost,sans-serif;color:var(--muted)}
 .who{display:grid;gap:4px;background:var(--sunk);border-radius:10px;padding:4px}
-.who button{border:0;background:none;min-height:44px;border-radius:8px;cursor:pointer;color:var(--muted);text-align:left;padding:0 12px}
+.who button{border:0;background:none;min-height:44px;border-radius:8px;cursor:pointer;color:var(--muted);text-align:left;padding:0 12px;line-height:1.2}
 .who button[aria-pressed=true]{background:var(--surface);color:var(--ink);box-shadow:0 1px 0 var(--line)}
 .nav{display:grid;gap:2px}
 .nav button{display:flex;gap:12px;align-items:center;border:0;background:none;min-height:52px;padding:6px 12px;border-radius:8px;cursor:pointer;color:var(--ink);text-align:left;line-height:1.3}
@@ -35,9 +36,10 @@ aside{background:var(--surface);border-right:1px solid var(--line);padding:22px 
 .foot{margin-top:auto;font-size:13px;color:var(--muted);padding:0 8px}
 main{padding:32px max(4vw,16px) 72px;max-width:1240px;width:100%}
 .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:14px;margin-bottom:24px}
-.lead{color:var(--muted);max-width:64ch;margin-top:6px}
+.lead{color:var(--muted);max-width:66ch;margin-top:6px}
 .grid{display:grid;gap:20px;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);align-items:start}
-.kpis{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(11em,1fr));margin-bottom:20px}
+.grid2{display:grid;gap:20px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+.stack{display:grid;gap:20px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
 .card h2{margin-bottom:4px}
 .sub{font-size:14px;color:var(--muted);font-weight:400}
@@ -52,11 +54,11 @@ main{padding:32px max(4vw,16px) 72px;max-width:1240px;width:100%}
 .steps li.on{color:var(--ink)}.steps li.on b{background:var(--wine);border-color:var(--wine);color:var(--wine-ink)}
 .steps li.done b{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
 .steps li+li::before{content:"";width:24px;height:1px;background:var(--line);margin-right:4px}
-.drop{border:1.5px dashed var(--gold);border-radius:12px;padding:36px 20px;text-align:center;background:var(--gold-soft)}
+.drop{border:1.5px dashed var(--gold);border-radius:12px;padding:32px 20px;text-align:center;background:var(--gold-soft)}
 .drop.over{background:var(--wine-soft);border-color:var(--wine)}
 .msg{margin-top:14px;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--sunk)}
 .msg.err{border-color:var(--wine);background:var(--wine-soft)}
-.maprow{display:grid;grid-template-columns:minmax(8em,11em) minmax(0,1fr) 28px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.maprow{display:grid;grid-template-columns:minmax(8em,11em) minmax(0,1fr) 28px;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
 .maprow select{min-height:44px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:6px 10px;font-size:16px;width:100%}
 .maprow.miss select{border-color:var(--wine)}
 .tick{color:var(--ok);font-weight:600}.cross{color:var(--wine);font-weight:600}
@@ -66,48 +68,58 @@ th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);white-spa
 th{font-weight:500;color:var(--muted);font-size:14px}
 .num{text-align:right;font-variant-numeric:tabular-nums}
 .list{list-style:none;margin:0;padding:0}
-.list>li{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.list>li{display:flex;gap:14px;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .list>li:last-child{border-bottom:0}
 .pill{display:inline-block;font-size:13px;border-radius:999px;padding:1px 10px;background:var(--gold-soft);color:var(--gold);font-weight:500;white-space:nowrap}
 .pill.wine{background:var(--wine-soft);color:var(--wine)}
 .pill.ok{background:transparent;border:1px solid var(--ok);color:var(--ok)}
-.track{display:flex;gap:4px;margin-top:8px}.track i{height:5px;flex:1;max-width:44px;border-radius:3px;background:var(--line)}.track i.on{background:var(--wine)}
-.big{font-family:"Cormorant Garamond",serif;font-size:40px;font-weight:600;line-height:1;white-space:nowrap}
-.fig{position:relative;min-height:320px}.fig>svg{position:absolute;inset:0;width:100%;height:100%}
-.bars .r{display:grid;grid-template-columns:minmax(7em,9em) minmax(0,1fr) auto;gap:12px;align-items:center;padding:7px 0}
-.bars .t{height:10px;background:var(--sunk);border-radius:5px;overflow:hidden}.bars .t b{display:block;height:100%;background:var(--wine);border-radius:5px}
-.seg{display:inline-flex;background:var(--sunk);border-radius:10px;padding:4px}
+.pill.line{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.big{font-family:"Cormorant Garamond",serif;font-size:38px;font-weight:600;line-height:1;white-space:nowrap}
+.kpis{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(11em,1fr));margin-bottom:20px}
+.fig{position:relative;min-height:300px}.fig>svg{position:absolute;inset:0;width:100%;height:100%}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--sunk);border-radius:10px;padding:4px;gap:2px}
 .seg button{border:0;background:none;min-height:40px;padding:0 14px;border-radius:8px;cursor:pointer;color:var(--muted)}
 .seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);box-shadow:0 1px 0 var(--line)}
-.perfs{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,9.5em),1fr));margin-bottom:20px}
-.perfs button{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 16px;cursor:pointer;min-height:44px}
-.perfs button[aria-pressed=true]{border-color:var(--wine);box-shadow:inset 0 0 0 1px var(--wine)}
-.perfs b{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:600;display:block}
-.chart{position:relative;height:260px;margin-top:8px}.chart svg{position:absolute;inset:0;width:100%;height:100%}
-.slider{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;margin-top:12px}
+.fdot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:baseline}
+.oilrow{display:grid;grid-template-columns:minmax(10em,15em) minmax(0,1fr) 4.2em;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.oilrow:last-child{border-bottom:0}
+.oilrow .t{height:14px;background:var(--sunk);border-radius:7px;overflow:hidden}.oilrow .t b{display:block;height:100%;border-radius:7px}
+.oilrow .hid{font-size:13px;color:var(--muted);font-style:italic}
+.code{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.fambar{display:flex;height:26px;border-radius:6px;overflow:hidden;background:var(--sunk)}
+.fambar i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;margin-top:12px}
+.oils{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,13em),1fr))}
+.oilcard{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:16px;cursor:pointer;min-height:44px;display:flex;flex-direction:column;gap:4px}
+.oilcard[aria-pressed=true]{border-color:var(--wine);box-shadow:inset 0 0 0 1px var(--wine)}
+.oilcard b{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:600}
+.feat{border-top:3px solid var(--gold)}
+.chart{position:relative;height:240px;margin-top:8px}.chart svg{position:absolute;inset:0;width:100%;height:100%}
+.slider{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;margin-top:10px}
 input[type=range]{width:100%;accent-color:var(--wine);min-height:44px}
-.now{background:var(--sunk);border-radius:10px;padding:14px 16px;margin-top:10px;font-size:17px}
-.phases{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:20px}
-.phase{border:1px solid var(--line);border-radius:12px;padding:16px;transition:border-color .2s,background .2s}
+.now{background:var(--sunk);border-radius:10px;padding:14px 16px;margin-top:8px;font-size:17px}
+.phases{display:grid;gap:14px;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:18px}
+.phase{border:1px solid var(--line);border-radius:12px;padding:14px;transition:border-color .2s,background .2s}
 .phase.active{border-color:var(--c);background:color-mix(in srgb,var(--c) 8%,var(--surface))}
-.phase h3{display:flex;gap:8px;align-items:center}.phase h3 i{width:12px;height:12px;border-radius:3px;background:var(--c)}
-.phase .when{font-size:14px;color:var(--muted);margin-bottom:8px}
-.note{padding:8px 0;border-top:1px solid var(--line)}.note b{font-weight:500;display:block}.note span{font-size:14px;color:var(--muted)}
+.phase h3{display:flex;gap:8px;align-items:center;font-size:19px}.phase h3 i{width:12px;height:12px;border-radius:3px;background:var(--c)}
+.phase .when{font-size:14px;color:var(--muted);margin-bottom:6px}
+.note{padding:7px 0;border-top:1px solid var(--line)}.note b{font-weight:500;display:block}.note span{font-size:14px;color:var(--muted)}
 .form label{display:block;margin-bottom:14px;font-size:15px;color:var(--muted)}
 .field{display:block;width:100%;margin-top:6px;min-height:46px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:8px 12px;font-size:16px;color:var(--ink)}
 .two{display:grid;gap:12px;grid-template-columns:1fr 1fr}
-.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;min-height:44px}.switch input{width:20px;height:20px;accent-color:var(--wine)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:10px;display:flex;gap:14px;align-items:center;z-index:9}
+.switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;min-height:44px}.switch input{width:20px;height:20px;accent-color:var(--wine);flex:none}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:10px;display:flex;gap:14px;align-items:center;z-index:9;max-width:calc(100% - 32px)}
 .toast button{background:none;border:0;color:var(--gold);font-weight:600;cursor:pointer;min-height:36px}
 .empty{color:var(--muted);text-align:center;padding:24px;display:block!important}
+.fmt td,.fmt th{white-space:normal}
 .tabbar{display:none}
 @media(min-width:861px){.toast{bottom:24px}}
-@media(max-width:1000px){.grid{grid-template-columns:minmax(0,1fr)}.phases{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:1000px){.grid,.grid2{grid-template-columns:minmax(0,1fr)}.phases{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:860px){.app{grid-template-columns:minmax(0,1fr)}aside{position:static;height:auto;flex-direction:row;align-items:center;flex-wrap:wrap;padding:12px max(4vw,16px);border-right:0;border-bottom:1px solid var(--line)}aside .nav,aside .foot{display:none}.brand{margin-right:auto;padding:0}.who{grid-auto-flow:column}
-.tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:4px 8px calc(4px + env(safe-area-inset-bottom,0px));z-index:8}
+.tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));z-index:8}
 .tabbar button{flex:1;border:0;background:none;display:grid;justify-items:center;gap:2px;font-size:12px;color:var(--muted);min-height:56px;cursor:pointer}
 .tabbar button[aria-current=page]{color:var(--wine)}main{padding-bottom:110px}}
-@media(max-width:600px){.two{grid-template-columns:1fr}table{font-size:13px}th,td{padding:7px 5px}.card{padding:18px}.big{font-size:32px}.maprow{grid-template-columns:minmax(0,1fr) 28px}.maprow .lbl{grid-column:1/-1}}
+@media(max-width:600px){.two{grid-template-columns:1fr}table{font-size:13px}th,td{padding:7px 5px}.card{padding:18px}.big{font-size:30px}.maprow{grid-template-columns:minmax(0,1fr) 28px}.maprow .lbl{grid-column:1/-1}.oilrow{grid-template-columns:minmax(0,1fr) 3.6em}.oilrow .t,.oilrow .hid{grid-column:1/-1;grid-row:2}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -121,199 +133,287 @@ input[type=range]{width:100%;accent-color:var(--wine);min-height:44px}
 const {useState,useRef,useEffect,useMemo}=React;
 const html=htm.bind(React.createElement);
 const fmt=n=>Math.round(n).toLocaleString('en-US');
-const money=n=>n>=1000?'$'+fmt(n/1000)+'k':'$'+fmt(n);
+const pct=n=>(n*100).toFixed(n<.1?1:0)+'%';
 
-/* ---------------- sample data ---------------- */
+/* ================= sample data (all made up) ================= */
+const CUR='Q4 2026',PREV='Q3 2026',PERIODS=[PREV,CUR];
+const CATS=['Deodorant','Soap','Body wash','Shampoo'];
+const FAM={Fresh:'var(--f-fresh)',Floral:'var(--f-floral)',Woody:'var(--f-woody)',Oriental:'var(--f-oriental)',Aromatic:'var(--f-aromatic)',Gourmand:'var(--f-gourmand)',Herbal:'var(--f-herbal)'};
+const OILS={
+ 'CS-101':{name:'Aqua Citrus',fam:'Fresh',mood:'Clean, zesty citrus for everyday freshness.',top:[['Bergamot','fresh citrus, like Earl Grey tea'],['Lemon','sharp and sparkling']],heart:[['Green tea','soft, clean and green'],['Mint','cool and bright']],base:[['White musk','clean, like fresh laundry']]},
+ 'CS-102':{name:'Ocean Breeze',fam:'Fresh',mood:'Sea air and soft lavender. Popular in deodorants.',top:[['Sea salt','airy and mineral'],['Marine accord','cool, watery']],heart:[['Lavender','calm, herbal floral']],base:[['Driftwood','pale, dry wood'],['Musk','soft skin warmth']]},
+ 'CS-110':{name:'Lavender Field',fam:'Aromatic',mood:'Classic lavender, calm and clean.',top:[['Lavender','calm, herbal floral']],heart:[['Geranium','rosy and green']],base:[['Tonka bean','soft, almond-like warmth']]},
+ 'CS-120':{name:'White Jasmine',fam:'Floral',mood:'Soft white flowers with a fruity lift.',top:[['Pear','juicy and light']],heart:[['Jasmine','sweet white flower'],['Orange blossom','honeyed white flower']],base:[['Musk','soft skin warmth']]},
+ 'CS-121':{name:'Rose Garden',fam:'Floral',mood:'A fresh, modern rose.',top:[['Lychee','sweet, juicy fruit']],heart:[['Rose','rich, classic rose'],['Peony','soft, airy flower']],base:[['Cedar','light, dry wood']]},
+ 'CS-130':{name:'Sandal Cream',fam:'Woody',mood:'Creamy sandalwood, a long-time soap favourite.',top:[['Cardamom','cool, aromatic spice']],heart:[['Iris','powdery and elegant']],base:[['Sandalwood','creamy wood'],['Vanilla','soft sweetness']]},
+ 'CS-131':{name:'Cedar Sport',fam:'Woody',mood:'Dry woods with a citrus kick, for men\'s ranges.',top:[['Grapefruit','sharp, sparkling citrus']],heart:[['Cedarwood','dry, like pencil shavings']],base:[['Vetiver','smoky roots']]},
+ 'CS-140':{name:'Oud Amber',fam:'Oriental',mood:'Rich oud and amber for the GCC market.',top:[['Saffron','honeyed, leathery spice']],heart:[['Rose','rich, classic rose']],base:[['Oud','smoky, resinous wood'],['Amber','warm, resinous sweetness']]},
+ 'CS-150':{name:'Coconut Milk',fam:'Gourmand',mood:'Creamy coconut and tropical flowers.',top:[['Coconut','creamy and sweet']],heart:[['Frangipani','tropical, buttery flower']],base:[['Vanilla','soft sweetness']]},
+ 'CS-160':{name:'Neem & Aloe',fam:'Herbal',mood:'Green, herbal and skin-friendly in feel.',top:[['Aloe','watery green']],heart:[['Neem leaf','bitter, herbal green']],base:[['Oakmoss','damp forest floor']]}};
+const BRANDS={aurel:'Aurel Personal Care',nimbus:'Nimbus Hygiene',verde:'Verde Home & Body',coast:'Coastline Cosmetics'};
+const ME='aurel';
+const P0=[
+ ['aurel','Aurel Fresh Deo','Deodorant','CS-101','GCC','2025-03',42000,45000],['aurel','Aurel Sport Deo','Deodorant','CS-131','GCC','2024-09',30000,28000],['aurel','Aurel Rose Soap','Soap','CS-121','India','2023-05',80000,78000],['aurel','Aurel Sandal Soap','Soap','CS-130','India','2022-01',95000,99000],
+ ['nimbus','Nimbus Ocean Deo','Deodorant','CS-102','Europe','2024-02',52000,61000],['nimbus','Nimbus Active Deo','Deodorant','CS-131','Europe','2023-08',26000,24000],['nimbus','Nimbus Citrus Wash','Body wash','CS-101','Europe','2025-06',18000,22000],['nimbus','Nimbus Lavender Soap','Soap','CS-110','United Kingdom','2021-10',40000,43000],
+ ['verde','Verde Neem Soap','Soap','CS-160','India','2020-04',120000,126000],['verde','Verde Coconut Soap','Soap','CS-150','Southeast Asia','2024-11',60000,72000],['verde','Verde Jasmine Wash','Body wash','CS-120','India','2025-01',25000,27000],['verde','Verde Herbal Shampoo','Shampoo','CS-160','India','2022-07',30000,31000],
+ ['coast','Coast Oud Deo','Deodorant','CS-140','GCC','2025-09',38000,47000],['coast','Coast Ocean Deo','Deodorant','CS-102','GCC','2025-04',20000,26000],['coast','Coast Coconut Shampoo','Shampoo','CS-150','Southeast Asia','2025-02',22000,29000],['coast','Coast Sandal Soap','Soap','CS-130','GCC','2023-03',35000,34000]
+].map(([brand,name,cat,oil,market,launch,a,b])=>({brand,name,cat,oil,market,launch,units:{[PREV]:a,[CUR]:b}}));
+const FEAT0={'CS-120':'New inspiration','CS-110':'Ready stock'};
 const REGIONS={'GCC':[25,51],'India':[21,78],'Europe':[48,10],'United Kingdom':[53,-2],'North America':[40,-95],'Southeast Asia':[5,108]};
-const SALES0=[['GCC','Rose Noir',1840,92000],['GCC','Saffron Veil',1320,72600],['India','Saffron Veil',2100,63000],['India','Neroli Light',900,22500],['Europe','Cedar Hymn',760,53200],['Europe','Rose Noir',540,29700],['United Kingdom','Neroli Light',610,24400],['North America','Cedar Hymn',480,36000],['Southeast Asia','Rose Noir',420,18900]];
-const ORDERS=[{id:'PO-2291',item:'Rose Noir 50 ml',qty:4000,step:3,label:'Filling and packing',eta:'12 Dec'},{id:'PO-2287',item:'Saffron Veil 100 ml',qty:2500,step:4,label:'Shipped',eta:'2 Dec'},{id:'PO-2302',item:'Neroli Light 30 ml',qty:6000,step:1,label:'Formula approved',eta:'9 Jan'}];
-const STEPS=['Formula approved','Bottles ordered','Filling and packing','Shipped'];
-const PERFUMES={
- 'Rose Noir':{fam:['Floral','Spicy','Woody'],mood:'A dark, velvety rose for evenings.',top:[['Pink pepper','bright, a little spicy'],['Bergamot','fresh citrus, like Earl Grey tea'],['Blackcurrant','juicy and slightly tart']],heart:[['Damask rose','rich, classic rose'],['Peony','soft, airy flower'],['Violet leaf','green and powdery']],base:[['Patchouli','earthy and deep'],['Oud','smoky, resinous wood'],['Musk','soft, skin-like warmth']]},
- 'Saffron Veil':{fam:['Oriental','Spicy'],mood:'Warm and golden, made for the GCC market.',top:[['Saffron','honeyed, leathery spice'],['Cardamom','cool, aromatic spice']],heart:[['Rose absolute','deep, honeyed rose'],['Jasmine','sweet white flower'],['Leather accord','smooth, polished leather']],base:[['Amber','warm, resinous sweetness'],['Sandalwood','creamy wood'],['Vanilla','soft sweetness']]},
- 'Cedar Hymn':{fam:['Woody','Fresh'],mood:'Clean and dry, like a cedar forest after rain.',top:[['Juniper','crisp, gin-like'],['Grapefruit','sharp, sparkling citrus']],heart:[['Cedarwood','dry, like pencil shavings'],['Iris','powdery and elegant']],base:[['Vetiver','smoky roots'],['Ambroxan','clean, mineral warmth'],['Oakmoss','damp forest floor']]},
- 'Neroli Light':{fam:['Fresh','Floral'],mood:'Bright orange blossom for daytime.',top:[['Neroli','bright orange blossom'],['Mandarin','sweet citrus'],['Petitgrain','green, leafy citrus']],heart:[['Orange blossom','honeyed white flower'],['Lily of the valley','fresh and dewy']],base:[['White musk','clean, like fresh laundry'],['Cedar','light, dry wood']]}};
-const CLIENTS0=[{name:'Maison Aurel',users:4,mfa:4,last:'1 Nov 2026',ai:false,share:false},{name:'Oud & Amber Co.',users:6,mfa:4,last:'28 Oct 2026',ai:false,share:true},{name:'Verde Atelier',users:2,mfa:2,last:'3 Oct 2026',ai:false,share:false},{name:'Nordlys Parfums',users:3,mfa:3,last:'No uploads yet',ai:false,share:false}];
-const REQ0=[{id:1,client:'Maison Aurel',title:'Lighter summer edition of Rose Noir',family:'Floral',market:'GCC',qty:'3,000',status:'Waiting for reply',reply:''},{id:2,client:'Verde Atelier',title:'Vetiver for men, under AED 250 retail',family:'Woody',market:'Europe',qty:'5,000',status:'Waiting for reply',reply:''}];
-const ATT0=[{id:'a1',kind:'Request',who:'Verde Atelier',text:'Asked for a new idea: Vetiver for men, under AED 250 retail.',why:'Every new client request appears here.',go:'requests'},{id:'a2',kind:'Account',who:'Oud & Amber Co.',text:'2 of 6 people have not finished setting up their sign-in app.',why:'Shown when setup is unfinished after 7 days.',go:'clients'},{id:'a3',kind:'Account',who:'Nordlys Parfums',text:'No sales report uploaded since joining.',why:'Shown when there is no upload after 30 days.',go:'clients'},{id:'a4',kind:'Request',who:'Maison Aurel',text:'Asked for a new idea: Lighter summer edition of Rose Noir.',why:'Every new client request appears here.',go:'requests'}];
 
-/* ---------------- world outline (rough, prototype only) ---------------- */
+/* ================= market analytics (nameless, consolidated) ================= */
+/* Privacy rule shown in the UI: a figure is hidden when only one other brand is behind it. */
+function oilStats(products,period,cat){
+  const rows=products.filter(p=>(cat==='All'||p.cat===cat)&&p.units[period]>0);const by={};
+  rows.forEach(p=>{const o=by[p.oil]||(by[p.oil]={code:p.oil,units:0,brands:new Set()});o.units+=p.units[period];o.brands.add(p.brand)});
+  const all=Object.values(by).map(o=>({...o,mine:o.brands.has(ME),hidden:o.brands.size<2&&!o.brands.has(ME)}));
+  const tot=all.filter(o=>!o.hidden).reduce((s,o)=>s+o.units,0)||1;
+  /* shares are worked out among visible oils only, so hidden volumes cannot be back-calculated; hidden oils go last */
+  return all.map(o=>({...o,share:o.hidden?0:o.units/tot})).sort((a,b)=>(a.hidden-b.hidden)||(b.units-a.units));
+}
+function rising(products,cat){
+  const a=Object.fromEntries(oilStats(products,PREV,cat).map(o=>[o.code,o.share]));
+  return oilStats(products,CUR,cat).filter(o=>!o.hidden&&o.brands.size>=2).map(o=>({...o,delta:o.share-(a[o.code]||0)})).filter(o=>o.delta>0.001).sort((x,y)=>y.delta-x.delta).slice(0,3);
+}
+function gaps(products,feat){
+  const mine=products.filter(p=>p.brand===ME);const out=[];
+  [...new Set(mine.map(p=>p.cat))].forEach(cat=>{const used=new Set(mine.filter(p=>p.cat===cat).map(p=>p.oil));
+    oilStats(products,CUR,cat).filter(o=>!o.hidden&&o.brands.size>=2&&!used.has(o.code)).slice(0,2).forEach(o=>out.push({code:o.code,why:`${pct(o.share)} of shared ${cat.toLowerCase()} volume, used by ${o.brands.size} brands`,cat}))});
+  const all=new Set(mine.map(p=>p.oil));Object.entries(feat).forEach(([c,tag])=>{if(!all.has(c)&&!out.some(g=>g.code===c))out.push({code:c,why:tag==='New inspiration'?'New from our perfumers':'Ready stock, available now',cat:null,tag})});
+  return out;
+}
+function families(products,cat,who){
+  const rows=products.filter(p=>(cat==='All'||p.cat===cat)&&(!who||p.brand===who)&&p.units[CUR]>0);const f={};
+  rows.forEach(p=>{const k=OILS[p.oil].fam,o=f[k]||(f[k]={u:0,b:new Set()});o.u+=p.units[CUR];o.b.add(p.brand)});
+  const vis=Object.entries(f).filter(([,o])=>who||o.b.size>=2||o.b.has(ME));const tot=vis.reduce((s,[,o])=>s+o.u,0)||1;
+  return vis.map(([k,o])=>[k,o.u/tot]).sort((a,b)=>b[1]-a[1]);
+}
+/* ================= world outline (rough, prototype only) ================= */
 const LAND=[[[-168,66],[-140,70],[-95,72],[-80,63],[-60,55],[-55,48],[-70,43],[-76,35],[-81,25],[-97,26],[-97,18],[-87,15],[-80,8],[-92,15],[-105,20],[-117,32],[-124,40],[-125,49],[-135,58],[-150,60],[-165,60]],[[-55,60],[-43,60],[-20,70],[-20,80],[-60,82],[-70,77]],[[-80,8],[-60,10],[-50,0],[-35,-6],[-40,-22],[-48,-28],[-58,-38],[-65,-55],[-72,-50],[-72,-30],[-71,-18],[-81,-5]],[[-10,36],[-9,43],[-2,44],[-5,48],[2,51],[8,54],[5,58],[10,63],[20,70],[30,71],[40,67],[45,55],[40,45],[28,41],[23,37],[12,38],[15,45],[5,43],[-5,36]],[[-17,15],[-17,21],[-10,30],[-5,36],[10,37],[20,32],[32,31],[35,28],[43,12],[51,12],[40,-5],[40,-15],[35,-25],[20,-35],[15,-28],[12,-15],[9,-1],[8,4],[-8,4],[-15,10]],[[28,41],[36,36],[35,31],[43,13],[53,16],[57,23],[60,25],[67,24],[73,20],[77,8],[80,13],[88,22],[92,22],[98,16],[100,8],[104,1],[106,10],[109,19],[117,23],[122,30],[121,40],[130,43],[140,50],[143,59],[160,60],[180,66],[180,72],[140,73],[110,77],[80,73],[68,70],[60,68],[45,55],[40,45]],[[-6,50],[2,51],[0,54],[-3,58],[-6,57]],[[130,31],[141,36],[142,44],[139,40]],[[95,5],[106,-6],[120,-9],[141,-9],[141,-2],[118,5],[105,0]],[[114,-22],[122,-18],[131,-12],[137,-12],[142,-11],[146,-19],[153,-28],[150,-37],[140,-38],[132,-32],[115,-34]]];
 const inPoly=(x,y,p)=>{let c=false;for(let i=0,j=p.length-1;i<p.length;j=i++){const[xi,yi]=p[i],[xj,yj]=p[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c};
 const DOTS=[];for(let lat=78;lat>=-54;lat-=3)for(let lon=-177;lon<=180;lon+=3)if(LAND.some(p=>inPoly(lon,lat,p)))DOTS.push([lon,lat]);
 
-/* ---------------- upload helpers ---------------- */
-const FIELDS=[['month','Month',['month','date','period','week']],['perfume','Perfume',['perfume','product','fragrance','sku','item']],['region','Market',['region','country','market','territory']],['units','Bottles sold',['units','qty','quantity','sold','pcs']],['revenue','Revenue (USD)',['revenue','sales','amount','value','total']]];
+/* ================= upload: our standard file format ================= */
+const FIELDS=[['product','Product name',['product','productname','name']],['cat','Category',['category','type','producttype']],['oil','Oil code',['oil','oilcode','fragrancecode','fragrance','code']],['market','Market',['market','region','country']],['launch','Launch date',['launch','launched','launchdate']],['period','Period',['period','quarter']],['units','Units sold',['units','unitssold','qty','quantity','volume']]];
+const FORMAT=[['product_name','Your product name','Aurel Fresh Deo'],['category',CATS.join(', '),'Deodorant'],['oil_code','Our oil code, from the catalog','CS-101'],['market',Object.keys(REGIONS).join(', '),'GCC'],['launch_date','Year and month, YYYY-MM','2025-03'],['period','Quarter, e.g. Q4 2026','Q4 2026'],['units_sold','Whole number','45000']];
 const guess=heads=>Object.fromEntries(FIELDS.map(([k,,syn])=>[k,heads.find(h=>syn.includes(h.toLowerCase().replace(/[^a-z]/g,'')))||'']));
-const SAMPLE_CSV='Month,Fragrance,Market,Qty,Net value\n'+[['Nov 2026','Rose Noir','GCC',640,32000],['Nov 2026','Rose Noir','Europe',210,11550],['Nov 2026','Saffron Veil','GCC',380,20900],['Nov 2026','Saffron Veil','India',720,21600],['Nov 2026','Neroli Light','United Kingdom',260,10400],['Nov 2026','Cedar Hymn','North America',190,14250],['Nov 2026','Rose Noir','Southeast Asia',150,6750]].map(r=>r.join(',')).join('\n');
+const SAMPLE_CSV='Product,Type,Fragrance code,Market,Launched,Quarter,Pieces\n'+[['Aurel Fresh Deo','Deodorant','CS-101','GCC','2025-03',CUR,46500],['Aurel Sport Deo','Deodorant','CS-131','GCC','2024-09',CUR,27500],['Aurel Rose Soap','Soap','CS-121','India','2023-05',CUR,79000],['Aurel Sandal Soap','Soap','CS-130','India','2022-01',CUR,101000],['Aurel Ocean Deo','Deodorant','CS-102','Europe','2026-10',CUR,12000],['Aurel Musk Deo','Deodorant','CS-199','GCC','2026-11',CUR,5000]].map(r=>r.join(',')).join('\n');
 function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'&&t[i+1]==='"'){f+='"';i++}else if(c==='"')q=false;else f+=c}else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f=''}else f+=c}if(f||row.length){row.push(f);rows.push(row)}return rows.filter(r=>r.some(c=>c.trim()))}
-const num=v=>parseFloat(String(v??'').replace(/[^0-9.\-]/g,''));
+function checkRow(r,map,n){const g=k=>(r[map[k]]||'').trim();const e=[];
+  if(!g('product'))e.push('product name is empty');
+  if(!CATS.includes(g('cat')))e.push(`category "${g('cat')}" is not one of: ${CATS.join(', ')}`);
+  if(!OILS[g('oil').toUpperCase()])e.push(`oil code ${g('oil')||'(empty)'} is not in our catalog`);
+  if(!REGIONS[g('market')])e.push(`market "${g('market')}" is not recognised`);
+  if(!PERIODS.includes(g('period')))e.push(`period "${g('period')}" should be ${PERIODS.join(' or ')}`);
+  const u=parseFloat(g('units').replace(/,/g,''));if(!(u>=0))e.push('units sold is not a number');
+  return e.length?{n,e}:null}
 
-/* ---------------- small pieces ---------------- */
-const P={home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',bottle:'M9 3h6v3l2 3v11a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V9l2-3zM7 12h10',idea:'M9 18h6M10 21h4M12 3a6 6 0 0 0-3 11.2V16h6v-1.8A6 6 0 0 0 12 3z',bell:'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4',users:'M16 20v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 20v-1a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',inbox:'M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z'};
-const Icon=({n,s=22})=>html`<svg width=${s} height=${s} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d=${P[n]}/></svg>`;
+/* ================= small pieces ================= */
+const P={home:'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z',chart:'M4 20V10M10 20V4M16 20v-7M22 20H2',box:'M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10',drop:'M12 3c3 4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 3-7 6-11z',idea:'M9 18h6M10 21h4M12 3a6 6 0 0 0-3 11.2V16h6v-1.8A6 6 0 0 0 12 3z',bell:'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4',users:'M16 20v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 20v-1a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',star:'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z',inbox:'M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z'};
+const Icon=({n,s=22})=>html`<svg width=${s} height=${s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d=${P[n]}/></svg>`;
 function useSize(){const ref=useRef(null);const[sz,set]=useState({w:0,h:0});useEffect(()=>{const ro=new ResizeObserver(([e])=>set({w:e.contentRect.width,h:e.contentRect.height}));ro.observe(ref.current);return()=>ro.disconnect()},[]);return[ref,sz]}
-const Sample=()=>html`<span className="pill" style=${{marginLeft:'8px',verticalAlign:'middle'}}>Sample</span>`;
+const OilName=({code})=>html`<span><span className="fdot" style=${{background:FAM[OILS[code].fam]}}></span><b style=${{fontWeight:500}}>${OILS[code].name}</b> <span className="code">${code}</span></span>`;
+const Seg=({value,set,opts,label})=>html`<div className="seg" role="group" aria-label=${label}>${opts.map(o=>html`<button key=${o} aria-pressed=${value===o} onClick=${()=>set(o)}>${o}</button>`)}</div>`;
 
-/* ---------------- client: home + upload ---------------- */
-function Upload({onSaved,goInsights}){
-  const[step,setStep]=useState(1),[file,setFile]=useState(null),[map,setMap]=useState({}),[err,setErr]=useState(''),[over,setOver]=useState(false),[saving,setSaving]=useState(false),[result,setResult]=useState(null);
+/* ================= client: home ================= */
+function Upload({onSaved,go}){
+  const[step,setStep]=useState(1),[file,setFile]=useState(null),[map,setMap]=useState({}),[err,setErr]=useState(''),[over,setOver]=useState(false),[saving,setSaving]=useState(false),[result,setResult]=useState(null),[showFmt,setShowFmt]=useState(false);
   const input=useRef(null);
   const read=f=>{setErr('');
-    if(!/\.csv$/i.test(f.name))return setErr(`"${f.name}" is not a CSV file. Open it in Excel, choose Save As, then CSV, and try again. (Excel and PDF files are accepted in the real app.)`);
-    if(f.size>5*1024*1024)return setErr(`This file is ${(f.size/1048576).toFixed(1)} MB. The limit is 5 MB. Split it by month and upload each part.`);
+    if(!/\.csv$/i.test(f.name))return setErr(`"${f.name}" is not a CSV file. In Excel choose Save As, then CSV, and try again. (Excel and PDF files are accepted in the real app.)`);
+    if(f.size>5*1024*1024)return setErr(`This file is ${(f.size/1048576).toFixed(1)} MB. The limit is 5 MB.`);
     f.text().then(t=>{const all=parseCSV(t);const heads=(all.shift()||[]).map(h=>h.trim());const rows=all.map(r=>Object.fromEntries(heads.map((h,i)=>[h,(r[i]||'').trim()])));
-      if(!rows.length)return setErr('This file has no rows. Check that it is the right report.');
-      setFile({name:f.name,heads,rows});setMap(guess(heads));setStep(2)})};
+      if(!rows.length)return setErr('This file has no rows. Check that it is the right file.');setFile({name:f.name,heads,rows});setMap(guess(heads));setStep(2)})};
   const missing=FIELDS.filter(([k])=>!map[k]);
-  const save=()=>{setSaving(true);setTimeout(()=>{const ok=[],bad=[];file.rows.forEach(r=>{const reg=r[map.region],u=num(r[map.units]),v=num(r[map.revenue]);(REGIONS[reg]&&u>=0&&v>=0?ok:bad).push([reg,r[map.perfume],u,v])});
-    onSaved(file.name,ok);setResult({rows:ok.length,skipped:bad.length,rev:ok.reduce((s,r)=>s+r[3],0),markets:new Set(ok.map(r=>r[0])).size});setSaving(false);setStep(3)},900)};
+  const problems=useMemo(()=>file&&!missing.length?file.rows.map((r,i)=>checkRow(r,map,i+2)).filter(Boolean):[],[file,map,missing.length]);
+  const good=file?file.rows.length-problems.length:0;
+  const save=()=>{setSaving(true);setTimeout(()=>{const bad=new Set(problems.map(p=>p.n));const rows=file.rows.filter((r,i)=>!bad.has(i+2)).map(r=>({name:r[map.product],cat:r[map.cat],oil:r[map.oil].toUpperCase(),market:r[map.market],launch:r[map.launch],period:r[map.period],units:parseFloat(r[map.units].replace(/,/g,''))}));
+    onSaved(file.name,rows);setResult({rows:rows.length,skipped:bad.size,oils:new Set(rows.map(r=>r.oil)).size});setSaving(false);setStep(3)},900)};
   const reset=()=>{setStep(1);setFile(null);setResult(null);setErr('')};
   return html`<section className="card" aria-labelledby="up-h">
-    <h2 id="up-h">Upload your November sales report</h2><p className="sub">Three short steps. Nothing is saved until you confirm.</p>
-    <ol className="steps">${['Choose file','Check columns','Done'].map((l,i)=>html`<li key=${l} className=${step===i+1?'on':step>i+1?'done':''}><b>${step>i+1?'✓':i+1}</b>${l}</li>`)}</ol>
+    <h2 id="up-h">Upload your ${CUR} portfolio</h2><p className="sub">One row per product: which of our oils it uses, where it sells and how many units sold. Nothing is saved until you confirm.</p>
+    <ol className="steps">${['Choose file','Check','Done'].map((l,i)=>html`<li key=${l} className=${step===i+1?'on':step>i+1?'done':''}><b>${step>i+1?'✓':i+1}</b>${l}</li>`)}</ol>
     ${step===1&&html`<div className=${'drop'+(over?' over':'')} onDragOver=${e=>{e.preventDefault();setOver(true)}} onDragLeave=${()=>setOver(false)} onDrop=${e=>{e.preventDefault();setOver(false);e.dataTransfer.files[0]&&read(e.dataTransfer.files[0])}}>
-      <button className="btn" style=${{fontSize:'18px',minHeight:'56px',padding:'0 30px'}} onClick=${()=>input.current.click()}>Choose sales file</button>
+      <button className="btn" style=${{fontSize:'18px',minHeight:'56px',padding:'0 30px'}} onClick=${()=>input.current.click()}>Choose portfolio file</button>
       <p className="sub" style=${{marginTop:'10px'}}>or drag it here · CSV, up to 5 MB</p>
-      <button className="link" id="useSample" onClick=${()=>read(new File([SAMPLE_CSV],'november-sales.csv',{type:'text/csv'}))}>No file to hand? Try a sample file</button>
+      <button className="link" id="useSample" onClick=${()=>read(new File([SAMPLE_CSV],'aurel-portfolio-q4.csv',{type:'text/csv'}))}>Try a sample file</button> · <button className="link" onClick=${()=>setShowFmt(!showFmt)}>${showFmt?'Hide':'See'} the file format</button>
       <input ref=${input} type="file" accept=".csv,text/csv" hidden onChange=${e=>e.target.files[0]&&read(e.target.files[0])}/></div>
+      ${showFmt&&html`<div className="scroll" style=${{marginTop:'14px'}}><table className="fmt"><thead><tr><th>Column</th><th>What to put</th><th>Example</th></tr></thead><tbody>${FORMAT.map(([c,w,e])=>html`<tr key=${c}><td><b style=${{fontWeight:500}}>${c}</b></td><td>${w}</td><td>${e}</td></tr>`)}</tbody></table><p className="sub" style=${{marginTop:'6px'}}>Column names can differ; you match them in the next step.</p></div>`}
       ${err&&html`<div className="msg err" role="alert">${err}</div>`}`}
-    ${step===2&&html`<div className="msg"><b>${file.name}</b> · ${file.rows.length} rows found. Check which column holds each piece of information.</div>
+    ${step===2&&html`<div className="msg"><b>${file.name}</b> · ${file.rows.length} products found. Check which column holds each piece of information.</div>
       ${FIELDS.map(([k,label])=>html`<div key=${k} className=${'maprow'+(map[k]?'':' miss')}><span className="lbl">${label}</span>
         <select aria-label=${'Column for '+label} data-f=${k} value=${map[k]} onChange=${e=>setMap({...map,[k]:e.target.value})}><option value="">Choose a column…</option>${file.heads.map(h=>html`<option key=${h} value=${h}>${h}${file.rows[0][h]?' (e.g. '+file.rows[0][h]+')':''}</option>`)}</select>
         <span className=${map[k]?'tick':'cross'} aria-label=${map[k]?'matched':'not matched'}>${map[k]?'✓':'!'}</span></div>`)}
       ${missing.length>0&&html`<div className="msg err" role="status">We could not find <b>${missing.map(m=>m[1]).join(', ')}</b> automatically. Pick the right column above.</div>`}
-      <div style=${{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}><button className="btn" id="confirm" disabled=${missing.length>0||saving} onClick=${save}>${saving?'Saving…':`Confirm and save ${file.rows.length} rows`}</button><button className="btn quiet" onClick=${reset}>Start again</button></div>`}
-    ${step===3&&html`<div className="msg" id="saved" style=${{borderColor:'var(--ok)'}}><b style=${{color:'var(--ok)'}}>Saved.</b> ${result.rows} rows · ${money(result.rev)} revenue · ${result.markets} markets.${result.skipped?` ${result.skipped} rows were skipped because the market name was not recognised.`:''}</div>
-      <div style=${{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}><button className="btn" onClick=${goInsights}>See your updated insights</button><button className="btn quiet" onClick=${reset}>Upload another file</button></div>`}
+      ${!missing.length&&problems.length>0&&html`<div className="msg err" id="problems" role="status"><b>${problems.length} ${problems.length===1?'row needs':'rows need'} fixing and will be skipped:</b>${problems.map(p=>html`<div key=${p.n}>Row ${p.n}: ${p.e.join('; ')}.</div>`)}</div>`}
+      <div style=${{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}><button className="btn" id="confirm" disabled=${missing.length>0||saving||!good} onClick=${save}>${saving?'Saving…':`Save ${good} products`}</button><button className="btn quiet" onClick=${reset}>Start again</button></div>`}
+    ${step===3&&html`<div className="msg" id="saved" style=${{borderColor:'var(--ok)'}}><b style=${{color:'var(--ok)'}}>Saved.</b> ${result.rows} products using ${result.oils} of our oils.${result.skipped?` ${result.skipped} row skipped; fix it and upload again any time.`:''} The market view now includes your new numbers.</div>
+      <div style=${{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}><button className="btn" onClick=${()=>go('market')}>See the market view</button><button className="btn quiet" onClick=${reset}>Upload another file</button></div>`}
   </section>`;
 }
-function Home({uploads,onSaved,go}){
-  return html`<div className="head"><div><h1>Good morning, Maison Aurel</h1><p className="lead">Your November sales report is due. Uploading it keeps your insights and our production planning up to date.</p></div></div>
-  <div className="grid"><div style=${{display:'grid',gap:'20px'}}><${Upload} onSaved=${onSaved} goInsights=${()=>go('insights')}/>
-    <section className="card"><h3>Recent uploads</h3><ul className="list">${uploads.map(u=>html`<li key=${u.name+u.when}><span>${u.name}<br/><span className="sub">${u.rows} rows · ${u.when}</span></span><span className="pill ok">Saved</span></li>`)}</ul></section></div>
-   <section className="card" aria-labelledby="or-h"><h2 id="or-h">Your orders<${Sample}/></h2><p className="sub">Where each order is in production.</p>
-    <ul className="list">${ORDERS.map(o=>html`<li key=${o.id} style=${{display:'block'}}><div style=${{display:'flex',justifyContent:'space-between',gap:'8px'}}><b>${o.item}</b><span className="sub">due ${o.eta}</span></div>
-      <div className="sub">${o.id} · ${fmt(o.qty)} bottles</div><div className="track" aria-hidden="true">${STEPS.map((s,i)=>html`<i key=${s} className=${i<o.step?'on':''}></i>`)}</div><div style=${{fontSize:'15px',marginTop:'4px'}}>Step ${o.step} of 4: ${o.label}</div></li>`)}</ul>
-    <p className="sub" style=${{marginTop:'8px'}}>At first launch this panel is hidden until the CRM is connected.</p></section></div>`;
+function Home({products,uploads,feat,onSaved,go}){
+  const top=oilStats(products,CUR,'All').filter(o=>!o.hidden)[0];
+  return html`<div className="head"><div><h1>Good morning, Aurel Personal Care</h1><p className="lead">Your ${CUR} portfolio is due. Once it is in, you can see which of our oils the market uses most, which are rising, and where your range differs.</p></div></div>
+  <div className="grid"><div className="stack"><${Upload} onSaved=${onSaved} go=${go}/>
+    <section className="card"><h3>Recent uploads</h3><ul className="list">${uploads.map(u=>html`<li key=${u.name+u.when}><span>${u.name}<br/><span className="sub">${u.rows} products · ${u.when}</span></span><span className="pill ok">Saved</span></li>`)}</ul></section></div>
+   <div className="stack"><section className="card"><p className="sub">Most-used oil shared across brands, ${CUR}</p><div style=${{marginTop:'6px',fontSize:'20px'}}><${OilName} code=${top.code}/></div><p className="sub" style=${{marginTop:'4px'}}>${pct(top.share)} of shared units, used by ${top.brands.size} brands.</p><button className="btn quiet sm" style=${{marginTop:'12px'}} onClick=${()=>go('market')}>Open the market view</button></section>
+    <section className="card"><h2>From our perfumers</h2><p className="sub">Oils we are featuring this season.</p><ul className="list">${Object.entries(feat).map(([c,tag])=>html`<li key=${c}><div><${OilName} code=${c}/><div className="sub">${OILS[c].mood}</div></div><span className=${'pill'+(tag==='New inspiration'?' wine':'')}>${tag}</span></li>`)}</ul><button className="btn quiet sm" style=${{marginTop:'8px'}} onClick=${()=>go('oils')}>Browse all oils</button></section></div></div>`;
 }
 
-/* ---------------- client: insights ---------------- */
+/* ================= client: market ================= */
+function Market({products,feat,ask}){
+  const[cat,setCat]=useState('All');
+  const stats=useMemo(()=>oilStats(products,CUR,cat),[products,cat]);const ris=useMemo(()=>rising(products,cat),[products,cat]);const gp=useMemo(()=>gaps(products,feat),[products,feat]);
+  const fm=families(products,cat),fy=families(products,cat,ME);const max=Math.max(...stats.map(s=>s.share));const brands=new Set(products.filter(p=>cat==='All'||p.cat===cat).map(p=>p.brand)).size;
+  const lead=stats.find(s=>!s.hidden);
+  return html`<div className="head"><div><h1>${!lead?'Market view':!stats.some(s=>s.hidden)?`${OILS[lead.code].name} leads ${cat==='All'?'the market':cat.toLowerCase()+'s'} with ${pct(lead.share)} of units`:`${OILS[lead.code].name} is the top oil shared by several ${cat==='All'?'brands':cat.toLowerCase()+' brands'}, with ${pct(lead.share)} of units`}</h1>
+    <p className="lead">Built from the portfolios of ${brands} brands, ${CUR}. Brand names are never shown. A figure is hidden when only one other brand is behind it. Sample data.</p></div>
+    <${Seg} value=${cat} set=${setCat} opts=${['All',...CATS]} label="Category"/></div>
+  <section className="card" style=${{marginBottom:'20px'}}><h2>Most-used oils</h2><p className="sub">Share of units${cat==='All'?'':' in '+cat.toLowerCase()}, among oils used by two or more brands (plus your own). Oils used by only one other brand are listed last, without numbers.</p>
+    <div style=${{marginTop:'10px'}}>${stats.map(s=>html`<div key=${s.code} className="oilrow"><div><${OilName} code=${s.code}/><div className="sub">${s.hidden?'Used by 1 brand':`Used by ${s.brands.size} ${s.brands.size===1?'brand':'brands'}`}${s.mine?html` · <span style=${{color:'var(--wine)',fontWeight:500}}>you use this</span>`:''}</div></div>
+      ${s.hidden?html`<div className="hid">Hidden to protect another brand</div><span></span>`:html`<div className="t"><b style=${{width:s.share/max*100+'%',background:s.mine?'var(--wine)':FAM[OILS[s.code].fam]}}></b></div><span className="num">${pct(s.share)}</span>`}</div>`)}</div></section>
+  <div className="grid2"><section className="card"><h2>Rising oils</h2><p className="sub">Biggest gains in share since ${PREV}.</p>
+     <ul className="list" style=${{marginTop:'6px'}}>${ris.length?ris.map(r=>html`<li key=${r.code}><${OilName} code=${r.code}/><span className="num" style=${{color:'var(--ok)',fontWeight:500}}>+${(r.delta*100).toFixed(1)} pts</span></li>`):html`<li className="empty">No oil gained share in this category.</li>`}</ul></section>
+   <section className="card"><h2>Gaps in your range</h2><p className="sub">Popular or featured oils you do not use yet.</p>
+     <ul className="list" style=${{marginTop:'6px'}}>${gp.length?gp.map(g=>html`<li key=${g.code+(g.cat||'')}><div style=${{flex:'1 1 14em'}}><${OilName} code=${g.code}/><div className="sub">${g.why}</div></div><button className="btn quiet sm" onClick=${()=>ask(g.code,g.cat)}>Ask for a sample</button></li>`):html`<li className="empty">You already use every popular oil in your categories.</li>`}</ul></section></div>
+  <section className="card" style=${{marginTop:'20px'}}><h2>Scent families: you vs the market</h2><p className="sub">Share of units by scent family${cat==='All'?'':' in '+cat.toLowerCase()}. Families used by only one other brand are left out of the market bar.</p>
+   ${[['Market',fm],['You',fy]].map(([l,f])=>html`<div key=${l} style=${{display:'grid',gridTemplateColumns:'5em minmax(0,1fr)',gap:'12px',alignItems:'center',marginTop:'14px'}}><b style=${{fontWeight:500}}>${l}</b>${f.length?html`<div className="fambar" role="img" aria-label=${l+': '+f.map(([k,v])=>k+' '+pct(v)).join(', ')}>${f.map(([k,v])=>html`<i key=${k} title=${k+' '+pct(v)} style=${{width:v*100+'%',background:FAM[k]}}></i>`)}</div>`:html`<span className="sub">You have no products in this category.</span>`}</div>`)}
+   <div className="legend">${Object.keys(FAM).filter(k=>fm.some(x=>x[0]===k)).map(k=>{const m=fm.find(x=>x[0]===k),y=fy.find(x=>x[0]===k);return html`<span key=${k}><span className="fdot" style=${{background:FAM[k]}}></span>${k} <span className="sub">market ${pct(m[1])} · you ${y?pct(y[1]):'0%'}</span></span>`})}</div></section>`;
+}
+
+/* ================= client: portfolio ================= */
 function WorldMap({byReg,mapStyle}){
   const[ref,{w:W,h:H}]=useSize();const LBL={'United Kingdom':'nw','Europe':'ne','GCC':'w','India':'e','Southeast Asia':'e','North America':'n'};
-  let body=null;if(W){const k=Math.min(W/360,H/136),ox=(W-360*k)/2,oy=(H-136*k)/2,X=lo=>ox+(lo+180)*k,Y=la=>oy+(80-la)*k,holo=mapStyle==='hologram',mx=Math.max(...Object.values(byReg)),r0=Math.max(12,k*15),dr=Math.max(1,k*.75);
+  let body=null;if(W&&Object.keys(byReg).length){const k=Math.min(W/360,H/136),ox=(W-360*k)/2,oy=(H-136*k)/2,X=lo=>ox+(lo+180)*k,Y=la=>oy+(80-la)*k,holo=mapStyle==='Hologram',mx=Math.max(...Object.values(byReg)),r0=Math.max(12,k*15),dr=Math.max(1,k*.75);
     const pts=Object.entries(byReg).map(([nm,v])=>{const[la,lo]=REGIONS[nm];return{nm,v,x:X(lo),y:Y(la),r:Math.max(5,Math.sqrt(v/mx)*r0)}});
     const short=nm=>W<520?({'United Kingdom':'UK','Southeast Asia':'SE Asia','North America':'N. America'}[nm]||nm):nm;
-    body=html`<svg viewBox=${`0 0 ${W} ${H}`}>${DOTS.map(([lo,la],i)=>html`<circle key=${i} cx=${X(lo)} cy=${Y(la)} r=${dr} fill=${holo?'none':'var(--dot)'} stroke=${holo?'var(--gold)':'none'} stroke-opacity=".55"/>`)}
-      ${pts.map(p=>holo?html`<g key=${p.nm}><circle cx=${p.x} cy=${p.y} r=${p.r} fill="none" stroke="var(--wine)" stroke-width="1.5"/><circle cx=${p.x} cy=${p.y} r=${p.r*.55} fill="none" stroke="var(--wine)" stroke-opacity=".5"/><circle cx=${p.x} cy=${p.y} r="2.5" fill="var(--wine)"/></g>`:html`<circle key=${p.nm} cx=${p.x} cy=${p.y} r=${p.r} fill="var(--wine)" fill-opacity=".8" stroke="var(--surface)"/>`)}
+    body=html`<svg viewBox=${`0 0 ${W} ${H}`}>${DOTS.map(([lo,la],i)=>html`<circle key=${i} cx=${X(lo)} cy=${Y(la)} r=${dr} fill=${holo?'none':'var(--dot)'} stroke=${holo?'var(--gold)':'none'} strokeOpacity=".55"/>`)}
+      ${pts.map(p=>holo?html`<g key=${p.nm}><circle cx=${p.x} cy=${p.y} r=${p.r} fill="none" stroke="var(--wine)" strokeWidth="1.5"/><circle cx=${p.x} cy=${p.y} r=${p.r*.55} fill="none" stroke="var(--wine)" strokeOpacity=".5"/><circle cx=${p.x} cy=${p.y} r="2.5" fill="var(--wine)"/></g>`:html`<circle key=${p.nm} cx=${p.x} cy=${p.y} r=${p.r} fill="var(--wine)" fillOpacity=".8" stroke="var(--surface)"/>`)}
       ${pts.map(({nm,v,x,y,r})=>{const d=LBL[nm];const[a,tx,ty]=d==='nw'?['end',x-r*.6,y-r-4]:d==='w'?['end',x-r-5,y+4]:d==='e'?['start',x+r+5,y+4]:d==='ne'?['start',x+r*.7+3,y-r*.7-3]:['middle',x,y-r-6];
-        return html`<text key=${'t'+nm} x=${tx} y=${ty} text-anchor=${a} font-size="13" fill="var(--ink)" style=${{paintOrder:'stroke',stroke:'var(--surface)',strokeWidth:'4px'}}>${short(nm)} ${money(v)}</text>`})}</svg>`}
-  return html`<div className="fig" ref=${ref} role="img" aria-label="World map of revenue by market">${body}</div>`;
+        return html`<text key=${'t'+nm} x=${tx} y=${ty} textAnchor=${a} fontSize="13" fill="var(--ink)" style=${{paintOrder:'stroke',stroke:'var(--surface)',strokeWidth:'4px'}}>${short(nm)} ${fmt(v/1000)}k</text>`})}</svg>`}
+  return html`<div className="fig" ref=${ref} role="img" aria-label="World map of your units sold by market">${body}</div>`;
 }
-function Insights({sales,go}){
-  const[mapStyle,setMapStyle]=useState('classic');
-  const{byReg,byPerf,units,rev}=useMemo(()=>{const byReg={},byPerf={};let units=0,rev=0;sales.forEach(([r,p,u,v])=>{byReg[r]=(byReg[r]||0)+v;byPerf[p]=(byPerf[p]||0)+v;units+=u;rev+=v});return{byReg,byPerf,units,rev}},[sales]);
-  const top=Object.entries(byReg).sort((a,b)=>b[1]-a[1])[0],perf=Object.entries(byPerf).sort((a,b)=>b[1]-a[1]),max=perf[0][1];
-  return html`<div className="head"><div><h1>${top[0]} brings ${Math.round(top[1]/rev*100)}% of your revenue</h1><p className="lead">Totals from every sales report you have uploaded. Sample data.</p></div></div>
-  <div className="kpis"><div className="card"><div className="sub">Revenue</div><div className="big">${money(rev)}</div></div><div className="card"><div className="sub">Bottles sold</div><div className="big">${fmt(units)}</div></div><div className="card"><div className="sub">Markets</div><div className="big">${Object.keys(byReg).length}</div></div><div className="card"><div className="sub">Best seller</div><div className="big" style=${{fontSize:'30px'}}>${perf[0][0]}</div></div></div>
-  <div className="grid"><section className="card"><div className="head" style=${{marginBottom:'6px'}}><div><h2>Revenue by market</h2><p className="sub">Bigger circle, more revenue.</p></div>
-     <div className="seg" role="group" aria-label="Map style"><button aria-pressed=${mapStyle==='classic'} onClick=${()=>setMapStyle('classic')}>Classic</button><button id="ms-h" aria-pressed=${mapStyle==='hologram'} onClick=${()=>setMapStyle('hologram')}>Hologram</button></div></div>
+function Portfolio({products,useOurSales,setUseOurSales}){
+  const[mapStyle,setMapStyle]=useState('Classic');const mine=products.filter(p=>p.brand===ME);
+  const byReg={};mine.forEach(p=>byReg[p.market]=(byReg[p.market]||0)+(p.units[CUR]||0));
+  const tot=mine.reduce((s,p)=>s+(p.units[CUR]||0),0),prev=mine.reduce((s,p)=>s+(p.units[PREV]||0),0);
+  return html`<div className="head"><div><h1>Your portfolio</h1><p className="lead">Every product you have told us about, the oil inside it, and how it sold. Only you and our team can see this page.</p></div></div>
+  <div className="kpis"><div className="card"><div className="sub">Products</div><div className="big">${mine.length}</div></div><div className="card"><div className="sub">Our oils you use</div><div className="big">${new Set(mine.map(p=>p.oil)).size}</div></div><div className="card"><div className="sub">Units, ${CUR}</div><div className="big">${fmt(tot/1000)}k</div><div className="sub" style=${{color:tot>=prev?'var(--ok)':'var(--wine)'}}>${tot>=prev?'+':''}${((tot/prev-1)*100).toFixed(1)}% vs ${PREV}</div></div></div>
+  <section className="card"><div className="scroll"><table><thead><tr><th>Product</th><th>Category</th><th>Oil</th><th>Market</th><th>Launched</th><th className="num">${PREV}</th><th className="num">${CUR}</th></tr></thead>
+   <tbody>${mine.map(p=>html`<tr key=${p.name}><td><b style=${{fontWeight:500}}>${p.name}</b></td><td>${p.cat}</td><td><${OilName} code=${p.oil}/></td><td>${p.market}</td><td>${p.launch}</td><td className="num">${p.units[PREV]?fmt(p.units[PREV]):'—'}</td><td className="num">${p.units[CUR]?fmt(p.units[CUR]):'—'}</td></tr>`)}</tbody></table></div></section>
+  <div className="grid" style=${{marginTop:'20px'}}><section className="card"><div className="head" style=${{marginBottom:'6px'}}><div><h2>Where your units sell</h2><p className="sub">${CUR}. Bigger circle, more units.</p></div><${Seg} value=${mapStyle} set=${setMapStyle} opts=${['Classic','Hologram']} label="Map style"/></div>
      <${WorldMap} byReg=${byReg} mapStyle=${mapStyle}/><p className="sub">Prototype drawing. The real app uses MapLibre with OpenStreetMap data (© OpenStreetMap contributors).</p></section>
-   <section className="card"><h2>Top perfumes</h2><p className="sub">Revenue per perfume.</p><div className="bars" style=${{marginTop:'10px'}}>${perf.map(([p,v])=>html`<div className="r" key=${p}><span>${p}</span><div className="t"><b style=${{width:v/max*100+'%'}}></b></div><span className="num">${money(v)}</span></div>`)}</div>
-     <button className="btn quiet sm" style=${{marginTop:'14px'}} onClick=${()=>go('perfumes')}>See how each perfume smells</button></section></div>`;
+   <section className="card"><h2>Your data choices</h2><p className="sub">You decide what we may use.</p>
+     <label className="switch" style=${{marginTop:'12px',alignItems:'flex-start'}}><input type="checkbox" id="ourSales" checked=${useOurSales} onChange=${e=>setUseOurSales(e.target.checked)} style=${{marginTop:'3px'}}/><span>Fill in my volumes from your oil sales records<br/><span className="sub">If you skip units sold in your file, we estimate them from the oil we supplied you. Off by default.</span></span></label>
+     <p className="sub" style=${{marginTop:'12px'}}>Your products always count towards the market view without your name. Changes are recorded in our audit log.</p></section></div>`;
 }
 
-/* ---------------- client: perfumes (scent over time) ---------------- */
-const PH=[['top','Top notes','First impression','0 – 30 min','var(--gold)'],['heart','Heart notes','The main character','30 min – 4 h','var(--wine)'],['base','Base notes','What stays on skin','4 h and longer','var(--base)']];
+/* ================= client: our oils (scent over time) ================= */
+const PH=[['top','Top notes','First impression','0 – 30 min','var(--gold)'],['heart','Heart notes','The main character','30 min – 4 h','var(--wine)'],['base','Base notes','What stays','4 h and longer','var(--base)']];
 const curve={top:t=>Math.exp(-t/.4),heart:t=>{const p=1.3;return Math.pow(t/p,1.6)*Math.exp(1.6*(1-t/p))},base:t=>.85*(1-Math.exp(-t/1.6))*Math.exp(-t/30)};
-const TMAX=8,TT=[0,.25,.5,1,2,4,6,8],tl=t=>t===0?'Spray':t<1?Math.round(t*60)+' min':t+' h';
+const TMAX=8,TT=[0,.25,.5,1,2,4,6,8],tl=t=>t===0?'Use':t<1?Math.round(t*60)+' min':t+' h';
 function ScentChart({name,t}){
   const[ref,{w:W,h:H}]=useSize();let body=null;
   if(W){const m={l:8,r:8,t:30,b:30},X=v=>m.l+Math.sqrt(v/TMAX)*(W-m.l-m.r),Y=v=>H-m.b-v*(H-m.t-m.b);
     const path=f=>{let d=`M${X(0)},${Y(0)}`;for(let i=0;i<=120;i++){const v=TMAX*(i/120)**2;d+=`L${X(v)},${Y(Math.min(1,f(v)))}`}return d+`L${X(TMAX)},${Y(0)}Z`};
-    body=html`<svg viewBox=${`0 0 ${W} ${H}`}>${TT.map(v=>html`<g key=${v}><line x1=${X(v)} x2=${X(v)} y1=${m.t} y2=${H-m.b} stroke="var(--line)"/><text x=${X(v)} y=${H-8} font-size="13" fill="var(--muted)" text-anchor=${v===0?'start':v===TMAX?'end':'middle'}>${W<480&&(v===.25||v===6)?'':tl(v)}</text></g>`)}
-      ${PH.map(([k,,,,c])=>html`<path key=${k} d=${path(curve[k])} fill=${c} fill-opacity=".2" stroke=${c} stroke-width="2"/>`)}
-      <text x=${X(.02)+6} y=${Y(1)-10} font-size="14" font-weight="500" fill="var(--gold)" style=${{paintOrder:'stroke',stroke:'var(--surface)',strokeWidth:'4px'}}>${W<520?'Top':'Top notes'}</text>
-      <text x=${X(1.3)} y=${Y(1)-10} font-size="14" font-weight="500" fill="var(--wine)" text-anchor="middle" style=${{paintOrder:'stroke',stroke:'var(--surface)',strokeWidth:'4px'}}>${W<520?'Heart':'Heart notes'}</text>
-      <text x=${X(TMAX)-6} y=${Y(curve.base(TMAX))-10} font-size="14" font-weight="500" fill="var(--base)" text-anchor="end" style=${{paintOrder:'stroke',stroke:'var(--surface)',strokeWidth:'4px'}}>${W<520?'Base':'Base notes'}</text>
-      <line x1=${X(t)} x2=${X(t)} y1=${m.t-14} y2=${H-m.b} stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3"/></svg>`}
+    const lab={paintOrder:'stroke',stroke:'var(--surface)',strokeWidth:'4px'};
+    body=html`<svg viewBox=${`0 0 ${W} ${H}`}>${TT.map(v=>html`<g key=${v}><line x1=${X(v)} x2=${X(v)} y1=${m.t} y2=${H-m.b} stroke="var(--line)"/><text x=${X(v)} y=${H-8} fontSize="13" fill="var(--muted)" textAnchor=${v===0?'start':v===TMAX?'end':'middle'}>${W<480&&(v===.25||v===6)?'':tl(v)}</text></g>`)}
+      ${PH.map(([k,,,,c])=>html`<path key=${k} d=${path(curve[k])} fill=${c} fillOpacity=".2" stroke=${c} strokeWidth="2"/>`)}
+      <text x=${X(.02)+6} y=${Y(1)-10} fontSize="14" fontWeight="500" fill="var(--gold)" style=${lab}>${W<520?'Top':'Top notes'}</text>
+      <text x=${X(1.3)} y=${Y(1)-10} fontSize="14" fontWeight="500" fill="var(--wine)" textAnchor="middle" style=${lab}>${W<520?'Heart':'Heart notes'}</text>
+      <text x=${X(TMAX)-6} y=${Y(curve.base(TMAX))-10} fontSize="14" fontWeight="500" fill="var(--base)" textAnchor="end" style=${lab}>${W<520?'Base':'Base notes'}</text>
+      <line x1=${X(t)} x2=${X(t)} y1=${m.t-14} y2=${H-m.b} stroke="var(--ink)" strokeWidth="1.5" strokeDasharray="4 3"/></svg>`}
   return html`<div className="chart" ref=${ref} role="img" aria-label=${'How '+name+' smells over time: top notes fade within about 30 minutes, heart notes lead for a few hours, base notes last longest.'}>${body}</div>`;
 }
-function Perfumes(){
-  const names=Object.keys(PERFUMES);const[name,setName]=useState(names[0]);const[i,setI]=useState(4);const t=TT[i];const p=PERFUMES[name];
+function Oils({feat,products}){
+  const codes=Object.keys(OILS);const[code,setCode]=useState('CS-102');const[i,setI]=useState(3);const t=TT[i];const o=OILS[code];
   const lv=Object.fromEntries(PH.map(([k])=>[k,curve[k](t)]));const order=PH.map(x=>x[0]).sort((a,b)=>lv[b]-lv[a]);const lead=order[0],second=lv[order[1]]>.3?order[1]:null;
-  const ph=k=>PH.find(x=>x[0]===k);const nn=k=>p[k].map(n=>n[0].toLowerCase()).slice(0,2).join(' and ');
-  return html`<div className="head"><div><h1>How your perfumes smell</h1><p className="lead">A perfume changes after you spray it. The light notes you smell first fade quickly; heavier notes come through later and last for hours. Pick a perfume, then move the slider to see what you smell at each moment.</p></div></div>
-  <div className="perfs" role="group" aria-label="Choose a perfume">${names.map(n=>html`<button key=${n} aria-pressed=${n===name} onClick=${()=>setName(n)}><b>${n}</b><span className="sub">${PERFUMES[n].fam.join(' · ')}</span></button>`)}</div>
-  <section className="card"><div className="head" style=${{marginBottom:'8px'}}><div><h2>${name}</h2><p className="sub">${p.mood}</p></div><div style=${{display:'flex',gap:'6px',flexWrap:'wrap'}}>${p.fam.map(f=>html`<span key=${f} className="pill wine">${f}</span>`)}</div></div>
-    <h3 style=${{marginTop:'14px'}}>What you smell over time</h3><p className="sub">Height shows how strongly each layer comes through.</p>
-    <${ScentChart} name=${name} t=${t}/>
-    <div className="slider"><label htmlFor="tsl" className="sub">Time since spraying</label><input id="tsl" type="range" min="0" max=${TT.length-1} step="1" value=${i} onInput=${e=>setI(+e.target.value)} aria-valuetext=${tl(t)}/></div>
-    <div className="now" aria-live="polite"><b>${t===0?'Right after spraying':'After '+tl(t)}:</b> you mostly smell the ${ph(lead)[1].toLowerCase()} (${nn(lead)})${second?html`, with the ${ph(second)[1].toLowerCase()} (${nn(second)}) ${lv[second]>lv[lead]*.8?'almost as strong':'in the background'}`:''}.</div>
-    <div className="phases">${PH.map(([k,label,role,when,c])=>html`<div key=${k} className=${'phase'+(k===lead?' active':'')} style=${{'--c':c}}><h3><i></i>${label}</h3><div className="when">${role} · ${when}</div>${p[k].map(([n,d])=>html`<div key=${n} className="note"><b>${n}</b><span>${d}</span></div>`)}</div>`)}</div>
+  const ph=k=>PH.find(x=>x[0]===k);const nn=k=>o[k].map(n=>n[0].toLowerCase()).slice(0,2).join(' and ');
+  const used=new Set(products.filter(p=>p.brand===ME).map(p=>p.oil));
+  return html`<div className="head"><div><h1>Our oils</h1><p className="lead">Our fragrance-oil catalog. Pick an oil to see what it smells like and how the scent changes after use, from the first fresh burst to what stays on skin.</p></div></div>
+  <div className="oils" role="group" aria-label="Choose an oil" style=${{marginBottom:'20px'}}>${codes.map(c=>html`<button key=${c} className=${'oilcard'+(feat[c]?' feat':'')} aria-pressed=${c===code} onClick=${()=>setCode(c)}><span className="code">${c}${feat[c]?' · '+feat[c]:''}</span><b>${OILS[c].name}</b><span className="sub"><span className="fdot" style=${{background:FAM[OILS[c].fam]}}></span>${OILS[c].fam}${used.has(c)?' · in your range':''}</span></button>`)}</div>
+  <section className="card"><div className="head" style=${{marginBottom:'8px'}}><div><h2>${o.name} <span className="code">${code}</span></h2><p className="sub">${o.mood}</p></div><span className="pill wine">${o.fam}</span></div>
+    <h3 style=${{marginTop:'12px'}}>What you smell over time</h3><p className="sub">Height shows how strongly each layer comes through.</p>
+    <${ScentChart} name=${o.name} t=${t}/>
+    <div className="slider"><label htmlFor="tsl" className="sub">Time since use</label><input id="tsl" type="range" min="0" max=${TT.length-1} step="1" value=${i} onInput=${e=>setI(+e.target.value)} aria-valuetext=${tl(t)}/></div>
+    <div className="now" aria-live="polite"><b>${t===0?'Right after use':'After '+tl(t)}:</b> you mostly smell the ${ph(lead)[1].toLowerCase()} (${nn(lead)})${second?html`, with the ${ph(second)[1].toLowerCase()} (${nn(second)}) ${lv[second]>lv[lead]*.8?'almost as strong':'in the background'}`:''}.</div>
+    <div className="phases">${PH.map(([k,label,role,when,c])=>html`<div key=${k} className=${'phase'+(k===lead?' active':'')} style=${{'--c':c}}><h3><i></i>${label}</h3><div className="when">${role} · ${when}</div>${o[k].map(([n,d])=>html`<div key=${n} className="note"><b>${n}</b><span>${d}</span></div>`)}</div>`)}</div>
   </section>`;
 }
 
-/* ---------------- client: ideas ---------------- */
+/* ================= client: requests ================= */
 function Ideas({requests,addRequest}){
-  const[f,setF]=useState({title:'',family:'Floral',market:'GCC',qty:''});const[err,setErr]=useState('');const mine=requests.filter(r=>r.client==='Maison Aurel');
-  const submit=e=>{e.preventDefault();if(!f.title.trim())return setErr('Please describe the idea in a few words.');setErr('');addRequest({...f,title:f.title.trim(),qty:f.qty||'—'});setF({...f,title:'',qty:''})};
-  return html`<div className="head"><div><h1>Ask for a new fragrance</h1><p className="lead">Describe what you have in mind. Our perfumers reply here, usually with questions or a first sample plan.</p></div></div>
-  <div className="grid"><form className="card form" onSubmit=${submit}><label>What should it be?<input className="field" value=${f.title} onInput=${e=>setF({...f,title:e.target.value})} placeholder="For example: a lighter summer edition of Rose Noir"/></label>
-    <div className="two"><label>Scent family<select className="field" value=${f.family} onChange=${e=>setF({...f,family:e.target.value})}>${['Floral','Woody','Oriental','Fresh','Gourmand'].map(x=>html`<option key=${x}>${x}</option>`)}</select></label>
-    <label>Main market<select className="field" value=${f.market} onChange=${e=>setF({...f,market:e.target.value})}>${Object.keys(REGIONS).map(x=>html`<option key=${x}>${x}</option>`)}</select></label></div>
-    <label>First order size (bottles)<input className="field" inputmode="numeric" value=${f.qty} onInput=${e=>setF({...f,qty:e.target.value})} placeholder="3,000"/></label>
+  const[f,setF]=useState({title:'',cat:'Deodorant',qty:''});const[err,setErr]=useState('');const mine=requests.filter(r=>r.client===BRANDS[ME]);
+  const submit=e=>{e.preventDefault();if(!f.title.trim())return setErr('Please describe what you need in a few words.');setErr('');addRequest({title:f.title.trim(),cat:f.cat,qty:f.qty||'—'});setF({...f,title:'',qty:''})};
+  return html`<div className="head"><div><h1>Ask our perfumers</h1><p className="lead">Request a sample, a new oil for a product, or a twist on one you use. We reply here.</p></div></div>
+  <div className="grid"><form className="card form" onSubmit=${submit}><label>What do you need?<input className="field" value=${f.title} onInput=${e=>setF({...f,title:e.target.value})} placeholder="For example: a fresher oil for our sport deodorant"/></label>
+    <div className="two"><label>For which product type<select className="field" value=${f.cat} onChange=${e=>setF({...f,cat:e.target.value})}>${CATS.map(x=>html`<option key=${x}>${x}</option>`)}</select></label>
+    <label>Expected yearly units<input className="field" inputMode="numeric" value=${f.qty} onInput=${e=>setF({...f,qty:e.target.value})} placeholder="50,000"/></label></div>
     ${err&&html`<div className="msg err" role="alert" style=${{margin:'0 0 14px'}}>${err}</div>`}<button className="btn">Send request</button></form>
-   <section className="card"><h2>Your requests</h2><ul className="list">${mine.length?mine.map(r=>html`<li key=${r.id} style=${{display:'block'}}><div style=${{display:'flex',justifyContent:'space-between',gap:'10px',flexWrap:'wrap'}}><b>${r.title}</b><span className=${'pill'+(r.reply?' ok':'')}>${r.status}</span></div><div className="sub">${r.family} · ${r.market} · ${r.qty} bottles</div>${r.reply&&html`<div className="msg" style=${{marginTop:'8px'}}>Reply from our team: ${r.reply}</div>`}</li>`):html`<li className="empty">No requests yet.</li>`}</ul></section></div>`;
+   <section className="card"><h2>Your requests</h2><ul className="list">${mine.length?mine.map(r=>html`<li key=${r.id} style=${{display:'block'}}><div style=${{display:'flex',justifyContent:'space-between',gap:'10px',flexWrap:'wrap'}}><b>${r.title}</b><span className=${'pill'+(r.reply?' ok':'')}>${r.status}</span></div><div className="sub">${r.cat} · ${r.qty} units a year</div>${r.reply&&html`<div className="msg" style=${{marginTop:'8px'}}>Reply from our team: ${r.reply}</div>`}</li>`):html`<li className="empty">No requests yet.</li>`}</ul></section></div>`;
 }
 
-/* ---------------- staff ---------------- */
+/* ================= staff ================= */
 function Attention({items,done,go}){
   return html`<div className="head"><div><h1>${items.length?`${items.length} things need your attention`:'All clear'}</h1><p className="lead">Client requests and account problems in one list. Each item says why it is here.</p></div></div>
   <section className="card"><ul className="list">${items.length?items.map(a=>html`<li key=${a.id}><div style=${{flex:'1 1 20em'}}><span className=${'pill'+(a.kind==='Request'?' wine':'')}>${a.kind}</span> <b style=${{marginLeft:'6px'}}>${a.who}</b><div style=${{marginTop:'4px'}}>${a.text}</div><div className="sub">${a.why}</div></div>
-    <div style=${{display:'flex',gap:'8px'}}><button className="btn sm" onClick=${()=>go(a.go)}>Open</button><button className="btn quiet sm" data-done=${a.id} onClick=${()=>done(a.id)}>Mark done</button></div></li>`):html`<li className="empty">Nothing to do. New requests and account problems appear here.</li>`}</ul></section>`;
+    <div style=${{display:'flex',gap:'8px'}}><button className="btn sm" onClick=${()=>go(a.go)}>Open</button><button className="btn quiet sm" data-done=${a.id} onClick=${()=>done(a.id)}>Mark done</button></div></li>`):html`<li className="empty">Nothing to do.</li>`}</ul></section>`;
 }
-function Clients({clients,toggle,audit}){
-  return html`<div className="head"><div><h1>Clients</h1><p className="lead">Every change here is written to the audit log below. The log cannot be edited.</p></div></div>
-  <section className="card"><div className="scroll"><table><thead><tr><th>Client</th><th className="num">People</th><th className="num">Sign-in app set up</th><th>Last upload</th><th>AI column matching</th><th>Shared insights</th></tr></thead>
-   <tbody>${clients.map((c,i)=>html`<tr key=${c.name}><td><b>${c.name}</b></td><td className="num">${c.users}</td><td className="num">${c.mfa===c.users?c.mfa+' of '+c.users:html`<span style=${{color:'var(--wine)'}}>${c.mfa} of ${c.users}</span>`}</td><td>${c.last}</td>
-    <td><label className="switch"><input type="checkbox" checked=${c.ai} onChange=${()=>toggle(i,'ai')}/>${c.ai?'On':'Off'}</label></td><td><label className="switch"><input type="checkbox" checked=${c.share} onChange=${()=>toggle(i,'share')}/>${c.share?'Included':'Not included'}</label></td></tr>`)}</tbody></table></div>
-   <p className="sub" style=${{marginTop:'10px'}}>AI matching and shared insights are later features. The switches record each client's choice now.</p></section>
+function Clients({products,uploads,clients,toggle,audit}){
+  return html`<div className="head"><div><h1>Clients</h1><p className="lead">Staff can see every brand by name. Clients only ever see the market view without names. Every change here goes to the audit log.</p></div></div>
+  <section className="card"><div className="scroll"><table><thead><tr><th>Client</th><th className="num">Products</th><th className="num">Oils used</th><th>Last upload</th><th>Volumes from our sales</th><th>AI column matching</th></tr></thead>
+   <tbody>${Object.entries(BRANDS).map(([id,name])=>{const ps=products.filter(p=>p.brand===id),c=clients[id];return html`<tr key=${id}><td><b style=${{fontWeight:500}}>${name}</b></td><td className="num">${ps.length}</td><td className="num">${new Set(ps.map(p=>p.oil)).size}</td><td>${c.last}</td><td>${c.ourSales?html`<span className="pill ok">Allowed by client</span>`:html`<span className="pill line">Not allowed</span>`}</td>
+    <td><label className="switch"><input type="checkbox" checked=${c.ai} onChange=${()=>toggle(id,'ai')}/>${c.ai?'On':'Off'}</label></td></tr>`})}</tbody></table></div>
+   <p className="sub" style=${{marginTop:'10px'}}>"Volumes from our sales" is the client's own choice, made on their Portfolio page. AI matching is a later feature; the switch records the choice now.</p></section>
   <section className="card" style=${{marginTop:'20px'}}><h2>Audit log</h2><div className="scroll"><table><thead><tr><th>When</th><th>Who</th><th>What happened</th></tr></thead><tbody>${audit.map((a,i)=>html`<tr key=${i}><td>${a[0]}</td><td>${a[1]}</td><td>${a[2]}</td></tr>`)}</tbody></table></div></section>`;
+}
+function Featured({feat,setFeat,products}){
+  return html`<div className="head"><div><h1>Featured oils</h1><p className="lead">Choose the oils to push to clients: new inspirations from our perfumers, or ready stock to move. Featured oils appear on every client's home page and in their gaps list.</p></div></div>
+  <section className="card"><div className="scroll"><table><thead><tr><th>Oil</th><th>Family</th><th className="num">Brands using it</th><th>Brands not using it</th><th>Feature as</th></tr></thead>
+   <tbody>${Object.keys(OILS).map(c=>{const b=new Set(products.filter(p=>p.oil===c).map(p=>p.brand));const not=Object.keys(BRANDS).filter(x=>!b.has(x)).map(x=>BRANDS[x].split(' ')[0]);
+    return html`<tr key=${c}><td><${OilName} code=${c}/></td><td>${OILS[c].fam}</td><td className="num">${b.size}</td><td style=${{whiteSpace:'normal'}}>${not.join(', ')||'—'}</td>
+     <td><select className="field" style=${{marginTop:0,minWidth:'11em'}} aria-label=${'Feature '+OILS[c].name+' as'} value=${feat[c]||''} onChange=${e=>setFeat(c,e.target.value)}><option value="">Not featured</option><option>New inspiration</option><option>Ready stock</option></select></td></tr>`})}</tbody></table></div></section>`;
 }
 function Requests({requests,reply}){
   const[d,setD]=useState({});
   return html`<div className="head"><div><h1>Client requests</h1><p className="lead">Reply to a request and the client sees your answer in their portal.</p></div></div>
-  <section className="card"><ul className="list">${requests.map(r=>html`<li key=${r.id} style=${{display:'block'}}><div style=${{display:'flex',justifyContent:'space-between',gap:'10px',flexWrap:'wrap'}}><div><b>${r.title}</b><div className="sub">${r.client} · ${r.family} · ${r.market} · ${r.qty} bottles</div></div><span className=${'pill'+(r.reply?' ok':' wine')}>${r.status}</span></div>
+  <section className="card"><ul className="list">${requests.map(r=>html`<li key=${r.id} style=${{display:'block'}}><div style=${{display:'flex',justifyContent:'space-between',gap:'10px',flexWrap:'wrap'}}><div><b>${r.title}</b><div className="sub">${r.client} · ${r.cat} · ${r.qty} units a year</div></div><span className=${'pill'+(r.reply?' ok':' wine')}>${r.status}</span></div>
     ${r.reply?html`<div className="msg" style=${{marginTop:'8px'}}>Your reply: ${r.reply}</div>`:html`<form data-rid=${r.id} style=${{display:'flex',gap:'8px',marginTop:'10px',flexWrap:'wrap',alignItems:'end'}} onSubmit=${e=>{e.preventDefault();const v=(d[r.id]||'').trim();if(v)reply(r.id,v)}}><input className="field" aria-label=${'Reply to '+r.client} placeholder="Write a reply" value=${d[r.id]||''} onInput=${e=>setD({...d,[r.id]:e.target.value})} style=${{flex:'1 1 16em',width:'auto'}}/><button className="btn sm">Send reply</button></form>`}</li>`)}</ul></section>`;
 }
 
-/* ---------------- app shell ---------------- */
-const NAV={client:[['home','Home','home','Upload sales, see orders'],['insights','Insights','chart','Sales by market'],['perfumes','Perfumes','bottle','How each one smells'],['ideas','Ideas','idea','Ask for a new fragrance']],staff:[['attention','Needs attention','bell','Your to-do list'],['clients','Clients','users','Accounts and settings'],['requests','Requests','inbox','Reply to clients']]};
+/* ================= app shell ================= */
+const NAV={client:[['home','Home','home','Upload your portfolio'],['market','Market view','chart','What the market uses'],['portfolio','Portfolio','box','Your products and oils'],['oils','Our oils','drop','Catalog and scent'],['ideas','Ask us','idea','Samples and new oils']],staff:[['attention','Needs attention','bell','Your to-do list'],['clients','Clients','users','Brands and settings'],['featured','Featured oils','star','What to push'],['requests','Requests','inbox','Reply to clients']]};
 const stamp=()=>{const d=new Date();return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+' '+d.toTimeString().slice(0,5)};
+const REQ0=[{id:1,client:'Nimbus Hygiene',title:'Sample of a fresher oil for our sport deodorant',cat:'Deodorant',qty:'60,000',status:'Waiting for reply',reply:''},{id:2,client:'Verde Home & Body',title:'Coconut oil with longer-lasting base for soap',cat:'Soap',qty:'200,000',status:'Waiting for reply',reply:''}];
+const ATT0=[{id:'a1',kind:'Request',who:'Nimbus Hygiene',text:'Asked for a sample of a fresher oil for their sport deodorant.',why:'Every new client request appears here.',go:'requests'},{id:'a2',kind:'Account',who:'Coastline Cosmetics',text:`No ${CUR} portfolio uploaded yet.`,why:'Shown when a quarter ends without an upload.',go:'clients'},{id:'a3',kind:'Request',who:'Verde Home & Body',text:'Asked for a coconut oil with a longer-lasting base for soap.',why:'Every new client request appears here.',go:'requests'}];
+const CL0={aurel:{last:'2 Oct 2026',ourSales:false,ai:false},nimbus:{last:'4 Oct 2026',ourSales:true,ai:false},verde:{last:'1 Oct 2026',ourSales:false,ai:false},coast:{last:'3 Jul 2026',ourSales:false,ai:false}};
 function App(){
   const[role,setRole]=useState('client'),[page,setPage]=useState('home');
-  const[sales,setSales]=useState(SALES0),[uploads,setUploads]=useState([{name:'october-sales.csv',rows:31,when:'1 Nov 2026'}]);
-  const[requests,setRequests]=useState(REQ0),[att,setAtt]=useState(ATT0),[clients,setClients]=useState(CLIENTS0),[audit,setAudit]=useState([['25 Nov 2026 09:12','staff@manufacturer (sample)','Turned on "Shared insights" for Oud & Amber Co.']]);
+  const[products,setProducts]=useState(P0),[uploads,setUploads]=useState([{name:'aurel-portfolio-q3.csv',rows:4,when:'2 Oct 2026'}]),[feat,setFeatAll]=useState(FEAT0);
+  const[requests,setRequests]=useState(REQ0),[att,setAtt]=useState(ATT0),[clients,setClients]=useState(CL0),[audit,setAudit]=useState([['20 Nov 2026 10:05','staff@manufacturer (sample)','Featured CS-110 Lavender Field as "Ready stock"']]);
   const[toast,setToast]=useState(null);const tm=useRef();
   const say=(text,undo)=>{setToast({text,undo});clearTimeout(tm.current);tm.current=setTimeout(()=>setToast(null),5000)};
-  const log=w=>setAudit(a=>[[stamp(),'staff@manufacturer (sample)',w],...a]);
+  const log=(who,w)=>setAudit(a=>[[stamp(),who,w],...a]);
   const switchRole=r=>{setRole(r);setPage(NAV[r][0][0]);window.scrollTo(0,0)};const go=p=>{setPage(p);window.scrollTo(0,0)};
+  const addRequest=r=>{const id=Date.now();setRequests(q=>[{id,client:BRANDS[ME],status:'Waiting for reply',reply:'',...r},...q]);setAtt(a=>[{id:'a'+id,kind:'Request',who:BRANDS[ME],text:'Asked: '+r.title+'.',why:'Every new client request appears here.',go:'requests'},...a]);say('Request sent. Our team will reply in "Ask us".')};
+  const onSaved=(name,rows)=>{setProducts(ps=>{const out=ps.map(p=>({...p,units:{...p.units}}));rows.forEach(r=>{const ex=out.find(p=>p.brand===ME&&p.name===r.name);if(ex){Object.assign(ex,{cat:r.cat,oil:r.oil,market:r.market,launch:r.launch});ex.units[r.period]=r.units}else out.push({brand:ME,name:r.name,cat:r.cat,oil:r.oil,market:r.market,launch:r.launch,units:{[r.period]:r.units}})});return out});setUploads(u=>[{name,rows:rows.length,when:'Today'},...u]);setClients(c=>({...c,[ME]:{...c[ME],last:'Today'}}))};
   let view;
-  if(page==='home')view=html`<${Home} uploads=${uploads} go=${go} onSaved=${(name,rows)=>{setSales(s=>[...s,...rows]);setUploads(u=>[{name,rows:rows.length,when:'Today'},...u])}}/>`;
-  else if(page==='insights')view=html`<${Insights} sales=${sales} go=${go}/>`;
-  else if(page==='perfumes')view=html`<${Perfumes}/>`;
-  else if(page==='ideas')view=html`<${Ideas} requests=${requests} addRequest=${r=>{const id=Date.now();setRequests(q=>[{id,client:'Maison Aurel',status:'Waiting for reply',reply:'',...r},...q]);setAtt(a=>[{id:'a'+id,kind:'Request',who:'Maison Aurel',text:'Asked for a new idea: '+r.title+'.',why:'Every new client request appears here.',go:'requests'},...a]);say('Request sent. Our team will reply here.')}}/>`;
+  if(page==='home')view=html`<${Home} products=${products} uploads=${uploads} feat=${feat} onSaved=${onSaved} go=${go}/>`;
+  else if(page==='market')view=html`<${Market} products=${products} feat=${feat} ask=${(code,cat)=>addRequest({title:`Sample of ${code} ${OILS[code].name}`+(cat?` for our ${cat.toLowerCase()}`:''),cat:cat||'Deodorant',qty:'—'})}/>`;
+  else if(page==='portfolio')view=html`<${Portfolio} products=${products} useOurSales=${clients[ME].ourSales} setUseOurSales=${v=>{setClients(c=>({...c,[ME]:{...c[ME],ourSales:v}}));log('client@aurel (sample)',`${v?'Allowed':'Stopped'} use of oil sales records to fill in volumes`);say(v?'Saved. We may now fill in your volumes from our sales records.':'Saved. We will only use the numbers you upload.')}}/>`;
+  else if(page==='oils')view=html`<${Oils} feat=${feat} products=${products}/>`;
+  else if(page==='ideas')view=html`<${Ideas} requests=${requests} addRequest=${addRequest}/>`;
   else if(page==='attention')view=html`<${Attention} items=${att} go=${go} done=${id=>{const i=att.findIndex(a=>a.id===id),it=att[i];setAtt(a=>a.filter(x=>x.id!==id));say('Marked done.',()=>setAtt(a=>{const n=[...a];n.splice(i,0,it);return n}))}}/>`;
-  else if(page==='clients')view=html`<${Clients} clients=${clients} audit=${audit} toggle=${(i,k)=>{const c=clients[i],v=!c[k];setClients(cs=>cs.map((x,j)=>j===i?{...x,[k]:v}:x));log(`Turned ${v?'on':'off'} "${k==='ai'?'AI column matching':'Shared insights'}" for ${c.name}`)}}/>`;
-  else view=html`<${Requests} requests=${requests} reply=${(id,text)=>{const r=requests.find(x=>x.id===id);setRequests(q=>q.map(x=>x.id===id?{...x,reply:text,status:'Answered'}:x));setAtt(a=>a.filter(x=>!(x.kind==='Request'&&x.text.includes(r.title))));log(`Replied to "${r.title}" from ${r.client}`);say('Reply sent.')}}/>`;
+  else if(page==='clients')view=html`<${Clients} products=${products} uploads=${uploads} clients=${clients} audit=${audit} toggle=${(id,k)=>{const v=!clients[id][k];setClients(c=>({...c,[id]:{...c[id],[k]:v}}));log('staff@manufacturer (sample)',`Turned ${v?'on':'off'} AI column matching for ${BRANDS[id]}`)}}/>`;
+  else if(page==='featured')view=html`<${Featured} feat=${feat} products=${products} setFeat=${(c,v)=>{setFeatAll(f=>{const n={...f};if(v)n[c]=v;else delete n[c];return n});log('staff@manufacturer (sample)',v?`Featured ${c} ${OILS[c].name} as "${v}"`:`Stopped featuring ${c} ${OILS[c].name}`);say(v?`${OILS[c].name} is now featured to all clients.`:`${OILS[c].name} is no longer featured.`)}}/>`;
+  else view=html`<${Requests} requests=${requests} reply=${(id,text)=>{const r=requests.find(x=>x.id===id);setRequests(q=>q.map(x=>x.id===id?{...x,reply:text,status:'Answered'}:x));setAtt(a=>a.filter(x=>!(x.kind==='Request'&&x.who===r.client)));log('staff@manufacturer (sample)',`Replied to "${r.title}" from ${r.client}`);say('Reply sent.')}}/>`;
   const nav=NAV[role];
   return html`<div className="app"><aside><div className="brand">Client Studio<small>Prototype · all data is sample</small></div>
-    <div className="who" role="group" aria-label="View as"><button id="r-client" aria-pressed=${role==='client'} onClick=${()=>switchRole('client')}>Client: Maison Aurel</button><button id="r-staff" aria-pressed=${role==='staff'} onClick=${()=>switchRole('staff')}>Manufacturer staff</button></div>
+    <div className="who" role="group" aria-label="View as"><button id="r-client" aria-pressed=${role==='client'} onClick=${()=>switchRole('client')}>Client: Aurel Personal Care</button><button id="r-staff" aria-pressed=${role==='staff'} onClick=${()=>switchRole('staff')}>Our team</button></div>
     <nav className="nav" aria-label="Sections">${nav.map(([k,l,ic,hint])=>html`<button key=${k} data-tab=${k} aria-current=${page===k?'page':undefined} onClick=${()=>go(k)}><${Icon} n=${ic}/><span>${l}<br/><span className="sub">${hint}</span></span>${k==='attention'&&att.length>0&&html`<span className="count">${att.length}</span>`}</button>`)}</nav>
-    <div className="foot">Prototype for review. Changes stay in this page and reset when you reload.</div></aside>
+    <div className="foot">Prototype for review. Four sample brands. Changes reset when you reload.</div></aside>
    <main>${view}</main>
-   <nav className="tabbar" aria-label="Sections">${nav.map(([k,l,ic])=>html`<button key=${k} data-mtab=${k} aria-current=${page===k?'page':undefined} onClick=${()=>go(k)}><${Icon} n=${ic}/>${l}</button>`)}</nav>
+   <nav className="tabbar" aria-label="Sections">${nav.map(([k,l,ic])=>html`<button key=${k} data-mtab=${k} aria-current=${page===k?'page':undefined} onClick=${()=>go(k)}><${Icon} n=${ic}/>${({'Market view':'Market','Our oils':'Oils','Needs attention':'To do','Featured oils':'Featured'})[l]||l}</button>`)}</nav>
    ${toast&&html`<div className="toast" role="status">${toast.text}${toast.undo&&html`<button onClick=${()=>{toast.undo();setToast(null)}}>Undo</button>`}</div>`}</div>`;
 }
 ReactDOM.createRoot(document.getElementById('root')).render(html`<${App}/>`);
