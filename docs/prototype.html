@@ -151,6 +151,9 @@ svg.gsvg{display:block;min-width:640px;width:100%;height:auto}
 .hm-stage.holo{--hm-tx:#e6f6ff;--hm-mu:#8fb4c9;--hm-bg:#0a152b;--hm-ac:#4fe3f5;background:radial-gradient(ellipse at 50% 45%,#10264a 0%,#0a152b 75%);border-color:#1d6f86;color:#e6f6ff}
 .hm-stage.holo::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(120,240,255,.05) 0 1px,transparent 1px 3px)}
 .hm-stage canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+.hm-hud{position:absolute;left:12px;top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--hm-mu);max-width:calc(100% - 80px)}
+.hm-hud select{min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 10px;font-size:15px}
+.hm-stage.holo .hm-hud select{background:#0e2238;border-color:#1d3a5a;color:#e6f6ff}
 .hm-zc{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:6px}
 .hm-zc button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-size:18px}
 .hm-stage.holo .hm-zc button{background:#0e2238;border-color:#1d3a5a;color:#e6f6ff}
@@ -204,13 +207,13 @@ const OILS={
 const BRANDS={aurel:'Aurel Personal Care',nimbus:'Nimbus Hygiene',verde:'Verde Home & Body',coast:'Coastline Cosmetics'};
 const ME='aurel';
 const P0=[
- ['aurel','Aurel Fresh Deo','Deodorant','CS-101','GCC','2025-03',42000,45000],['aurel','Aurel Sport Deo','Deodorant','CS-131','GCC','2024-09',30000,28000],['aurel','Aurel Rose Soap','Soap','CS-121','India','2023-05',80000,78000],['aurel','Aurel Sandal Soap','Soap','CS-130','India','2022-01',95000,99000],
- ['nimbus','Nimbus Ocean Deo','Deodorant','CS-102','Europe','2024-02',52000,61000],['nimbus','Nimbus Active Deo','Deodorant','CS-131','Europe','2023-08',26000,24000],['nimbus','Nimbus Citrus Wash','Body wash','CS-101','Europe','2025-06',18000,22000],['nimbus','Nimbus Lavender Soap','Soap','CS-110','United Kingdom','2021-10',40000,43000],
- ['verde','Verde Neem Soap','Soap','CS-160','India','2020-04',120000,126000],['verde','Verde Coconut Soap','Soap','CS-150','Southeast Asia','2024-11',60000,72000],['verde','Verde Jasmine Wash','Body wash','CS-120','India','2025-01',25000,27000],['verde','Verde Herbal Shampoo','Shampoo','CS-160','India','2022-07',30000,31000],
- ['coast','Coast Oud Deo','Deodorant','CS-140','GCC','2025-09',38000,47000],['coast','Coast Ocean Deo','Deodorant','CS-102','GCC','2025-04',20000,26000],['coast','Coast Coconut Shampoo','Shampoo','CS-150','Southeast Asia','2025-02',22000,29000],['coast','Coast Sandal Soap','Soap','CS-130','GCC','2023-03',35000,34000]
-].map(([brand,name,cat,oil,market,launch,a,b])=>({brand,name,cat,oil,market,launch,units:{[PREV]:a,[CUR]:b}}));
+ ['aurel','Aurel Fresh Deo','Deodorant','CS-101','2025-03',42000,45000,{Dubai:.5,Riyadh:.3,Lagos:.2}],['aurel','Aurel Sport Deo','Deodorant','CS-131','2024-09',30000,28000,{Dubai:.6,Johannesburg:.4}],['aurel','Aurel Rose Soap','Soap','CS-121','2023-05',80000,78000,{Mumbai:.5,Delhi:.3,Paris:.2}],['aurel','Aurel Sandal Soap','Soap','CS-130','2022-01',95000,99000,{Mumbai:.5,Delhi:.3,Singapore:.2}],
+ ['nimbus','Nimbus Ocean Deo','Deodorant','CS-102','2024-02',52000,61000,{London:.4,Paris:.3,'New York':.3}],['nimbus','Nimbus Active Deo','Deodorant','CS-131','2023-08',26000,24000,{Paris:.5,'Los Angeles':.5}],['nimbus','Nimbus Citrus Wash','Body wash','CS-101','2025-06',18000,22000,{London:.5,Sydney:.5}],['nimbus','Nimbus Lavender Soap','Soap','CS-110','2021-10',40000,43000,{London:.6,'New York':.4}],
+ ['verde','Verde Neem Soap','Soap','CS-160','2020-04',120000,126000,{Mumbai:.5,Delhi:.3,Lagos:.2}],['verde','Verde Coconut Soap','Soap','CS-150','2024-11',60000,72000,{Singapore:.5,'São Paulo':.5}],['verde','Verde Jasmine Wash','Body wash','CS-120','2025-01',25000,27000,{Delhi:.6,Johannesburg:.4}],['verde','Verde Herbal Shampoo','Shampoo','CS-160','2022-07',30000,31000,{Mumbai:1}],
+ ['coast','Coast Oud Deo','Deodorant','CS-140','2025-09',38000,47000,{Dubai:.5,Riyadh:.5}],['coast','Coast Ocean Deo','Deodorant','CS-102','2025-04',20000,26000,{Dubai:.6,Tokyo:.4}],['coast','Coast Coconut Shampoo','Shampoo','CS-150','2025-02',22000,29000,{Singapore:.5,Sydney:.5}],['coast','Coast Sandal Soap','Soap','CS-130','2023-03',35000,34000,{Riyadh:.5,Tokyo:.5}]
+].flatMap(([brand,name,cat,oil,launch,a,b,split])=>Object.entries(split).map(([market,w])=>({brand,name,cat,oil,market,launch,units:{[PREV]:Math.round(a*w),[CUR]:Math.round(b*w)}})));
 const FEAT0={'CS-120':'New inspiration','CS-110':'Ready stock'};
-const REGIONS={'GCC':[25,51],'India':[21,78],'Europe':[48,10],'United Kingdom':[53,-2],'North America':[40,-95],'Southeast Asia':[5,108]};
+const REGIONS={'Mumbai':[92.4,32.7],'Delhi':[93.5,28.6],'Dubai':[84.5,30.2],'Riyadh':[81.2,30],'London':[58,14.5],'Paris':[60.3,17.5],'New York':[29,20.5],'Los Angeles':[8.5,24.5],'São Paulo':[38,49.8],'Lagos':[59,37],'Johannesburg':[71,52],'Singapore':[104,40],'Tokyo':[118,21.5],'Sydney':[123.5,57]};
 
 /* ================= market analytics (nameless, consolidated) ================= */
 /* Privacy rule shown in the UI: a figure is hidden when only one other brand is behind it. */
@@ -239,23 +242,17 @@ function families(products,cat,who){
   const vis=Object.entries(f).filter(([,o])=>who||o.b.size>=2||o.b.has(ME));const tot=vis.reduce((s,[,o])=>s+o.u,0)||1;
   return vis.map(([k,o])=>[k,o.u/tot]).sort((a,b)=>b[1]-a[1]);
 }
-/* ================= world outline (rough, prototype only) ================= */
-const LAND=[[[-168,66],[-140,70],[-95,72],[-80,63],[-60,55],[-55,48],[-70,43],[-76,35],[-81,25],[-97,26],[-97,18],[-87,15],[-80,8],[-92,15],[-105,20],[-117,32],[-124,40],[-125,49],[-135,58],[-150,60],[-165,60]],[[-55,60],[-43,60],[-20,70],[-20,80],[-60,82],[-70,77]],[[-80,8],[-60,10],[-50,0],[-35,-6],[-40,-22],[-48,-28],[-58,-38],[-65,-55],[-72,-50],[-72,-30],[-71,-18],[-81,-5]],[[-10,36],[-9,43],[-2,44],[-5,48],[2,51],[8,54],[5,58],[10,63],[20,70],[30,71],[40,67],[45,55],[40,45],[28,41],[23,37],[12,38],[15,45],[5,43],[-5,36]],[[-17,15],[-17,21],[-10,30],[-5,36],[10,37],[20,32],[32,31],[35,28],[43,12],[51,12],[40,-5],[40,-15],[35,-25],[20,-35],[15,-28],[12,-15],[9,-1],[8,4],[-8,4],[-15,10]],[[28,41],[36,36],[35,31],[43,13],[53,16],[57,23],[60,25],[67,24],[73,20],[77,8],[80,13],[88,22],[92,22],[98,16],[100,8],[104,1],[106,10],[109,19],[117,23],[122,30],[121,40],[130,43],[140,50],[143,59],[160,60],[180,66],[180,72],[140,73],[110,77],[80,73],[68,70],[60,68],[45,55],[40,45]],[[-6,50],[2,51],[0,54],[-3,58],[-6,57]],[[130,31],[141,36],[142,44],[139,40]],[[95,5],[106,-6],[120,-9],[141,-9],[141,-2],[118,5],[105,0]],[[114,-22],[122,-18],[131,-12],[137,-12],[142,-11],[146,-19],[153,-28],[150,-37],[140,-38],[132,-32],[115,-34]]];
-const inPoly=(x,y,p)=>{let c=false;for(let i=0,j=p.length-1;i<p.length;j=i++){const[xi,yi]=p[i],[xj,yj]=p[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c};
-const DOTS2=[];for(let lat=78;lat>=-54;lat-=1.5)for(let lon=-178.5;lon<=180;lon+=1.5)if(LAND.some(p=>inPoly(lon,lat,p)))DOTS2.push([lon,lat]);
-const DOTS=[];for(let lat=78;lat>=-54;lat-=3)for(let lon=-177;lon<=180;lon+=3)if(LAND.some(p=>inPoly(lon,lat,p)))DOTS.push([lon,lat]);
-
 /* ================= upload: our standard file format ================= */
-const FIELDS=[['product','Product name',['product','productname','name']],['cat','Category',['category','type','producttype']],['oil','Oil code',['oil','oilcode','fragrancecode','fragrance','code']],['market','Market',['market','region','country']],['launch','Launch date',['launch','launched','launchdate']],['period','Period',['period','quarter']],['units','Units sold',['units','unitssold','qty','quantity','volume']]];
-const FORMAT=[['product_name','Your product name','Aurel Fresh Deo'],['category',CATS.join(', '),'Deodorant'],['oil_code','Our oil code, from the catalog','CS-101'],['market',Object.keys(REGIONS).join(', '),'GCC'],['launch_date','Year and month, YYYY-MM','2025-03'],['period','Quarter, e.g. Q4 2026','Q4 2026'],['units_sold','Whole number','45000']];
+const FIELDS=[['product','Product name',['product','productname','name']],['cat','Category',['category','type','producttype']],['oil','Oil code',['oil','oilcode','fragrancecode','fragrance','code']],['market','City',['market','city','region','country']],['launch','Launch date',['launch','launched','launchdate']],['period','Period',['period','quarter']],['units','Units sold',['units','unitssold','qty','quantity','volume']]];
+const FORMAT=[['product_name','Your product name','Aurel Fresh Deo'],['category',CATS.join(', '),'Deodorant'],['oil_code','Our oil code, from the catalog','CS-101'],['market','City: '+Object.keys(REGIONS).join(', '),'Dubai'],['launch_date','Year and month, YYYY-MM','2025-03'],['period','Quarter, e.g. Q4 2026 (one row per product per city)','Q4 2026'],['units_sold','Whole number','45000']];
 const guess=heads=>Object.fromEntries(FIELDS.map(([k,,syn])=>[k,heads.find(h=>syn.includes(h.toLowerCase().replace(/[^a-z]/g,'')))||'']));
-const SAMPLE_CSV='Product,Type,Fragrance code,Market,Launched,Quarter,Pieces\n'+[['Aurel Fresh Deo','Deodorant','CS-101','GCC','2025-03',CUR,46500],['Aurel Sport Deo','Deodorant','CS-131','GCC','2024-09',CUR,27500],['Aurel Rose Soap','Soap','CS-121','India','2023-05',CUR,79000],['Aurel Sandal Soap','Soap','CS-130','India','2022-01',CUR,101000],['Aurel Ocean Deo','Deodorant','CS-102','Europe','2026-10',CUR,12000],['Aurel Musk Deo','Deodorant','CS-199','GCC','2026-11',CUR,5000]].map(r=>r.join(',')).join('\n');
+const SAMPLE_CSV='Product,Type,Fragrance code,City,Launched,Quarter,Pieces\n'+[['Aurel Fresh Deo','Deodorant','CS-101','Dubai','2025-03',CUR,23500],['Aurel Fresh Deo','Deodorant','CS-101','Riyadh','2025-03',CUR,13500],['Aurel Fresh Deo','Deodorant','CS-101','Lagos','2025-03',CUR,9500],['Aurel Rose Soap','Soap','CS-121','Mumbai','2023-05',CUR,39500],['Aurel Sandal Soap','Soap','CS-130','Mumbai','2022-01',CUR,51000],['Aurel Ocean Deo','Deodorant','CS-102','London','2026-10',CUR,7000],['Aurel Ocean Deo','Deodorant','CS-102','Paris','2026-10',CUR,5000],['Aurel Musk Deo','Deodorant','CS-199','Dubai','2026-11',CUR,5000]].map(r=>r.join(',')).join('\n');
 function parseCSV(t){const rows=[];let row=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'&&t[i+1]==='"'){f+='"';i++}else if(c==='"')q=false;else f+=c}else if(c==='"')q=true;else if(c===','){row.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(f);rows.push(row);row=[];f=''}else f+=c}if(f||row.length){row.push(f);rows.push(row)}return rows.filter(r=>r.some(c=>c.trim()))}
 function checkRow(r,map,n){const g=k=>(r[map[k]]||'').trim();const e=[];
   if(!g('product'))e.push('product name is empty');
   if(!CATS.includes(g('cat')))e.push(`category "${g('cat')}" is not one of: ${CATS.join(', ')}`);
   if(!OILS[g('oil').toUpperCase()])e.push(`oil code ${g('oil')||'(empty)'} is not in our catalog`);
-  if(!REGIONS[g('market')])e.push(`market "${g('market')}" is not recognised`);
+  if(!REGIONS[g('market')])e.push(`city "${g('market')}" is not one of our cities`);
   if(!PERIODS.includes(g('period')))e.push(`period "${g('period')}" should be ${PERIODS.join(' or ')}`);
   const u=parseFloat(g('units').replace(/,/g,''));if(!(u>=0))e.push('units sold is not a number');
   return e.length?{n,e}:null}
@@ -283,7 +280,7 @@ function Upload({onSaved,go}){
     onSaved(file.name,rows);setResult({rows:rows.length,skipped:bad.size,oils:new Set(rows.map(r=>r.oil)).size});setSaving(false);setStep(3)},900)};
   const reset=()=>{setStep(1);setFile(null);setResult(null);setErr('')};
   return html`<section className="card" aria-labelledby="up-h">
-    <h2 id="up-h">Upload your ${CUR} portfolio</h2><p className="sub">One row per product: which of our oils it uses, where it sells and how many units sold. Nothing is saved until you confirm.</p>
+    <h2 id="up-h">Upload your ${CUR} portfolio</h2><p className="sub">One row per product and city: which of our oils it uses, the city it sells in and how many units sold. Nothing is saved until you confirm.</p>
     <ol className="steps">${['Choose file','Check','Done'].map((l,i)=>html`<li key=${l} className=${step===i+1?'on':step>i+1?'done':''}><b>${step>i+1?'✓':i+1}</b>${l}</li>`)}</ol>
     ${step===1&&html`<div className=${'drop'+(over?' over':'')} onDragOver=${e=>{e.preventDefault();setOver(true)}} onDragLeave=${()=>setOver(false)} onDrop=${e=>{e.preventDefault();setOver(false);e.dataTransfer.files[0]&&read(e.dataTransfer.files[0])}}>
       <button className="btn" style=${{fontSize:'18px',minHeight:'56px',padding:'0 30px'}} onClick=${()=>input.current.click()}>Choose portfolio file</button>
@@ -292,14 +289,14 @@ function Upload({onSaved,go}){
       <input ref=${input} type="file" accept=".csv,text/csv" hidden onChange=${e=>e.target.files[0]&&read(e.target.files[0])}/></div>
       ${showFmt&&html`<div className="scroll" style=${{marginTop:'14px'}}><table className="fmt"><thead><tr><th>Column</th><th>What to put</th><th>Example</th></tr></thead><tbody>${FORMAT.map(([c,w,e])=>html`<tr key=${c}><td><b style=${{fontWeight:500}}>${c}</b></td><td>${w}</td><td>${e}</td></tr>`)}</tbody></table><p className="sub" style=${{marginTop:'6px'}}>Column names can differ; you match them in the next step.</p></div>`}
       ${err&&html`<div className="msg err" role="alert">${err}</div>`}`}
-    ${step===2&&html`<div className="msg"><b>${file.name}</b> · ${file.rows.length} products found. Check which column holds each piece of information.</div>
+    ${step===2&&html`<div className="msg"><b>${file.name}</b> · ${file.rows.length} rows found. Check which column holds each piece of information.</div>
       ${FIELDS.map(([k,label])=>html`<div key=${k} className=${'maprow'+(map[k]?'':' miss')}><span className="lbl">${label}</span>
         <select aria-label=${'Column for '+label} data-f=${k} value=${map[k]} onChange=${e=>setMap({...map,[k]:e.target.value})}><option value="">Choose a column…</option>${file.heads.map(h=>html`<option key=${h} value=${h}>${h}${file.rows[0][h]?' (e.g. '+file.rows[0][h]+')':''}</option>`)}</select>
         <span className=${map[k]?'tick':'cross'} aria-label=${map[k]?'matched':'not matched'}>${map[k]?'✓':'!'}</span></div>`)}
       ${missing.length>0&&html`<div className="msg err" role="status">We could not find <b>${missing.map(m=>m[1]).join(', ')}</b> automatically. Pick the right column above.</div>`}
       ${!missing.length&&problems.length>0&&html`<div className="msg err" id="problems" role="status"><b>${problems.length} ${problems.length===1?'row needs':'rows need'} fixing and will be skipped:</b>${problems.map(p=>html`<div key=${p.n}>Row ${p.n}: ${p.e.join('; ')}.</div>`)}</div>`}
-      <div style=${{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}><button className="btn" id="confirm" disabled=${missing.length>0||saving||!good} onClick=${save}>${saving?'Saving…':`Save ${good} products`}</button><button className="btn quiet" onClick=${reset}>Start again</button></div>`}
-    ${step===3&&html`<div className="msg" id="saved" style=${{borderColor:'var(--ok)'}}><b style=${{color:'var(--ok)'}}>Saved.</b> ${result.rows} products using ${result.oils} of our oils.${result.skipped?` ${result.skipped} row skipped; fix it and upload again any time.`:''} The market view now includes your new numbers.</div>
+      <div style=${{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}><button className="btn" id="confirm" disabled=${missing.length>0||saving||!good} onClick=${save}>${saving?'Saving…':`Save ${good} rows`}</button><button className="btn quiet" onClick=${reset}>Start again</button></div>`}
+    ${step===3&&html`<div className="msg" id="saved" style=${{borderColor:'var(--ok)'}}><b style=${{color:'var(--ok)'}}>Saved.</b> ${result.rows} rows using ${result.oils} of our oils.${result.skipped?` ${result.skipped} row skipped; fix it and upload again any time.`:''} The market view now includes your new numbers.</div>
       <div style=${{display:'flex',gap:'10px',flexWrap:'wrap',marginTop:'16px'}}><button className="btn" onClick=${()=>go('market')}>See the market view</button><button className="btn quiet" onClick=${reset}>Upload another file</button></div>`}
   </section>`;
 }
@@ -334,75 +331,14 @@ function Market({products,feat,ask}){
 }
 
 /* ================= client: portfolio ================= */
-const PLANT={name:'Our plant (sample)',lat:19,lon:73};
-const LBL={'United Kingdom':'nw','Europe':'ne','GCC':'sw','India':'se','Southeast Asia':'e','North America':'n'};
-const SHORT={'United Kingdom':'UK','Southeast Asia':'SE Asia','North America':'N. America'};
-function WorldMap({byReg,mapStyle}){
-  const[ref,{w:W,h:H}]=useSize();const holo=mapStyle==='Hologram';let body=null;
-  if(W&&Object.keys(byReg).length){
-    const pad=holo?{x:18,y:24}:{x:0,y:0};const k=Math.min((W-2*pad.x)/360,(H-2*pad.y)/136),ox=(W-360*k)/2,oy=(H-136*k)/2,X=lo=>ox+(lo+180)*k,Y=la=>oy+(80-la)*k;
-    const tot=Object.values(byReg).reduce((s,v)=>s+v,0),mx=Math.max(...Object.values(byReg)),r0=Math.max(12,k*15),dr=Math.max(1,k*.75);
-    const pts=Object.entries(byReg).map(([nm,v])=>{const[la,lo]=REGIONS[nm];return{nm,v,share:v/tot,x:X(lo),y:Y(la),r:Math.max(6,Math.sqrt(v/mx)*r0)}});
-    const nm=n=>W<560?(SHORT[n]||n):n;
-    if(!holo){
-      body=html`<svg viewBox=${`0 0 ${W} ${H}`}>${DOTS.map(([lo,la],i)=>html`<circle key=${i} cx=${X(lo)} cy=${Y(la)} r=${dr} fill="var(--dot)"/>`)}
-        ${pts.map(p=>html`<circle key=${p.nm} cx=${p.x} cy=${p.y} r=${p.r} fill="var(--wine)" fillOpacity=".8" stroke="var(--surface)"/>`)}
-        ${pts.map(({nm:n,v,x,y,r})=>{const d=LBL[n];const[a,tx,ty]=d==='nw'?['end',x-r*.6,y-r-4]:d==='sw'?['end',x-r-5,y+4]:d==='se'?['start',x+r+5,y+8]:d==='e'?['start',x+r+5,y+4]:d==='ne'?['start',x+r*.7+3,y-r*.7-3]:['middle',x,y-r-6];
-          return html`<text key=${'t'+n} x=${tx} y=${ty} textAnchor=${a} fontSize="13" fill="var(--ink)" style=${{paintOrder:'stroke',stroke:'var(--surface)',strokeWidth:'4px'}}>${nm(n)} ${fmt(v/1000)}k</text>`})}</svg>`;
-    }else{
-      /* zoom to the client's markets plus our plant, keeping the box's shape */
-      const lons=[...Object.keys(byReg).map(n=>REGIONS[n][1]),PLANT.lon],lats=[...Object.keys(byReg).map(n=>REGIONS[n][0]),PLANT.lat];
-      let lo0=Math.min(...lons)-22,lo1=Math.max(...lons)+22,la0=Math.min(...lats)-16,la1=Math.max(...lats)+16;
-      if(lo1-lo0<90){const c=(lo0+lo1)/2;lo0=c-45;lo1=c+45}if(la1-la0<45){const c=(la0+la1)/2;la0=c-22.5;la1=c+22.5}
-      const iw=W-2*pad.x,ih=H-2*pad.y;const kz=Math.min(iw/(lo1-lo0),ih/(la1-la0));const cLo=(lo0+lo1)/2,cLa=(la0+la1)/2;
-      const ZX=lo=>W/2+(lo-cLo)*kz,ZY=la=>H/2-(la-cLa)*kz;
-      const vLo0=cLo-W/2/kz,vLo1=cLo+W/2/kz,vLa0=cLa-H/2/kz,vLa1=cLa+H/2/kz;
-      const zr0=Math.max(12,Math.min(kz*7,44));
-      pts.forEach(p=>{const[la,lo]=REGIONS[p.nm];p.x=ZX(lo);p.y=ZY(la);p.r=Math.max(7,Math.sqrt(p.v/mx)*zr0)});
-      const px=ZX(PLANT.lon),py=ZY(PLANT.lat);
-      const step=kz>4?15:30,gl=v=>Math.ceil(v/step)*step;
-      const ZD=kz>3?DOTS2:DOTS,zdr=Math.max(1.1,Math.min(kz*(ZD===DOTS2?.26:.45),2.2));
-      const grat=[];for(let lo=gl(vLo0);lo<=vLo1;lo+=step)grat.push(html`<line key=${'lo'+lo} x1=${ZX(lo)} x2=${ZX(lo)} y1=${0} y2=${H} className="hg-grid"/>`);
-      for(let la=gl(vLa0);la<=vLa1;la+=step)grat.push(html`<line key=${'la'+la} x1=${0} x2=${W} y1=${ZY(la)} y2=${ZY(la)} className=${la===0?'hg-grid hg-eq':'hg-grid'}/>`);
-      const latLbl=[];for(let la=gl(vLa0);la<=vLa1;la+=step){const y=ZY(la);if(y>34&&y<H-14)latLbl.push(html`<text key=${'ll'+la} x=${14} y=${y-4} className="hg-tiny">${la===0?'0°':Math.abs(la)+'°'+(la>0?'N':'S')}</text>`)}
-      for(let lo=gl(vLo0);lo<=vLo1;lo+=step){const x=ZX(lo);if(x>40&&x<W-40)latLbl.push(html`<text key=${'lb'+lo} x=${x+4} y=${H-12} className="hg-tiny">${Math.abs(lo)+'°'+(lo>=0?'E':'W')}</text>`)}
-      const land=ZD.filter(([lo,la])=>lo>=vLo0-2&&lo<=vLo1+2&&la>=vLa0-2&&la<=vLa1+2);
-      const arc=(x,y,r,f)=>{const a=Math.min(f,.999)*2*Math.PI,ex=x+r*Math.sin(a),ey=y-r*Math.cos(a);return`M${x},${y-r}A${r},${r} 0 ${a>Math.PI?1:0} 1 ${ex},${ey}`};
-      const route=(x,y)=>{const mxp=(px+x)/2,myp=(py+y)/2-Math.hypot(x-px,y-py)*.28;return`M${px},${py}Q${mxp},${myp} ${x},${y}`};
-      const callout=({nm:n,v,share,x,y,r})=>{const d=LBL[n]||'n';const dx=/e/.test(d)?1:/w/.test(d)?-1:0,dy=/n/.test(d)?-1:/s/.test(d)?1:-1;
-        const ex=x+dx*(r+6),ey=y+dy*(r+6)*.7,lx=ex+dx*(W<560?10:22);let anchor=dx<0?'end':dx>0?'start':'middle',tx=dx===0?ex:lx+dx*4;const tw=Math.max(nm(n).length*7.5,70);if(anchor==='start'&&tx+tw>W-12){anchor='end';tx=W-12}if(anchor==='end'&&tx-tw<12){anchor='start';tx=12}
-        return html`<g key=${'c'+n}><polyline points=${`${x+dx*r*.7},${y+dy*r*.7} ${ex},${ey} ${dx===0?ex:lx},${ey}`} className="hg-lead"/>
-          <text x=${tx} y=${ey-(dx===0?14:3)} textAnchor=${anchor} className="hg-name">${nm(n)}</text>
-          <text x=${tx} y=${ey+(dx===0?-1:12)} textAnchor=${anchor} className="hg-val">${fmt(v/1000)}k · ${pct(share)}</text></g>`};
-      const br=(x,y,sx,sy)=>html`<path d=${`M${x},${y+sy*14}V${y}H${x+sx*14}`} className="hg-frame"/>`;
-      body=html`<svg viewBox=${`0 0 ${W} ${H}`} className="hg">
-        <rect x="0" y="0" width=${W} height=${H} rx="10" className="hg-bg"/>
-        ${grat}${latLbl}
-        ${land.map(([lo,la],i)=>html`<circle key=${i} cx=${ZX(lo)} cy=${ZY(la)} r=${zdr} className=${(Math.round((80-la)/(ZD===DOTS2?1.5:3))%2)?'hg-land hg-dim':'hg-land'}/>`)}
-        ${pts.filter(p=>Math.hypot(p.x-px,p.y-py)>p.r+6).map(p=>html`<path key=${'r'+p.nm} d=${route(p.x,p.y)} className="hg-route"/>`)}
-        <g><rect x=${px-5} y=${py-5} width="10" height="10" transform=${`rotate(45 ${px} ${py})`} className="hg-plant"/><text x=${px} y=${py+20} textAnchor="middle" className="hg-tiny">Our plant</text></g>
-        ${pts.map((p,i)=>html`<g key=${p.nm}>
-          <circle cx=${p.x} cy=${p.y} r=${p.r} className="hg-ping" style=${{animationDelay:i*.5+'s'}}/>
-          <circle cx=${p.x} cy=${p.y} r=${p.r} className="hg-ring"/>
-          ${[0,1,2,3].map(t=>{const a=t*Math.PI/2;return html`<line key=${t} x1=${p.x+(p.r+2)*Math.sin(a)} y1=${p.y-(p.r+2)*Math.cos(a)} x2=${p.x+(p.r+6)*Math.sin(a)} y2=${p.y-(p.r+6)*Math.cos(a)} className="hg-tick"/>`})}
-          <path d=${arc(p.x,p.y,p.r*.62,p.share)} className="hg-arc"/>
-          <circle cx=${p.x} cy=${p.y} r="2.4" className="hg-core"/></g>`)}
-        ${pts.map(callout)}
-        ${br(8,8,1,1)}${br(W-8,8,-1,1)}${br(8,H-8,1,-1)}${br(W-8,H-8,-1,-1)}
-        <rect x=${W-250} y="10" width="236" height="22" rx="4" className="hg-bg"/><text x=${W-16} y="25" textAnchor="end" className="hg-tiny">${CUR} · ${fmt(tot)} units · ${pts.length} markets</text></svg>`;
-    }
-  }
-  return html`<div className="fig" ref=${ref} role="img" aria-label=${'World map of your units sold by market: '+Object.entries(byReg).map(([n,v])=>n+' '+fmt(v)).join(', ')}>${body}</div>
-    ${holo&&html`<div className="hg-legend"><span><i className="lg-ring"></i>Ring size: units sold</span><span><i className="lg-arc"></i>Gold arc: share of your total</span><span><i className="lg-route"></i>Supply route from our plant (sample)</span></div>`}`;
-}
 function Portfolio({products,useOurSales,setUseOurSales,go}){
-  const mine=products.filter(p=>p.brand===ME);
+  const rows=products.filter(p=>p.brand===ME),byName={};rows.forEach(p=>{const o=byName[p.name]||(byName[p.name]={...p,cities:[],units:{[PREV]:0,[CUR]:0}});o.cities.push(p.market);o.units[PREV]+=p.units[PREV]||0;o.units[CUR]+=p.units[CUR]||0});const mine=Object.values(byName);
   const tot=mine.reduce((s,p)=>s+(p.units[CUR]||0),0),prev=mine.reduce((s,p)=>s+(p.units[PREV]||0),0);
   return html`<div className="head"><div><h1>Your portfolio</h1><p className="lead">Every product you have told us about, the oil inside it, and how it sold. Only you and our team can see this page.</p></div></div>
-  <div className="kpis"><div className="card"><div className="sub">Products</div><div className="big">${mine.length}</div></div><div className="card"><div className="sub">Our oils you use</div><div className="big">${new Set(mine.map(p=>p.oil)).size}</div></div><div className="card"><div className="sub">Units, ${CUR}</div><div className="big">${fmt(tot/1000)}k</div><div className="sub" style=${{color:tot>=prev?'var(--ok)':'var(--wine)'}}>${tot>=prev?'+':''}${((tot/prev-1)*100).toFixed(1)}% vs ${PREV}</div></div></div>
-  <section className="card"><div className="scroll"><table><thead><tr><th>Product</th><th>Category</th><th>Oil</th><th>Market</th><th>Launched</th><th className="num">${PREV}</th><th className="num">${CUR}</th></tr></thead>
-   <tbody>${mine.map(p=>html`<tr key=${p.name}><td><b style=${{fontWeight:500}}>${p.name}</b></td><td>${p.cat}</td><td><${OilName} code=${p.oil}/></td><td>${p.market}</td><td>${p.launch}</td><td className="num">${p.units[PREV]?fmt(p.units[PREV]):'—'}</td><td className="num">${p.units[CUR]?fmt(p.units[CUR]):'—'}</td></tr>`)}</tbody></table></div></section>
-  <div className="grid" style=${{marginTop:'20px'}}><section className="card"><h2>Where your units sell</h2><p className="sub">See your markets on the hologram map, with the scent families that sell in each.</p><button className="btn quiet sm" style=${{marginTop:'12px'}} onClick=${()=>go('graph')}>Open Graphs</button></section>
+  <div className="kpis"><div className="card"><div className="sub">Products</div><div className="big">${mine.length}</div></div><div className="card"><div className="sub">Cities</div><div className="big">${new Set(rows.map(p=>p.market)).size}</div></div><div className="card"><div className="sub">Our oils you use</div><div className="big">${new Set(mine.map(p=>p.oil)).size}</div></div><div className="card"><div className="sub">Units, ${CUR}</div><div className="big">${fmt(tot/1000)}k</div><div className="sub" style=${{color:tot>=prev?'var(--ok)':'var(--wine)'}}>${tot>=prev?'+':''}${((tot/prev-1)*100).toFixed(1)}% vs ${PREV}</div></div></div>
+  <section className="card"><div className="scroll"><table><thead><tr><th>Product</th><th>Category</th><th>Oil</th><th>Cities</th><th>Launched</th><th className="num">${PREV}</th><th className="num">${CUR}</th></tr></thead>
+   <tbody>${mine.map(p=>html`<tr key=${p.name}><td><b style=${{fontWeight:500}}>${p.name}</b></td><td>${p.cat}</td><td><${OilName} code=${p.oil}/></td><td style=${{whiteSpace:'normal'}}>${p.cities.join(', ')}</td><td>${p.launch}</td><td className="num">${p.units[PREV]?fmt(p.units[PREV]):'—'}</td><td className="num">${p.units[CUR]?fmt(p.units[CUR]):'—'}</td></tr>`)}</tbody></table></div></section>
+  <div className="grid" style=${{marginTop:'20px'}}><section className="card"><h2>Where your units sell</h2><p className="sub">See your cities on the hologram map, with the scent families that sell in each.</p><button className="btn quiet sm" style=${{marginTop:'12px'}} onClick=${()=>go('graph')}>Open Graphs</button></section>
    <section className="card"><h2>Your data choices</h2><p className="sub">You decide what we may use.</p>
      <label className="switch" style=${{marginTop:'12px',alignItems:'flex-start'}}><input type="checkbox" id="ourSales" checked=${useOurSales} onChange=${e=>setUseOurSales(e.target.checked)} style=${{marginTop:'3px'}}/><span>Fill in my volumes from your oil sales records<br/><span className="sub">If you skip units sold in your file, we estimate them from the oil we supplied you. Off by default.</span></span></label>
      <p className="sub" style=${{marginTop:'12px'}}>Your products always count towards the market view without your name. Changes are recorded in our audit log.</p></section></div>`;
@@ -455,10 +391,10 @@ const lumTC=h=>{const v=[1,3,5].map(i=>parseInt(h.substr(i,2),16));return(v[0]*2
 /* ---- hologram map (canvas), dot mask from the owner's file ---- */
 const MH='00000000000c0000000000000000000000,00000000001e6000000000000000000000,000000003fffff00000c03000000000000,000000027efffe00f0000080c000000000,000000f2b9fffe00000380ffe300000000,00000706d0fff803800407fff080000000,01e003e5f8fff807c0042ffff9f8060000,07fdfbdcbc3ff00fff01dfffffffff0000,0fffffff1c7f000fffdffffffffffff000,1ffffffa387c0e07ef7fffffffffffc800,ffffffe0c0380007dfffffffffffffc000,fdffffe1c0100007c3fffffffffff20000,61ffffc1f0000062cfffffffffff030000,00ffffe3f80000621ffffffffffe038000,007ffff7fc0001b3ffffffffffff818000,007ffffffc0001f7ffffffffffffe08000,007fffff8c00001fffffffffffffe00000,007fffff8c00007fffffffffffffe00000,007fffffc000003fffffffffffffe00000,00fffffe0000003d7fffffffffffe60000,01fffffc000001f09fffffffffff860000,01fffffc000001e25bffffffffff860000,01fffffc000001e0cbfffffffffc860000,01fffffc0000009e00fffffffffc460000,00fffffc000000fe007ffffffffe1c0000,00ffff30000001ff883fffffffff100000,00fff600000003ffffffffffffff000000,00ff030000001bffffff7fffffff000000,00ff030000003fffffff8fffffff000000,007f000000007fffffffd3fffffe800000,003e030000007ffffffffbfffffc000000,000e318000003ffffffff9ff8fc0000000,000f603000001ffffffff1ff87d0000000,0003e00000001fffffffc00f07e0c00000,0000780000001ffffffb800e01f0c00000,0000180000001ffffffc000e0170000000,000008f800000ffffffcc0060170b00000,000004fe000007ffffffc0050120100000,000001ff000007ffffff80010080300000,000001ffe0000367ffff800002c1000000,000001fff0000001ffff00000147000000,000003fff0000001fffe000000ef000000,000003fff8000003fffc000001ff430000,000003ffff800003fff8000001ff63e000,00000fffffc00003fff0000001f060f800,00000fffffe00003fff0000000fc007800,00000fffffe00001fff800000000003400,00000fffffc000007ff800000000000200,000007ffffc000007ff800000000030000,000001ffff800000fff880000000173000,0000007fff800000fff1800000003fb000,0000001fff800000ffe1800000007ff000,0000001fff8000007fc380000000fff800,0000001fff0000007fc300000003fff800,0000001ffc0000007fc300000007fffc00,0000001ff80000007f8000000007fffc00,0000001ffc0000003f8000000007fffc00,0000001ffe0000003f0000000007fffc00,0000000ffc0000001f0000000007fff800,0000000ffc0000001c00000000061ff000,0000000ff80000000000000000000fe004,0000000fe000000000000000000007c00c,0000000f8000000000000000000000000c,0000000f00000000000000000000018028,00000007000000000000000000000000c0,0000000700000000000000000000000100,0000000780000000000000000000000000,0000000780000000000000000000000000,0000000308000000000000000000000000,0000000180000000000000000000000000,0000000040000000000000000000000000';
 const MASK=MH.split(',').map(h=>{const a=[];h.split('').forEach(ch=>{const v=parseInt(ch,16);for(let b=3;b>=0;b--)a.push((v>>b)&1)});return a});
-const GPOS={'GCC':[84.5,30.2],'India':[93.5,28.6],'Europe':[60.3,17.5],'United Kingdom':[58,14.5],'North America':[29,20.5],'Southeast Asia':[104,40]};
+const GPOS=REGIONS;
 const HQ=[92.4,32.7],WLD={cx:67,cy:35.5,k:1};
-function HoloMap({nodes,sty,sel,setSel}){
-  const cvRef=useRef(null),stRef=useRef(null),V=useRef({...WLD}),live=useRef({});live.current={nodes,sty,sel,setSel};
+function HoloMap({nodes,sty,setSty,fam,setFam,sel,setSel}){
+  const cvRef=useRef(null),stRef=useRef(null),V=useRef({...WLD}),live=useRef({});live.current={nodes,sty,fam,sel,setSel};
   useEffect(()=>{const cv=cvRef.current,x=cv.getContext('2d'),rm=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=performance.now();let raf,w=0,h=0,d=1,col={},ct=0,drag=null,alive=true;
     const fit=()=>{const r=cv.getBoundingClientRect();d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;w=r.width;h=r.height};fit();
     const cs=()=>Math.min(w/134,h/71)*V.current.k,sx=c=>w/2+(c-V.current.cx)*cs(),sy=r=>h/2+(r-V.current.cy)*cs(),pr=m=>({x:sx(GPOS[m][0]),y:sy(GPOS[m][1])});
@@ -468,7 +404,7 @@ function HoloMap({nodes,sty,sel,setSel}){
     cv.onpointermove=e=>{const r=cv.getBoundingClientRect();if(!drag){cv.style.cursor=near(e.clientX-r.left,e.clientY-r.top)?'pointer':'grab';return}
       const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.m+=Math.abs(dx)+Math.abs(dy);drag.x=e.clientX;drag.y=e.clientY;V.current.cx=Math.max(0,Math.min(134,V.current.cx-dx/cs()));V.current.cy=Math.max(0,Math.min(71,V.current.cy-dy/cs()))};
     cv.onpointerup=e=>{if(drag&&drag.m<5){const r=cv.getBoundingClientRect(),m=near(e.clientX-r.left,e.clientY-r.top);if(m)live.current.setSel(m)}drag=null};
-    const paint=t=>{const{nodes,sty,sel}=live.current,H=sty==='Hologram',FC=GPAL[sty],c=cs();x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);x.shadowBlur=0;
+    const paint=t=>{const{nodes,sty,fam,sel}=live.current,H=sty==='Hologram',FC=GPAL[sty],c=cs();x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);x.shadowBlur=0;
       const c0=Math.max(0,Math.floor(V.current.cx-w/2/c)),c1=Math.min(133,Math.ceil(V.current.cx+w/2/c)),r0=Math.max(0,Math.floor(V.current.cy-h/2/c)),r1=Math.min(70,Math.ceil(V.current.cy+h/2/c)),gp=c>8?1.2:Math.min(.6,c/12);
       for(let r=r0;r<=r1;r++)for(let q=c0;q<=c1;q++){if(!MASK[r][q])continue;const tw=(q*7+r*13)%23===0,u=q/134;let al,cl;
         if(H){al=tw?.75+.25*Math.sin(t*2+q):.8;cl=`rgba(${tw?150:30},${Math.round(120+80*u)+(tw?45:0)},${Math.round(255-25*u)},${al})`}else{al=tw?.65+.3*Math.sin(t*1.5+q):.4+.08*((q*5+r*3)%4);cl=`rgba(${col.dot},${al})`}
@@ -477,17 +413,17 @@ function HoloMap({nodes,sty,sel,setSel}){
       nodes.forEach((n,j)=>{const p=pr(n.m);if(Math.hypot(p.x-hq.x,p.y-hq.y)<8)return;const mx=(hq.x+p.x)/2,my=(hq.y+p.y)/2-Math.hypot(p.x-hq.x,p.y-hq.y)*.3;
         x.strokeStyle=H?'rgba(255,122,217,.55)':`rgba(${col.dot},.8)`;x.shadowColor='#ff7ad9';x.shadowBlur=H?8:0;x.lineWidth=1.1;x.beginPath();x.moveTo(hq.x,hq.y);x.quadraticCurveTo(mx,my,p.x,p.y);x.stroke();
         const u=(t*.3+j*.17)%1,a=(1-u)*(1-u),b=2*u*(1-u),c2=u*u;x.shadowBlur=0;x.fillStyle=H?'#fff':col.ac;x.beginPath();x.arc(a*hq.x+b*mx+c2*p.x,a*hq.y+b*my+c2*p.y,2.5,0,7);x.fill()});
-      x.fillStyle=H?'#e6f6ff':col.tx;x.save();x.translate(hq.x,hq.y);x.rotate(Math.PI/4);x.fillRect(-4,-4,8,8);x.restore();
-      const mt=Math.max(1,...nodes.map(n=>n.tot)),zk=Math.min(2.4,1+.18*(V.current.k-1)),L=[];
-      nodes.forEach(n=>{const p=pr(n.m),r=(6+10*Math.sqrt(n.tot/mt))*zk,ti=n.row.indexOf(Math.max(...n.row));L.push({n,p,r,ti});
+      const val=n=>fam<0?n.tot:n.row[fam],mt=Math.max(1,...nodes.map(val)),zk=Math.min(2.4,1+.18*(V.current.k-1)),L=[];
+      nodes.forEach(n=>{const p=pr(n.m),v=val(n),r=(5+9*Math.sqrt(v/mt))*zk,ti=fam<0?n.row.indexOf(Math.max(...n.row)):fam;L.push({n,p,r,ti,v});
+        if(v<=0){x.setLineDash([4,3]);x.strokeStyle=col.mu;x.lineWidth=1.5;x.beginPath();x.arc(p.x,p.y,r,0,7);x.stroke();x.setLineDash([]);return}
         const gg=x.createRadialGradient(p.x,p.y,r*.5,p.x,p.y,r*2.4);gg.addColorStop(0,H?'rgba(140,255,255,.45)':`rgba(${col.dot},.3)`);gg.addColorStop(1,H?'rgba(140,255,255,0)':`rgba(${col.dot},0)`);x.fillStyle=gg;x.beginPath();x.arc(p.x,p.y,r*2.4,0,7);x.fill();
         x.shadowColor=FC[ti];x.shadowBlur=H?14:0;x.fillStyle=FC[ti];x.globalAlpha=.92;x.beginPath();x.arc(p.x,p.y,r,0,7);x.fill();x.globalAlpha=1;x.shadowBlur=0;x.strokeStyle=col.bg;x.lineWidth=2;x.stroke();
         if(r>=13){x.fillStyle=lumTC(FC[ti]);x.font='600 11px Jost,system-ui,sans-serif';x.textAlign='center';x.fillText(Math.round(n.row[ti]/n.rsum*100)+'%',p.x,p.y+4)}
         if(n.m===sel){x.strokeStyle=col.tx;x.lineWidth=1.5;x.beginPath();x.arc(p.x,p.y,r+5+2*Math.sin(t*3),0,7);x.stroke()}});
       const used=[];x.lineJoin='round';
-      L.slice().sort((a,b)=>(b.n.m===sel)-(a.n.m===sel)||b.n.tot-a.n.tot).forEach(o=>{const nm=o.n.m,fl=GF[o.ti]+' · '+fmt(o.n.tot)+' units';x.font='600 14px Jost,system-ui,sans-serif';const w1=x.measureText(nm).width;x.font='12px Jost,system-ui,sans-serif';const bw=Math.max(w1,x.measureText(fl).width),bh=32;
+      L.slice().sort((a,b)=>(b.n.m===sel)-(a.n.m===sel)||b.n.tot-a.n.tot).forEach(o=>{const nm=o.n.m,fl=fam<0?GF[o.ti]:GF[fam]+' '+Math.round(o.n.row[fam]/o.n.rsum*100)+'%';x.font='600 14px Jost,system-ui,sans-serif';const w1=x.measureText(nm).width;x.font='12px Jost,system-ui,sans-serif';const bw=Math.max(w1,x.measureText(fl).width),bh=32;
         for(const sd of ['r','l','t','b']){const bx=sd==='r'?o.p.x+o.r+8:sd==='l'?o.p.x-o.r-8-bw:o.p.x-bw/2,by=sd==='t'?o.p.y-o.r-6-bh:sd==='b'?o.p.y+o.r+6:o.p.y-bh/2;
-          if(bx<4||bx+bw>w-4||by<4||by+bh>h-4)continue;if(used.some(u=>bx<u[0]+u[2]&&bx+bw>u[0]&&by<u[1]+u[3]&&by+bh>u[1]))continue;
+          if(bx<4||bx+bw>w-4||by<4||by+bh>h-4)continue;if(bx+bw>w-64&&by<168)continue;if(bx<310&&by<58)continue;if(used.some(u=>bx<u[0]+u[2]&&bx+bw>u[0]&&by<u[1]+u[3]&&by+bh>u[1]))continue;
           if(L.some(q=>q!==o&&Math.hypot(Math.max(bx-q.p.x,0,q.p.x-bx-bw),Math.max(by-q.p.y,0,q.p.y-by-bh))<q.r+2))continue;
           used.push([bx,by,bw,bh]);x.textAlign=sd==='l'?'right':sd==='r'?'left':'center';const tx=sd==='l'?bx+bw:sd==='r'?bx:bx+bw/2;
           x.lineWidth=4;x.strokeStyle=col.bg;x.font='600 14px Jost,system-ui,sans-serif';x.fillStyle=col.tx;x.strokeText(nm,tx,by+13);x.fillText(nm,tx,by+13);
@@ -495,12 +431,13 @@ function HoloMap({nodes,sty,sel,setSel}){
     const loop=()=>{if(!alive)return;const r=cv.getBoundingClientRect();if(Math.abs(r.width-w)>1||Math.abs(r.height-h)>1)fit();const now=performance.now();if(now-ct>300){readCol();ct=now}paint(rm?0:(now-t0)/1000);raf=requestAnimationFrame(loop)};loop();
     return()=>{alive=false;cancelAnimationFrame(raf)}},[]);
   const z=f=>()=>{V.current.k=Math.max(1,Math.min(14,V.current.k*f))};
-  const zoomTo=m=>{if(!m)return;Object.assign(V.current,{cx:GPOS[m][0],cy:GPOS[m][1],k:4})};
+  
   return html`<div className=${'hm-stage'+(sty==='Hologram'?' holo':'')} ref=${stRef}>
     <canvas ref=${cvRef} role="img" aria-label=${'Map of markets: '+nodes.map(n=>n.m+' '+fmt(n.tot)+' units, mostly '+GF[n.row.indexOf(Math.max(...n.row))]).join('; ')}></canvas>
+    <div className="hm-hud"><span>Show</span><select aria-label="Scent family" value=${fam} onChange=${e=>setFam(+e.target.value)}><option value="-1">All families</option>${GF.map((f,i)=>html`<option key=${f} value=${i}>${f}</option>`)}</select><select aria-label="Map style" value=${sty} onChange=${e=>setSty(e.target.value)}><option>Hologram</option><option>Classic</option></select></div>
     <div className="hm-zc"><button aria-label="Zoom in" onClick=${z(1.4)}>+</button><button aria-label="Zoom out" onClick=${z(1/1.4)}>−</button><button aria-label="Show the whole world" onClick=${()=>Object.assign(V.current,WLD)}>⟲</button></div>
     <div className="hm-lg"><b>Top family</b>${GF.map((f,i)=>html`<span key=${f}><i style=${{background:GPAL[sty][i]}}></i>${f}</span>`)}</div>
-    ${sel&&html`<button className="hm-zoomsel" onClick=${()=>zoomTo(sel)}>Zoom to ${sel}</button>`}</div>`;
+</div>`;
 }
 
 /* ---- olfactory graph (SVG) ---- */
@@ -554,7 +491,7 @@ function OlfGraph({en,sty,staff,gr}){
 }
 
 function Graphs({products,role,go}){
-  const staff=role==='staff';const[sty,setSty]=useState('Hologram'),[gr,setGr]=useState('All');
+  const staff=role==='staff';const[sty,setSty]=useState('Hologram'),[gr,setGr]=useState('All'),[fam,setFam]=useState(-1);
   const live=(staff?products:products.filter(p=>p.brand===ME)).filter(p=>(p.units[CUR]||0)>0);
   /* map nodes: one per market */
   const mk={};live.forEach(p=>{const u=p.units[CUR],r=famRow(p),o=mk[p.market]||(mk[p.market]={m:p.market,tot:0,row:Array(7).fill(0),prods:[]});o.tot+=u;r.forEach((v,i)=>o.row[i]+=v*u);o.prods.push(p)});
@@ -567,21 +504,20 @@ function Graphs({products,role,go}){
     :live.map(p=>{const o=OILS[p.oil];return{id:p.name,label:p.name.replace(/^Aurel /,''),color:GCOLS[0],tot:p.units[CUR],byMkt:{[p.market]:p.units[CUR]},notes:notesOf(p),detail:`${p.name} uses ${o.name} (${p.oil}). Top: ${o.top.map(x=>x[0]).join(', ')}. Heart: ${o.heart.map(x=>x[0]).join(', ')}. Base: ${o.base.map(x=>x[0]).join(', ')}.`}});
   const lead=nodes.length?GF[nodes.reduce((a,n)=>a.map((v,i)=>v+n.row[i]),Array(7).fill(0)).reduce((b,v,i,arr)=>v>arr[b]?i:b,0)]:'—';
   const FC=GPAL[sty];
-  return html`<div className="head"><div><h1>${staff?'Where every brand sells, and what is inside':'Where your fragrances sell, and what is inside them'}</h1><p className="lead">The map shows each market, coloured by the scent family that sells most there. The graph below shows which notes your ${staff?'clients\' products':'products'} are built from. Sample data.</p></div>
-    <${Seg} value=${sty} set=${setSty} opts=${['Hologram','Classic']} label="Style for map and graph"/></div>
-  <div className="kpis"><div className="card"><div className="sub">Units, ${CUR}</div><div className="big">${fmt(live.reduce((s,p)=>s+p.units[CUR],0)/1000)}k</div></div><div className="card"><div className="sub">Markets</div><div className="big">${nodes.length}</div></div><div className="card"><div className="sub">Leading family</div><div className="big">${lead}</div></div></div>
-  <h2 style=${{margin:'8px 0 10px'}}>Market map</h2>
-  <div className="hm-grid"><${HoloMap} nodes=${nodes} sty=${sty} sel=${cur&&cur.m} setSel=${setSel}/>
-    <section className="card hm-side">${cur?html`<p className="sub">Selected market</p><h3 style=${{fontSize:'26px'}}>${cur.m}</h3>
+  return html`<div className="head"><div><h1>${staff?'Where every brand sells, and what is inside':'Where your fragrances sell, and what is inside them'}</h1><p className="lead">The map shows each city, coloured by the scent family that sells most there. The graph below shows which notes your ${staff?'clients\' products':'products'} are built from. Sample data.</p></div></div>
+  <div className="kpis"><div className="card"><div className="big">${fmt(live.reduce((s,p)=>s+p.units[CUR],0))}</div><div className="sub">Units, ${CUR}</div></div><div className="card"><div className="big">${lead}</div><div className="sub">Leading family</div></div><div className="card"><div className="big">${nodes.length}</div><div className="sub">Cities</div></div></div>
+  <h2 style=${{margin:'8px 0 10px'}}>City map</h2>
+  <div className="hm-grid"><${HoloMap} nodes=${nodes} sty=${sty} setSty=${setSty} fam=${fam} setFam=${setFam} sel=${cur&&cur.m} setSel=${setSel}/>
+    <section className="card hm-side">${cur?html`<p className="sub">Selected city</p><h3 style=${{fontSize:'26px'}}>${cur.m}</h3>
       <p style=${{marginTop:'6px'}}><b style=${{fontWeight:500}}>${fmt(cur.tot)}</b> units, led by <b style=${{fontWeight:500}}>${GF[cur.row.indexOf(Math.max(...cur.row))]}</b>.</p>
       <h3 style=${{marginTop:'14px',fontSize:'18px'}}>Scent family mix</h3>
       ${cur.row.map((v,i)=>[i,v/cur.rsum]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).map(([i,q])=>html`<div key=${i} className="hm-mb"><span>${GF[i]}</span><div className="t"><b style=${{width:Math.min(100,q*200)+'%',background:FC[i]}}></b></div><span className="num">${pct(q)}</span></div>`)}
       <h3 style=${{marginTop:'14px',fontSize:'18px'}}>${staff?'Products sold here':'Your products here'}</h3>
       <ul className="list">${cur.prods.map(p=>html`<li key=${p.brand+p.name} style=${{padding:'8px 0'}}><span>${p.name}${staff?html`<br/><span className="sub">${BRANDS[p.brand]}</span>`:''}</span><span className="num sub">${fmt(p.units[CUR])}</span></li>`)}</ul>
       <button className="btn quiet sm" style=${{marginTop:'8px'}} onClick=${()=>setGr(cur.m)}>Show ${cur.m} in the graph below</button>`:html`<p className="sub">No units yet.</p>`}</section></div>
-  <div className="ghow" style=${{marginTop:'10px'}}><span><i style=${{width:'18px',height:'18px'}}></i>Bigger circle = more units</span><span>Colour and % = top scent family</span><span>Click a market for its full mix · drag to move · +/− to zoom</span><span>Lines = supply from our plant (sample)</span></div>
-  <div className="head" style=${{marginTop:'36px',marginBottom:'6px'}}><div><h2>Olfactory graph</h2><p className="sub">${gr==='All'?'All markets. Pick one to see which notes sell there.':'Showing '+gr+'. Thicker lines and bigger dots mean more units sold there.'}</p></div>
-    <label className="sub">Where <select className="field" style=${{display:'inline-block',width:'auto',marginLeft:'6px'}} value=${gr} onChange=${e=>setGr(e.target.value)}><option value="All">All markets</option>${nodes.map(n=>html`<option key=${n.m}>${n.m}</option>`)}</select></label></div>
+  <div className="ghow" style=${{marginTop:'10px'}}><span><i style=${{width:'18px',height:'18px'}}></i>Bigger circle = more units</span><span>Colour and % = top scent family</span><span>Click a city for its full mix · drag to move · +/− to zoom</span><span>Lines = supply from our plant (sample)</span></div>
+  <div className="head" style=${{marginTop:'36px',marginBottom:'6px'}}><div><h2>Olfactory graph</h2><p className="sub">${gr==='All'?'All cities. Pick one to see which notes sell there.':'Showing '+gr+'. Thicker lines and bigger dots mean more units sold there.'}</p></div>
+    <div style=${{display:'flex',gap:'12px',flexWrap:'wrap',alignItems:'center'}}><${Seg} value=${sty} set=${setSty} opts=${['Hologram','Classic']} label="Graph style"/><label className="sub">Where <select className="field" style=${{display:'inline-block',width:'auto',marginLeft:'6px'}} value=${gr} onChange=${e=>setGr(e.target.value)}><option value="All">All cities</option>${nodes.map(n=>html`<option key=${n.m}>${n.m}</option>`)}</select></label></div></div>
   <div onClick=${e=>{const b=e.target.closest&&e.target.closest('[data-go]');if(b)go(b.dataset.go)}}><${OlfGraph} key=${staff?'s':'c'} en=${en} sty=${sty} staff=${staff} gr=${gr}/></div>`;
 }
 
@@ -606,7 +542,7 @@ function Attention({items,done,go}){
 function Clients({products,uploads,clients,toggle,audit}){
   return html`<div className="head"><div><h1>Clients</h1><p className="lead">Staff can see every brand by name. Clients only ever see the market view without names. Every change here goes to the audit log.</p></div></div>
   <section className="card"><div className="scroll"><table><thead><tr><th>Client</th><th className="num">Products</th><th className="num">Oils used</th><th>Last upload</th><th>Volumes from our sales</th><th>AI column matching</th></tr></thead>
-   <tbody>${Object.entries(BRANDS).map(([id,name])=>{const ps=products.filter(p=>p.brand===id),c=clients[id];return html`<tr key=${id}><td><b style=${{fontWeight:500}}>${name}</b></td><td className="num">${ps.length}</td><td className="num">${new Set(ps.map(p=>p.oil)).size}</td><td>${c.last}</td><td>${c.ourSales?html`<span className="pill ok">Allowed by client</span>`:html`<span className="pill line">Not allowed</span>`}</td>
+   <tbody>${Object.entries(BRANDS).map(([id,name])=>{const ps=products.filter(p=>p.brand===id),c=clients[id];return html`<tr key=${id}><td><b style=${{fontWeight:500}}>${name}</b></td><td className="num">${new Set(ps.map(p=>p.name)).size}</td><td className="num">${new Set(ps.map(p=>p.oil)).size}</td><td>${c.last}</td><td>${c.ourSales?html`<span className="pill ok">Allowed by client</span>`:html`<span className="pill line">Not allowed</span>`}</td>
     <td><label className="switch"><input type="checkbox" checked=${c.ai} onChange=${()=>toggle(id,'ai')}/>${c.ai?'On':'Off'}</label></td></tr>`})}</tbody></table></div>
    <p className="sub" style=${{marginTop:'10px'}}>"Volumes from our sales" is the client's own choice, made on their Portfolio page. AI matching is a later feature; the switch records the choice now.</p></section>
   <section className="card" style=${{marginTop:'20px'}}><h2>Audit log</h2><div className="scroll"><table><thead><tr><th>When</th><th>Who</th><th>What happened</th></tr></thead><tbody>${audit.map((a,i)=>html`<tr key=${i}><td>${a[0]}</td><td>${a[1]}</td><td>${a[2]}</td></tr>`)}</tbody></table></div></section>`;
@@ -640,7 +576,7 @@ function App(){
   const log=(who,w)=>setAudit(a=>[[stamp(),who,w],...a]);
   const switchRole=r=>{setRole(r);setPage(NAV[r][0][0]);window.scrollTo(0,0)};const go=p=>{setPage(p);window.scrollTo(0,0)};
   const addRequest=r=>{const id=Date.now();setRequests(q=>[{id,client:BRANDS[ME],status:'Waiting for reply',reply:'',...r},...q]);setAtt(a=>[{id:'a'+id,kind:'Request',who:BRANDS[ME],text:'Asked: '+r.title+'.',why:'Every new client request appears here.',go:'requests'},...a]);say('Request sent. Our team will reply in "Ask us".')};
-  const onSaved=(name,rows)=>{setProducts(ps=>{const out=ps.map(p=>({...p,units:{...p.units}}));rows.forEach(r=>{const ex=out.find(p=>p.brand===ME&&p.name===r.name);if(ex){Object.assign(ex,{cat:r.cat,oil:r.oil,market:r.market,launch:r.launch});ex.units[r.period]=r.units}else out.push({brand:ME,name:r.name,cat:r.cat,oil:r.oil,market:r.market,launch:r.launch,units:{[r.period]:r.units}})});return out});setUploads(u=>[{name,rows:rows.length,when:'Today'},...u]);setClients(c=>({...c,[ME]:{...c[ME],last:'Today'}}))};
+  const onSaved=(name,rows)=>{setProducts(ps=>{const out=ps.map(p=>({...p,units:{...p.units}}));rows.forEach(r=>{const ex=out.find(p=>p.brand===ME&&p.name===r.name&&p.market===r.market);if(ex){Object.assign(ex,{cat:r.cat,oil:r.oil,market:r.market,launch:r.launch});ex.units[r.period]=r.units}else out.push({brand:ME,name:r.name,cat:r.cat,oil:r.oil,market:r.market,launch:r.launch,units:{[r.period]:r.units}})});return out});setUploads(u=>[{name,rows:rows.length,when:'Today'},...u]);setClients(c=>({...c,[ME]:{...c[ME],last:'Today'}}))};
   let view;
   if(page==='home')view=html`<${Home} products=${products} uploads=${uploads} feat=${feat} onSaved=${onSaved} go=${go}/>`;
   else if(page==='market')view=html`<${Market} products=${products} feat=${feat} ask=${(code,cat)=>addRequest({title:`Sample of ${code} ${OILS[code].name}`+(cat?` for our ${cat.toLowerCase()}`:''),cat:cat||'Deodorant',qty:'—'})}/>`;

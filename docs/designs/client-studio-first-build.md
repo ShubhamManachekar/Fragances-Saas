@@ -178,14 +178,14 @@ Each user opens a screen and the one right next step is already shown, with its 
 
 We supply fragrance oils to client brands that make finished goods such as deodorants, soaps, body washes and shampoos. Each client sends us a portfolio file in our standard format. It lists their products, which of our oils each product uses, where it sells and how many units sold. Client Studio combines every client's portfolio into one nameless market view. Each client then sees which oils are most used, which are rising, where their range differs from the market, and how scent families compare. Our team also features oils it wants to push: new inspirations and ready stock.
 
-### Standard input file (one row per product per period)
+### Standard input file (one row per product, per city, per period)
 
 | Column | Content | Example |
 | --- | --- | --- |
 | product_name | Client's product name | Fresh Deo |
 | category | Deodorant, Soap, Body wash or Shampoo (list kept by staff) | Deodorant |
 | oil_code | Our oil code from the catalog | CS-101 |
-| market | One of our market regions | GCC |
+| market | City where it sells, from our city list (Mumbai, Delhi, Dubai, Riyadh, London, Paris, New York, Los Angeles, São Paulo, Lagos, Johannesburg, Singapore, Tokyo, Sydney; list kept by staff) | Dubai |
 | launch_date | YYYY-MM | 2025-03 |
 | period | Quarter, e.g. Q4 2026 | Q4 2026 |
 | units_sold | Whole number; may be left empty if the client lets us fill it from our oil sales | 45000 |
@@ -221,3 +221,12 @@ Staff mark any catalog oil as "New inspiration" or "Ready stock". Featured oils 
 ### Data model additions
 
 `Oil` (code, name, family, notes), `Product` (client_id, name, category, oil_code, market, launch_date), `ProductPeriod` (product_id, period, units, source: client_file or our_sales), `FeaturedOil` (oil_code, tag), `Client.use_our_sales` (boolean). The earlier `Perfume`/`PerfumeNote` tables become `Oil`/`OilNote`.
+
+### Graphs page
+
+One page holds both visuals, each with a Hologram and a Classic style:
+
+1. **City map** — the owner's dotted world map with 14 cities. Each city is a circle sized by units and coloured by its top scent family, with supply routes from our plant. It has a family filter, zoom and pan, and a side panel with the selected city's family mix and products.
+2. **Olfactory graph** — products (or brands, for staff) in the centre, linked to their oil's notes on a ring grouped by scent family. Hover or click to highlight; it can be filtered by city.
+
+The Hologram style uses neon colours, gradients and glow at the owner's request. This is a deliberate exception to the earlier "no AI look" rule.
