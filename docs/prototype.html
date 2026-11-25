@@ -10,7 +10,7 @@
    TYPE Cormorant Garamond headings + Jost body (from CLAUDE.md)
    LAYOUT laptop: left sidebar + content; phone: top bar + bottom tab bar */
 :root{color-scheme:light dark;--bg:light-dark(#faf7f0,#171012);--surface:light-dark(#ffffff,#211719);--sunk:light-dark(#f3eee4,#1c1315);--ink:light-dark(#2a1a1c,#f3ece2);--muted:light-dark(#6f5d5f,#b6a6a1);--line:light-dark(#e7dfd2,#372a2c);--wine:light-dark(#7a1f2b,#d97a86);--wine-ink:light-dark(#ffffff,#1a1012);--wine-soft:light-dark(#f7eaea,#3a2226);--gold:light-dark(#94742c,#d3b26a);--gold-soft:light-dark(#f4ecd7,#352c1d);--ok:light-dark(#2f6b45,#7cc596);--dot:light-dark(#dccfba,#4a3a3c);--base:light-dark(#5c4a46,#a8968f);
---f-fresh:light-dark(#6f8a52,#9fbb82);--f-floral:light-dark(#9c3445,#e08a97);--f-woody:light-dark(#6b5444,#b59a86);--f-oriental:light-dark(#a86a26,#dba15f);--f-aromatic:light-dark(#66618f,#a9a3d6);--f-gourmand:light-dark(#b8954a,#e0c27e);--f-herbal:light-dark(#46685a,#8fb8a6)}
+--holo-bg:light-dark(#1d1416,#120c0e);--holo-ink:#efe4cf;--holo-gold:#cfb06b;--holo-wine:#de8b97;--f-fresh:light-dark(#6f8a52,#9fbb82);--f-floral:light-dark(#9c3445,#e08a97);--f-woody:light-dark(#6b5444,#b59a86);--f-oriental:light-dark(#a86a26,#dba15f);--f-aromatic:light-dark(#66618f,#a9a3d6);--f-gourmand:light-dark(#b8954a,#e0c27e);--f-herbal:light-dark(#46685a,#8fb8a6)}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
 html,body{height:100%}
@@ -112,6 +112,28 @@ input[type=range]{width:100%;accent-color:var(--wine);min-height:44px}
 .toast button{background:none;border:0;color:var(--gold);font-weight:600;cursor:pointer;min-height:36px}
 .empty{color:var(--muted);text-align:center;padding:24px;display:block!important}
 .fmt td,.fmt th{white-space:normal}
+.hg-bg{fill:var(--holo-bg)}
+.hg-grid{stroke:var(--holo-gold);stroke-opacity:.14;stroke-width:1}.hg-eq{stroke-opacity:.3;stroke-dasharray:2 4}
+.hg-tiny,.hg-name,.hg-val{paint-order:stroke;stroke:var(--holo-bg);stroke-width:4px;stroke-linejoin:round}
+.hg-tiny{fill:var(--holo-gold);fill-opacity:.85;font-size:11px;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.hg-land{fill:var(--holo-gold);fill-opacity:.75}.hg-dim{fill-opacity:.45}
+.hg-route{fill:none;stroke:var(--holo-ink);stroke-opacity:.75;stroke-width:1.3;stroke-dasharray:3 6;animation:hgflow 2.4s linear infinite}
+.hg-plant{fill:var(--holo-bg);stroke:var(--holo-ink);stroke-width:1.5}
+.hg-ring{fill:var(--holo-wine);fill-opacity:.12;stroke:var(--holo-wine);stroke-width:1.4}
+.hg-ping{fill:none;stroke:var(--holo-wine);stroke-width:1;transform-box:fill-box;transform-origin:center;animation:hgping 3.2s ease-out infinite;opacity:0}
+.hg-tick{stroke:var(--holo-ink);stroke-opacity:.6;stroke-width:1}
+.hg-arc{fill:none;stroke:var(--holo-gold);stroke-width:3;stroke-linecap:round}
+.hg-core{fill:var(--holo-ink)}
+.hg-lead{fill:none;stroke:var(--holo-ink);stroke-opacity:.5;stroke-width:1}
+.hg-name{fill:var(--holo-ink);font-size:13px;font-weight:500}
+.hg-val{fill:var(--holo-gold);font-size:12px;font-variant-numeric:tabular-nums}
+.hg-frame{fill:none;stroke:var(--holo-gold);stroke-opacity:.6;stroke-width:1.2}
+.hg-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);margin-top:10px}
+.hg-legend i{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:-2px}
+.lg-ring{border:1.4px solid var(--wine);border-radius:50%}.lg-arc{border:3px solid transparent;border-top-color:var(--gold);border-right-color:var(--gold);border-radius:50%}.lg-route{border-top:1.5px dashed var(--ink);height:0!important;vertical-align:3px!important}
+@keyframes hgflow{to{stroke-dashoffset:-18}}
+@keyframes hgping{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.9);opacity:0}}
+@media(prefers-reduced-motion:reduce){.hg-route,.hg-ping{animation:none}}
 .tabbar{display:none}
 @media(min-width:861px){.toast{bottom:24px}}
 @media(max-width:1000px){.grid,.grid2{grid-template-columns:minmax(0,1fr)}.phases{grid-template-columns:minmax(0,1fr)}}
@@ -191,6 +213,7 @@ function families(products,cat,who){
 /* ================= world outline (rough, prototype only) ================= */
 const LAND=[[[-168,66],[-140,70],[-95,72],[-80,63],[-60,55],[-55,48],[-70,43],[-76,35],[-81,25],[-97,26],[-97,18],[-87,15],[-80,8],[-92,15],[-105,20],[-117,32],[-124,40],[-125,49],[-135,58],[-150,60],[-165,60]],[[-55,60],[-43,60],[-20,70],[-20,80],[-60,82],[-70,77]],[[-80,8],[-60,10],[-50,0],[-35,-6],[-40,-22],[-48,-28],[-58,-38],[-65,-55],[-72,-50],[-72,-30],[-71,-18],[-81,-5]],[[-10,36],[-9,43],[-2,44],[-5,48],[2,51],[8,54],[5,58],[10,63],[20,70],[30,71],[40,67],[45,55],[40,45],[28,41],[23,37],[12,38],[15,45],[5,43],[-5,36]],[[-17,15],[-17,21],[-10,30],[-5,36],[10,37],[20,32],[32,31],[35,28],[43,12],[51,12],[40,-5],[40,-15],[35,-25],[20,-35],[15,-28],[12,-15],[9,-1],[8,4],[-8,4],[-15,10]],[[28,41],[36,36],[35,31],[43,13],[53,16],[57,23],[60,25],[67,24],[73,20],[77,8],[80,13],[88,22],[92,22],[98,16],[100,8],[104,1],[106,10],[109,19],[117,23],[122,30],[121,40],[130,43],[140,50],[143,59],[160,60],[180,66],[180,72],[140,73],[110,77],[80,73],[68,70],[60,68],[45,55],[40,45]],[[-6,50],[2,51],[0,54],[-3,58],[-6,57]],[[130,31],[141,36],[142,44],[139,40]],[[95,5],[106,-6],[120,-9],[141,-9],[141,-2],[118,5],[105,0]],[[114,-22],[122,-18],[131,-12],[137,-12],[142,-11],[146,-19],[153,-28],[150,-37],[140,-38],[132,-32],[115,-34]]];
 const inPoly=(x,y,p)=>{let c=false;for(let i=0,j=p.length-1;i<p.length;j=i++){const[xi,yi]=p[i],[xj,yj]=p[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c};
+const DOTS2=[];for(let lat=78;lat>=-54;lat-=1.5)for(let lon=-178.5;lon<=180;lon+=1.5)if(LAND.some(p=>inPoly(lon,lat,p)))DOTS2.push([lon,lat]);
 const DOTS=[];for(let lat=78;lat>=-54;lat-=3)for(let lon=-177;lon<=180;lon+=3)if(LAND.some(p=>inPoly(lon,lat,p)))DOTS.push([lon,lat]);
 
 /* ================= upload: our standard file format ================= */
@@ -282,16 +305,66 @@ function Market({products,feat,ask}){
 }
 
 /* ================= client: portfolio ================= */
+const PLANT={name:'Our plant (sample)',lat:19,lon:73};
+const LBL={'United Kingdom':'nw','Europe':'ne','GCC':'sw','India':'se','Southeast Asia':'e','North America':'n'};
+const SHORT={'United Kingdom':'UK','Southeast Asia':'SE Asia','North America':'N. America'};
 function WorldMap({byReg,mapStyle}){
-  const[ref,{w:W,h:H}]=useSize();const LBL={'United Kingdom':'nw','Europe':'ne','GCC':'w','India':'e','Southeast Asia':'e','North America':'n'};
-  let body=null;if(W&&Object.keys(byReg).length){const k=Math.min(W/360,H/136),ox=(W-360*k)/2,oy=(H-136*k)/2,X=lo=>ox+(lo+180)*k,Y=la=>oy+(80-la)*k,holo=mapStyle==='Hologram',mx=Math.max(...Object.values(byReg)),r0=Math.max(12,k*15),dr=Math.max(1,k*.75);
-    const pts=Object.entries(byReg).map(([nm,v])=>{const[la,lo]=REGIONS[nm];return{nm,v,x:X(lo),y:Y(la),r:Math.max(5,Math.sqrt(v/mx)*r0)}});
-    const short=nm=>W<520?({'United Kingdom':'UK','Southeast Asia':'SE Asia','North America':'N. America'}[nm]||nm):nm;
-    body=html`<svg viewBox=${`0 0 ${W} ${H}`}>${DOTS.map(([lo,la],i)=>html`<circle key=${i} cx=${X(lo)} cy=${Y(la)} r=${dr} fill=${holo?'none':'var(--dot)'} stroke=${holo?'var(--gold)':'none'} strokeOpacity=".55"/>`)}
-      ${pts.map(p=>holo?html`<g key=${p.nm}><circle cx=${p.x} cy=${p.y} r=${p.r} fill="none" stroke="var(--wine)" strokeWidth="1.5"/><circle cx=${p.x} cy=${p.y} r=${p.r*.55} fill="none" stroke="var(--wine)" strokeOpacity=".5"/><circle cx=${p.x} cy=${p.y} r="2.5" fill="var(--wine)"/></g>`:html`<circle key=${p.nm} cx=${p.x} cy=${p.y} r=${p.r} fill="var(--wine)" fillOpacity=".8" stroke="var(--surface)"/>`)}
-      ${pts.map(({nm,v,x,y,r})=>{const d=LBL[nm];const[a,tx,ty]=d==='nw'?['end',x-r*.6,y-r-4]:d==='w'?['end',x-r-5,y+4]:d==='e'?['start',x+r+5,y+4]:d==='ne'?['start',x+r*.7+3,y-r*.7-3]:['middle',x,y-r-6];
-        return html`<text key=${'t'+nm} x=${tx} y=${ty} textAnchor=${a} fontSize="13" fill="var(--ink)" style=${{paintOrder:'stroke',stroke:'var(--surface)',strokeWidth:'4px'}}>${short(nm)} ${fmt(v/1000)}k</text>`})}</svg>`}
-  return html`<div className="fig" ref=${ref} role="img" aria-label="World map of your units sold by market">${body}</div>`;
+  const[ref,{w:W,h:H}]=useSize();const holo=mapStyle==='Hologram';let body=null;
+  if(W&&Object.keys(byReg).length){
+    const pad=holo?{x:18,y:24}:{x:0,y:0};const k=Math.min((W-2*pad.x)/360,(H-2*pad.y)/136),ox=(W-360*k)/2,oy=(H-136*k)/2,X=lo=>ox+(lo+180)*k,Y=la=>oy+(80-la)*k;
+    const tot=Object.values(byReg).reduce((s,v)=>s+v,0),mx=Math.max(...Object.values(byReg)),r0=Math.max(12,k*15),dr=Math.max(1,k*.75);
+    const pts=Object.entries(byReg).map(([nm,v])=>{const[la,lo]=REGIONS[nm];return{nm,v,share:v/tot,x:X(lo),y:Y(la),r:Math.max(6,Math.sqrt(v/mx)*r0)}});
+    const nm=n=>W<560?(SHORT[n]||n):n;
+    if(!holo){
+      body=html`<svg viewBox=${`0 0 ${W} ${H}`}>${DOTS.map(([lo,la],i)=>html`<circle key=${i} cx=${X(lo)} cy=${Y(la)} r=${dr} fill="var(--dot)"/>`)}
+        ${pts.map(p=>html`<circle key=${p.nm} cx=${p.x} cy=${p.y} r=${p.r} fill="var(--wine)" fillOpacity=".8" stroke="var(--surface)"/>`)}
+        ${pts.map(({nm:n,v,x,y,r})=>{const d=LBL[n];const[a,tx,ty]=d==='nw'?['end',x-r*.6,y-r-4]:d==='sw'?['end',x-r-5,y+4]:d==='se'?['start',x+r+5,y+8]:d==='e'?['start',x+r+5,y+4]:d==='ne'?['start',x+r*.7+3,y-r*.7-3]:['middle',x,y-r-6];
+          return html`<text key=${'t'+n} x=${tx} y=${ty} textAnchor=${a} fontSize="13" fill="var(--ink)" style=${{paintOrder:'stroke',stroke:'var(--surface)',strokeWidth:'4px'}}>${nm(n)} ${fmt(v/1000)}k</text>`})}</svg>`;
+    }else{
+      /* zoom to the client's markets plus our plant, keeping the box's shape */
+      const lons=[...Object.keys(byReg).map(n=>REGIONS[n][1]),PLANT.lon],lats=[...Object.keys(byReg).map(n=>REGIONS[n][0]),PLANT.lat];
+      let lo0=Math.min(...lons)-22,lo1=Math.max(...lons)+22,la0=Math.min(...lats)-16,la1=Math.max(...lats)+16;
+      if(lo1-lo0<90){const c=(lo0+lo1)/2;lo0=c-45;lo1=c+45}if(la1-la0<45){const c=(la0+la1)/2;la0=c-22.5;la1=c+22.5}
+      const iw=W-2*pad.x,ih=H-2*pad.y;const kz=Math.min(iw/(lo1-lo0),ih/(la1-la0));const cLo=(lo0+lo1)/2,cLa=(la0+la1)/2;
+      const ZX=lo=>W/2+(lo-cLo)*kz,ZY=la=>H/2-(la-cLa)*kz;
+      const vLo0=cLo-W/2/kz,vLo1=cLo+W/2/kz,vLa0=cLa-H/2/kz,vLa1=cLa+H/2/kz;
+      const zr0=Math.max(12,Math.min(kz*7,44));
+      pts.forEach(p=>{const[la,lo]=REGIONS[p.nm];p.x=ZX(lo);p.y=ZY(la);p.r=Math.max(7,Math.sqrt(p.v/mx)*zr0)});
+      const px=ZX(PLANT.lon),py=ZY(PLANT.lat);
+      const step=kz>4?15:30,gl=v=>Math.ceil(v/step)*step;
+      const ZD=kz>3?DOTS2:DOTS,zdr=Math.max(1.1,Math.min(kz*(ZD===DOTS2?.26:.45),2.2));
+      const grat=[];for(let lo=gl(vLo0);lo<=vLo1;lo+=step)grat.push(html`<line key=${'lo'+lo} x1=${ZX(lo)} x2=${ZX(lo)} y1=${0} y2=${H} className="hg-grid"/>`);
+      for(let la=gl(vLa0);la<=vLa1;la+=step)grat.push(html`<line key=${'la'+la} x1=${0} x2=${W} y1=${ZY(la)} y2=${ZY(la)} className=${la===0?'hg-grid hg-eq':'hg-grid'}/>`);
+      const latLbl=[];for(let la=gl(vLa0);la<=vLa1;la+=step){const y=ZY(la);if(y>34&&y<H-14)latLbl.push(html`<text key=${'ll'+la} x=${14} y=${y-4} className="hg-tiny">${la===0?'0°':Math.abs(la)+'°'+(la>0?'N':'S')}</text>`)}
+      for(let lo=gl(vLo0);lo<=vLo1;lo+=step){const x=ZX(lo);if(x>40&&x<W-40)latLbl.push(html`<text key=${'lb'+lo} x=${x+4} y=${H-12} className="hg-tiny">${Math.abs(lo)+'°'+(lo>=0?'E':'W')}</text>`)}
+      const land=ZD.filter(([lo,la])=>lo>=vLo0-2&&lo<=vLo1+2&&la>=vLa0-2&&la<=vLa1+2);
+      const arc=(x,y,r,f)=>{const a=Math.min(f,.999)*2*Math.PI,ex=x+r*Math.sin(a),ey=y-r*Math.cos(a);return`M${x},${y-r}A${r},${r} 0 ${a>Math.PI?1:0} 1 ${ex},${ey}`};
+      const route=(x,y)=>{const mxp=(px+x)/2,myp=(py+y)/2-Math.hypot(x-px,y-py)*.28;return`M${px},${py}Q${mxp},${myp} ${x},${y}`};
+      const callout=({nm:n,v,share,x,y,r})=>{const d=LBL[n]||'n';const dx=/e/.test(d)?1:/w/.test(d)?-1:0,dy=/n/.test(d)?-1:/s/.test(d)?1:-1;
+        const ex=x+dx*(r+6),ey=y+dy*(r+6)*.7,lx=ex+dx*(W<560?10:22);let anchor=dx<0?'end':dx>0?'start':'middle',tx=dx===0?ex:lx+dx*4;const tw=Math.max(nm(n).length*7.5,70);if(anchor==='start'&&tx+tw>W-12){anchor='end';tx=W-12}if(anchor==='end'&&tx-tw<12){anchor='start';tx=12}
+        return html`<g key=${'c'+n}><polyline points=${`${x+dx*r*.7},${y+dy*r*.7} ${ex},${ey} ${dx===0?ex:lx},${ey}`} className="hg-lead"/>
+          <text x=${tx} y=${ey-(dx===0?14:3)} textAnchor=${anchor} className="hg-name">${nm(n)}</text>
+          <text x=${tx} y=${ey+(dx===0?-1:12)} textAnchor=${anchor} className="hg-val">${fmt(v/1000)}k · ${pct(share)}</text></g>`};
+      const br=(x,y,sx,sy)=>html`<path d=${`M${x},${y+sy*14}V${y}H${x+sx*14}`} className="hg-frame"/>`;
+      body=html`<svg viewBox=${`0 0 ${W} ${H}`} className="hg">
+        <rect x="0" y="0" width=${W} height=${H} rx="10" className="hg-bg"/>
+        ${grat}${latLbl}
+        ${land.map(([lo,la],i)=>html`<circle key=${i} cx=${ZX(lo)} cy=${ZY(la)} r=${zdr} className=${(Math.round((80-la)/(ZD===DOTS2?1.5:3))%2)?'hg-land hg-dim':'hg-land'}/>`)}
+        ${pts.filter(p=>Math.hypot(p.x-px,p.y-py)>p.r+6).map(p=>html`<path key=${'r'+p.nm} d=${route(p.x,p.y)} className="hg-route"/>`)}
+        <g><rect x=${px-5} y=${py-5} width="10" height="10" transform=${`rotate(45 ${px} ${py})`} className="hg-plant"/><text x=${px} y=${py+20} textAnchor="middle" className="hg-tiny">Our plant</text></g>
+        ${pts.map((p,i)=>html`<g key=${p.nm}>
+          <circle cx=${p.x} cy=${p.y} r=${p.r} className="hg-ping" style=${{animationDelay:i*.5+'s'}}/>
+          <circle cx=${p.x} cy=${p.y} r=${p.r} className="hg-ring"/>
+          ${[0,1,2,3].map(t=>{const a=t*Math.PI/2;return html`<line key=${t} x1=${p.x+(p.r+2)*Math.sin(a)} y1=${p.y-(p.r+2)*Math.cos(a)} x2=${p.x+(p.r+6)*Math.sin(a)} y2=${p.y-(p.r+6)*Math.cos(a)} className="hg-tick"/>`})}
+          <path d=${arc(p.x,p.y,p.r*.62,p.share)} className="hg-arc"/>
+          <circle cx=${p.x} cy=${p.y} r="2.4" className="hg-core"/></g>`)}
+        ${pts.map(callout)}
+        ${br(8,8,1,1)}${br(W-8,8,-1,1)}${br(8,H-8,1,-1)}${br(W-8,H-8,-1,-1)}
+        <rect x=${W-250} y="10" width="236" height="22" rx="4" className="hg-bg"/><text x=${W-16} y="25" textAnchor="end" className="hg-tiny">${CUR} · ${fmt(tot)} units · ${pts.length} markets</text></svg>`;
+    }
+  }
+  return html`<div className="fig" ref=${ref} role="img" aria-label=${'World map of your units sold by market: '+Object.entries(byReg).map(([n,v])=>n+' '+fmt(v)).join(', ')}>${body}</div>
+    ${holo&&html`<div className="hg-legend"><span><i className="lg-ring"></i>Ring size: units sold</span><span><i className="lg-arc"></i>Gold arc: share of your total</span><span><i className="lg-route"></i>Supply route from our plant (sample)</span></div>`}`;
 }
 function Portfolio({products,useOurSales,setUseOurSales}){
   const[mapStyle,setMapStyle]=useState('Classic');const mine=products.filter(p=>p.brand===ME);
