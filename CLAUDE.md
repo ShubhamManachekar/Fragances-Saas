@@ -36,7 +36,7 @@ Full brief: `docs/brief.md`. Working prototype (single-file HTML, sample data): 
 Client, Perfume, Note, PerfumeNote, Region, Sale, Upload (+ AuditLog, Concept/Request for ideas).
 
 ## Design
-Light, fresh, professional, not tech-heavy: mint and aqua palette (pale mint-white ground, deep teal text, aqua-teal primary `#178582`, sky-blue secondary `#2c7fbf`, light fresh scent-family colours), serif headings (Cormorant Garamond), sans body (Jost). Replaces the earlier ivory/burgundy/gold palette at the owner's request. Z-pattern layout, one main action per screen. Light/dark aware, accessible (44px targets, visible focus). Map and olfactory graph share one Graphs page, each with a light Hologram (ice and aqua) and a Classic style. Reuse CSS variables from `docs/prototype.html`.
+Warm, professional, not tech-heavy, taken from sawaifragrances.com's own colour tokens: maroon `#42131E` (deep `#3A050F`, hover `#5C0F1D`) for headings and buttons, cream `#FBF8F4` and sand `#F3F0EE` backgrounds, beige lines `#E7DFD6`, taupe accent `#7A5B52`, grey body text `#4E4E4E`. Soft, light scent-family colours. Serif headings (Cormorant Garamond, standing in for Sawai's F37 Bergman) and sans body (Jost, standing in for Akzidenz Grotesk). Z-pattern layout, one main action per screen. Light/dark aware, accessible (44px targets, visible focus). Map and olfactory graph share one Graphs page, each with a light Hologram (cream and blush) and a Classic style. Reuse CSS variables from `docs/prototype.html`.
 
 ## Workflow and skills
 1. Spec: `/egm:egm-brainstorm` → `/egm:egm-draft` → `/egm:egm-review design_draft.md` (repeat until clean)

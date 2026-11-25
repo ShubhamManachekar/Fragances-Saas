@@ -233,4 +233,4 @@ The Hologram style uses neon colours, gradients and glow at the owner's request.
 
 ### Palette update
 
-The owner moved the whole app to a light, fresh mint-and-aqua palette, replacing ivory, burgundy and gold. Both Hologram styles are now light (ice and aqua, no glow). The tokens live in `docs/prototype.html` under `:root`.
+The whole app uses the colour tokens from sawaifragrances.com: maroon, cream, sand, beige and taupe, with soft light scent-family colours. This replaces a short-lived mint-and-aqua trial. Both Hologram styles are light (cream and blush, no glow). The tokens live in `docs/prototype.html` under `:root`.
