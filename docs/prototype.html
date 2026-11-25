@@ -144,6 +144,25 @@ svg.gsvg{display:block;min-width:640px;width:100%;height:auto}
 .gfam i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px}
 .gi{margin:12px 0;padding:14px 18px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;min-height:56px}
 .ghow{display:flex;flex-wrap:wrap;gap:8px 24px;font-size:14px;color:var(--muted)}.ghow span{display:inline-flex;align-items:center;gap:8px}.ghow i{display:inline-block;border-radius:50%;background:var(--gold)}
+.hm-grid{display:grid;grid-template-columns:minmax(0,2.1fr) minmax(260px,1fr);gap:20px;align-items:start}
+.hm-stage{--hm-dot:176,141,87;--hm-tx:#2a1a1c;--hm-mu:#6f5d5f;--hm-bg:#f2e9da;--hm-ac:#7a1f2b;position:relative;height:420px;border-radius:16px;overflow:hidden;background:#f2e9da;border:1px solid var(--line)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .hm-stage:not(.holo){--hm-dot:212,178,122;--hm-tx:#f3ece2;--hm-mu:#b6a6a1;--hm-bg:#2a221d;--hm-ac:#d97a86;background:#2a221d}}
+:root[data-theme=dark] .hm-stage:not(.holo){--hm-dot:212,178,122;--hm-tx:#f3ece2;--hm-mu:#b6a6a1;--hm-bg:#2a221d;--hm-ac:#d97a86;background:#2a221d}
+.hm-stage.holo{--hm-tx:#e6f6ff;--hm-mu:#8fb4c9;--hm-bg:#0a152b;--hm-ac:#4fe3f5;background:radial-gradient(ellipse at 50% 45%,#10264a 0%,#0a152b 75%);border-color:#1d6f86;color:#e6f6ff}
+.hm-stage.holo::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(120,240,255,.05) 0 1px,transparent 1px 3px)}
+.hm-stage canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+.hm-zc{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:6px}
+.hm-zc button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-size:18px}
+.hm-stage.holo .hm-zc button{background:#0e2238;border-color:#1d3a5a;color:#e6f6ff}
+.hm-lg{position:absolute;left:12px;bottom:10px;display:flex;flex-wrap:wrap;gap:2px 12px;font-size:13px;max-width:75%;color:var(--hm-tx)}
+.hm-lg b{font-weight:500;color:var(--hm-mu)}.hm-lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.hm-zoomsel{position:absolute;left:12px;top:12px;min-height:40px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 14px;cursor:pointer;font-size:14px}
+.hm-stage.holo .hm-zoomsel{background:#0e2238;border-color:#1d3a5a;color:#e6f6ff}
+.hm-side{max-height:420px;overflow-y:auto}
+.hm-mb{display:grid;grid-template-columns:6.5em minmax(0,1fr) 3.4em;gap:10px;align-items:center;margin:6px 0;font-size:14px}
+.hm-mb .t{height:10px;background:var(--sunk);border-radius:5px;overflow:hidden}.hm-mb .t b{display:block;height:100%;border-radius:5px}
+@media(max-width:1000px){.hm-grid{grid-template-columns:minmax(0,1fr)}.hm-side{max-height:none}}
+@media(max-width:600px){.hm-stage{height:340px}.hm-lg{display:none}}
 .tabbar{display:none}
 @media(min-width:861px){.toast{bottom:24px}}
 @media(max-width:1000px){.grid,.grid2{grid-template-columns:minmax(0,1fr)}.phases{grid-template-columns:minmax(0,1fr)}}
@@ -376,16 +395,14 @@ function WorldMap({byReg,mapStyle}){
   return html`<div className="fig" ref=${ref} role="img" aria-label=${'World map of your units sold by market: '+Object.entries(byReg).map(([n,v])=>n+' '+fmt(v)).join(', ')}>${body}</div>
     ${holo&&html`<div className="hg-legend"><span><i className="lg-ring"></i>Ring size: units sold</span><span><i className="lg-arc"></i>Gold arc: share of your total</span><span><i className="lg-route"></i>Supply route from our plant (sample)</span></div>`}`;
 }
-function Portfolio({products,useOurSales,setUseOurSales}){
-  const[mapStyle,setMapStyle]=useState('Classic');const mine=products.filter(p=>p.brand===ME);
-  const byReg={};mine.forEach(p=>byReg[p.market]=(byReg[p.market]||0)+(p.units[CUR]||0));
+function Portfolio({products,useOurSales,setUseOurSales,go}){
+  const mine=products.filter(p=>p.brand===ME);
   const tot=mine.reduce((s,p)=>s+(p.units[CUR]||0),0),prev=mine.reduce((s,p)=>s+(p.units[PREV]||0),0);
   return html`<div className="head"><div><h1>Your portfolio</h1><p className="lead">Every product you have told us about, the oil inside it, and how it sold. Only you and our team can see this page.</p></div></div>
   <div className="kpis"><div className="card"><div className="sub">Products</div><div className="big">${mine.length}</div></div><div className="card"><div className="sub">Our oils you use</div><div className="big">${new Set(mine.map(p=>p.oil)).size}</div></div><div className="card"><div className="sub">Units, ${CUR}</div><div className="big">${fmt(tot/1000)}k</div><div className="sub" style=${{color:tot>=prev?'var(--ok)':'var(--wine)'}}>${tot>=prev?'+':''}${((tot/prev-1)*100).toFixed(1)}% vs ${PREV}</div></div></div>
   <section className="card"><div className="scroll"><table><thead><tr><th>Product</th><th>Category</th><th>Oil</th><th>Market</th><th>Launched</th><th className="num">${PREV}</th><th className="num">${CUR}</th></tr></thead>
    <tbody>${mine.map(p=>html`<tr key=${p.name}><td><b style=${{fontWeight:500}}>${p.name}</b></td><td>${p.cat}</td><td><${OilName} code=${p.oil}/></td><td>${p.market}</td><td>${p.launch}</td><td className="num">${p.units[PREV]?fmt(p.units[PREV]):'—'}</td><td className="num">${p.units[CUR]?fmt(p.units[CUR]):'—'}</td></tr>`)}</tbody></table></div></section>
-  <div className="grid" style=${{marginTop:'20px'}}><section className="card"><div className="head" style=${{marginBottom:'6px'}}><div><h2>Where your units sell</h2><p className="sub">${CUR}. Bigger circle, more units.</p></div><${Seg} value=${mapStyle} set=${setMapStyle} opts=${['Classic','Hologram']} label="Map style"/></div>
-     <${WorldMap} byReg=${byReg} mapStyle=${mapStyle}/><p className="sub">Prototype drawing. The real app uses MapLibre with OpenStreetMap data (© OpenStreetMap contributors).</p></section>
+  <div className="grid" style=${{marginTop:'20px'}}><section className="card"><h2>Where your units sell</h2><p className="sub">See your markets on the hologram map, with the scent families that sell in each.</p><button className="btn quiet sm" style=${{marginTop:'12px'}} onClick=${()=>go('graph')}>Open Graphs</button></section>
    <section className="card"><h2>Your data choices</h2><p className="sub">You decide what we may use.</p>
      <label className="switch" style=${{marginTop:'12px',alignItems:'flex-start'}}><input type="checkbox" id="ourSales" checked=${useOurSales} onChange=${e=>setUseOurSales(e.target.checked)} style=${{marginTop:'3px'}}/><span>Fill in my volumes from your oil sales records<br/><span className="sub">If you skip units sold in your file, we estimate them from the oil we supplied you. Off by default.</span></span></label>
      <p className="sub" style=${{marginTop:'12px'}}>Your products always count towards the market view without your name. Changes are recorded in our audit log.</p></section></div>`;
@@ -424,7 +441,7 @@ function Oils({feat,products}){
   </section>`;
 }
 
-/* ================= olfactory graph (ported from Global Fragrance Portal) ================= */
+/* ================= graphs page: hologram map + olfactory graph (ported from the owner's Global Fragrance Portal) ================= */
 const GF=['Citrus','Fresh','Floral','Gourmand','Woody','Amber','Musk'];
 const NF={'Bergamot':0,'Lemon':0,'Grapefruit':0,'Pear':0,'Green tea':1,'Mint':1,'Sea salt':1,'Marine accord':1,'Lavender':1,'Aloe':1,'Neem leaf':1,'Lychee':1,'Jasmine':2,'Rose':2,'Peony':2,'Orange blossom':2,'Iris':2,'Geranium':2,'Frangipani':2,'Vanilla':3,'Tonka bean':3,'Coconut':3,'Sandalwood':4,'Cedar':4,'Cedarwood':4,'Driftwood':4,'Vetiver':4,'Oud':4,'Oakmoss':4,'Saffron':5,'Cardamom':5,'Amber':5,'White musk':6,'Musk':6};
 const GNOTES=Object.keys(NF).sort((a,b)=>NF[a]-NF[b]||a.localeCompare(b));
@@ -432,57 +449,140 @@ const GPAL={Hologram:['#ffd23f','#3df2ff','#ff7ad9','#ff9f43','#7dff9a','#b388ff
 const GCOLS=['#ff6b6b','#d8c08a','#7aa2c8','#c78bd8'];
 const LWT={top:.2,heart:.3,base:.5};
 const notesOf=p=>{const o=OILS[p.oil],out=[];['top','heart','base'].forEach(l=>o[l].forEach(([n])=>out.push([n,LWT[l]/o[l].length,l])));return out};
-const pid=p=>p.brand+'|'+p.name;
-function OlfGraph({products,role,go}){
-  const staff=role==='staff';const[sty,setSty]=useState('Hologram'),[gr,setGr]=useState('All'),[hov,setHov]=useState(null),[sel,setSel]=useState(null);
+const famRow=p=>{const a=Array(7).fill(0);notesOf(p).forEach(([n,w])=>a[NF[n]]+=w);return a};
+const lumTC=h=>{const v=[1,3,5].map(i=>parseInt(h.substr(i,2),16));return(v[0]*299+v[1]*587+v[2]*114)/1000>150?'#2b2420':'#fff'};
+
+/* ---- hologram map (canvas), dot mask from the owner's file ---- */
+const MH='00000000000c0000000000000000000000,00000000001e6000000000000000000000,000000003fffff00000c03000000000000,000000027efffe00f0000080c000000000,000000f2b9fffe00000380ffe300000000,00000706d0fff803800407fff080000000,01e003e5f8fff807c0042ffff9f8060000,07fdfbdcbc3ff00fff01dfffffffff0000,0fffffff1c7f000fffdffffffffffff000,1ffffffa387c0e07ef7fffffffffffc800,ffffffe0c0380007dfffffffffffffc000,fdffffe1c0100007c3fffffffffff20000,61ffffc1f0000062cfffffffffff030000,00ffffe3f80000621ffffffffffe038000,007ffff7fc0001b3ffffffffffff818000,007ffffffc0001f7ffffffffffffe08000,007fffff8c00001fffffffffffffe00000,007fffff8c00007fffffffffffffe00000,007fffffc000003fffffffffffffe00000,00fffffe0000003d7fffffffffffe60000,01fffffc000001f09fffffffffff860000,01fffffc000001e25bffffffffff860000,01fffffc000001e0cbfffffffffc860000,01fffffc0000009e00fffffffffc460000,00fffffc000000fe007ffffffffe1c0000,00ffff30000001ff883fffffffff100000,00fff600000003ffffffffffffff000000,00ff030000001bffffff7fffffff000000,00ff030000003fffffff8fffffff000000,007f000000007fffffffd3fffffe800000,003e030000007ffffffffbfffffc000000,000e318000003ffffffff9ff8fc0000000,000f603000001ffffffff1ff87d0000000,0003e00000001fffffffc00f07e0c00000,0000780000001ffffffb800e01f0c00000,0000180000001ffffffc000e0170000000,000008f800000ffffffcc0060170b00000,000004fe000007ffffffc0050120100000,000001ff000007ffffff80010080300000,000001ffe0000367ffff800002c1000000,000001fff0000001ffff00000147000000,000003fff0000001fffe000000ef000000,000003fff8000003fffc000001ff430000,000003ffff800003fff8000001ff63e000,00000fffffc00003fff0000001f060f800,00000fffffe00003fff0000000fc007800,00000fffffe00001fff800000000003400,00000fffffc000007ff800000000000200,000007ffffc000007ff800000000030000,000001ffff800000fff880000000173000,0000007fff800000fff1800000003fb000,0000001fff800000ffe1800000007ff000,0000001fff8000007fc380000000fff800,0000001fff0000007fc300000003fff800,0000001ffc0000007fc300000007fffc00,0000001ff80000007f8000000007fffc00,0000001ffc0000003f8000000007fffc00,0000001ffe0000003f0000000007fffc00,0000000ffc0000001f0000000007fff800,0000000ffc0000001c00000000061ff000,0000000ff80000000000000000000fe004,0000000fe000000000000000000007c00c,0000000f8000000000000000000000000c,0000000f00000000000000000000018028,00000007000000000000000000000000c0,0000000700000000000000000000000100,0000000780000000000000000000000000,0000000780000000000000000000000000,0000000308000000000000000000000000,0000000180000000000000000000000000,0000000040000000000000000000000000';
+const MASK=MH.split(',').map(h=>{const a=[];h.split('').forEach(ch=>{const v=parseInt(ch,16);for(let b=3;b>=0;b--)a.push((v>>b)&1)});return a});
+const GPOS={'GCC':[84.5,30.2],'India':[93.5,28.6],'Europe':[60.3,17.5],'United Kingdom':[58,14.5],'North America':[29,20.5],'Southeast Asia':[104,40]};
+const HQ=[92.4,32.7],WLD={cx:67,cy:35.5,k:1};
+function HoloMap({nodes,sty,sel,setSel}){
+  const cvRef=useRef(null),stRef=useRef(null),V=useRef({...WLD}),live=useRef({});live.current={nodes,sty,sel,setSel};
+  useEffect(()=>{const cv=cvRef.current,x=cv.getContext('2d'),rm=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=performance.now();let raf,w=0,h=0,d=1,col={},ct=0,drag=null,alive=true;
+    const fit=()=>{const r=cv.getBoundingClientRect();d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;w=r.width;h=r.height};fit();
+    const cs=()=>Math.min(w/134,h/71)*V.current.k,sx=c=>w/2+(c-V.current.cx)*cs(),sy=r=>h/2+(r-V.current.cy)*cs(),pr=m=>({x:sx(GPOS[m][0]),y:sy(GPOS[m][1])});
+    const readCol=()=>{const g=getComputedStyle(stRef.current),v=k=>g.getPropertyValue(k).trim();col={dot:v('--hm-dot'),tx:v('--hm-tx'),mu:v('--hm-mu'),bg:v('--hm-bg'),ac:v('--hm-ac')}};
+    const near=(px,py)=>{let b=null,bd=26;live.current.nodes.forEach(n=>{const p=pr(n.m),q=Math.hypot(p.x-px,p.y-py);if(q<bd){bd=q;b=n.m}});return b};
+    cv.onpointerdown=e=>{drag={x:e.clientX,y:e.clientY,m:0};cv.setPointerCapture(e.pointerId)};
+    cv.onpointermove=e=>{const r=cv.getBoundingClientRect();if(!drag){cv.style.cursor=near(e.clientX-r.left,e.clientY-r.top)?'pointer':'grab';return}
+      const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.m+=Math.abs(dx)+Math.abs(dy);drag.x=e.clientX;drag.y=e.clientY;V.current.cx=Math.max(0,Math.min(134,V.current.cx-dx/cs()));V.current.cy=Math.max(0,Math.min(71,V.current.cy-dy/cs()))};
+    cv.onpointerup=e=>{if(drag&&drag.m<5){const r=cv.getBoundingClientRect(),m=near(e.clientX-r.left,e.clientY-r.top);if(m)live.current.setSel(m)}drag=null};
+    const paint=t=>{const{nodes,sty,sel}=live.current,H=sty==='Hologram',FC=GPAL[sty],c=cs();x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);x.shadowBlur=0;
+      const c0=Math.max(0,Math.floor(V.current.cx-w/2/c)),c1=Math.min(133,Math.ceil(V.current.cx+w/2/c)),r0=Math.max(0,Math.floor(V.current.cy-h/2/c)),r1=Math.min(70,Math.ceil(V.current.cy+h/2/c)),gp=c>8?1.2:Math.min(.6,c/12);
+      for(let r=r0;r<=r1;r++)for(let q=c0;q<=c1;q++){if(!MASK[r][q])continue;const tw=(q*7+r*13)%23===0,u=q/134;let al,cl;
+        if(H){al=tw?.75+.25*Math.sin(t*2+q):.8;cl=`rgba(${tw?150:30},${Math.round(120+80*u)+(tw?45:0)},${Math.round(255-25*u)},${al})`}else{al=tw?.65+.3*Math.sin(t*1.5+q):.4+.08*((q*5+r*3)%4);cl=`rgba(${col.dot},${al})`}
+        x.fillStyle=cl;x.fillRect(sx(q)+gp,sy(r)+gp,c-2*gp,c-2*gp)}
+      const hq={x:sx(HQ[0]),y:sy(HQ[1])};
+      nodes.forEach((n,j)=>{const p=pr(n.m);if(Math.hypot(p.x-hq.x,p.y-hq.y)<8)return;const mx=(hq.x+p.x)/2,my=(hq.y+p.y)/2-Math.hypot(p.x-hq.x,p.y-hq.y)*.3;
+        x.strokeStyle=H?'rgba(255,122,217,.55)':`rgba(${col.dot},.8)`;x.shadowColor='#ff7ad9';x.shadowBlur=H?8:0;x.lineWidth=1.1;x.beginPath();x.moveTo(hq.x,hq.y);x.quadraticCurveTo(mx,my,p.x,p.y);x.stroke();
+        const u=(t*.3+j*.17)%1,a=(1-u)*(1-u),b=2*u*(1-u),c2=u*u;x.shadowBlur=0;x.fillStyle=H?'#fff':col.ac;x.beginPath();x.arc(a*hq.x+b*mx+c2*p.x,a*hq.y+b*my+c2*p.y,2.5,0,7);x.fill()});
+      x.fillStyle=H?'#e6f6ff':col.tx;x.save();x.translate(hq.x,hq.y);x.rotate(Math.PI/4);x.fillRect(-4,-4,8,8);x.restore();
+      const mt=Math.max(1,...nodes.map(n=>n.tot)),zk=Math.min(2.4,1+.18*(V.current.k-1)),L=[];
+      nodes.forEach(n=>{const p=pr(n.m),r=(6+10*Math.sqrt(n.tot/mt))*zk,ti=n.row.indexOf(Math.max(...n.row));L.push({n,p,r,ti});
+        const gg=x.createRadialGradient(p.x,p.y,r*.5,p.x,p.y,r*2.4);gg.addColorStop(0,H?'rgba(140,255,255,.45)':`rgba(${col.dot},.3)`);gg.addColorStop(1,H?'rgba(140,255,255,0)':`rgba(${col.dot},0)`);x.fillStyle=gg;x.beginPath();x.arc(p.x,p.y,r*2.4,0,7);x.fill();
+        x.shadowColor=FC[ti];x.shadowBlur=H?14:0;x.fillStyle=FC[ti];x.globalAlpha=.92;x.beginPath();x.arc(p.x,p.y,r,0,7);x.fill();x.globalAlpha=1;x.shadowBlur=0;x.strokeStyle=col.bg;x.lineWidth=2;x.stroke();
+        if(r>=13){x.fillStyle=lumTC(FC[ti]);x.font='600 11px Jost,system-ui,sans-serif';x.textAlign='center';x.fillText(Math.round(n.row[ti]/n.rsum*100)+'%',p.x,p.y+4)}
+        if(n.m===sel){x.strokeStyle=col.tx;x.lineWidth=1.5;x.beginPath();x.arc(p.x,p.y,r+5+2*Math.sin(t*3),0,7);x.stroke()}});
+      const used=[];x.lineJoin='round';
+      L.slice().sort((a,b)=>(b.n.m===sel)-(a.n.m===sel)||b.n.tot-a.n.tot).forEach(o=>{const nm=o.n.m,fl=GF[o.ti]+' · '+fmt(o.n.tot)+' units';x.font='600 14px Jost,system-ui,sans-serif';const w1=x.measureText(nm).width;x.font='12px Jost,system-ui,sans-serif';const bw=Math.max(w1,x.measureText(fl).width),bh=32;
+        for(const sd of ['r','l','t','b']){const bx=sd==='r'?o.p.x+o.r+8:sd==='l'?o.p.x-o.r-8-bw:o.p.x-bw/2,by=sd==='t'?o.p.y-o.r-6-bh:sd==='b'?o.p.y+o.r+6:o.p.y-bh/2;
+          if(bx<4||bx+bw>w-4||by<4||by+bh>h-4)continue;if(used.some(u=>bx<u[0]+u[2]&&bx+bw>u[0]&&by<u[1]+u[3]&&by+bh>u[1]))continue;
+          if(L.some(q=>q!==o&&Math.hypot(Math.max(bx-q.p.x,0,q.p.x-bx-bw),Math.max(by-q.p.y,0,q.p.y-by-bh))<q.r+2))continue;
+          used.push([bx,by,bw,bh]);x.textAlign=sd==='l'?'right':sd==='r'?'left':'center';const tx=sd==='l'?bx+bw:sd==='r'?bx:bx+bw/2;
+          x.lineWidth=4;x.strokeStyle=col.bg;x.font='600 14px Jost,system-ui,sans-serif';x.fillStyle=col.tx;x.strokeText(nm,tx,by+13);x.fillText(nm,tx,by+13);
+          x.font='12px Jost,system-ui,sans-serif';x.fillStyle=col.mu;x.strokeText(fl,tx,by+28);x.fillText(fl,tx,by+28);break}})};
+    const loop=()=>{if(!alive)return;const r=cv.getBoundingClientRect();if(Math.abs(r.width-w)>1||Math.abs(r.height-h)>1)fit();const now=performance.now();if(now-ct>300){readCol();ct=now}paint(rm?0:(now-t0)/1000);raf=requestAnimationFrame(loop)};loop();
+    return()=>{alive=false;cancelAnimationFrame(raf)}},[]);
+  const z=f=>()=>{V.current.k=Math.max(1,Math.min(14,V.current.k*f))};
+  const zoomTo=m=>{if(!m)return;Object.assign(V.current,{cx:GPOS[m][0],cy:GPOS[m][1],k:4})};
+  return html`<div className=${'hm-stage'+(sty==='Hologram'?' holo':'')} ref=${stRef}>
+    <canvas ref=${cvRef} role="img" aria-label=${'Map of markets: '+nodes.map(n=>n.m+' '+fmt(n.tot)+' units, mostly '+GF[n.row.indexOf(Math.max(...n.row))]).join('; ')}></canvas>
+    <div className="hm-zc"><button aria-label="Zoom in" onClick=${z(1.4)}>+</button><button aria-label="Zoom out" onClick=${z(1/1.4)}>−</button><button aria-label="Show the whole world" onClick=${()=>Object.assign(V.current,WLD)}>⟲</button></div>
+    <div className="hm-lg"><b>Top family</b>${GF.map((f,i)=>html`<span key=${f}><i style=${{background:GPAL[sty][i]}}></i>${f}</span>`)}</div>
+    ${sel&&html`<button className="hm-zoomsel" onClick=${()=>zoomTo(sel)}>Zoom to ${sel}</button>`}</div>`;
+}
+
+/* ---- olfactory graph (SVG) ---- */
+function OlfGraph({en,sty,staff,gr}){
+  const[hov,setHov]=useState(null),[sel,setSel]=useState(null);
   const FC=GPAL[sty],act=hov||sel,f1=v=>v.toFixed(1);
-  const en=(staff?products:products.filter(p=>p.brand===ME)).filter(p=>(p.units[CUR]||0)>0);
-  const brandIx=Object.fromEntries(Object.keys(BRANDS).map((b,i)=>[b,i]));
-  const un=p=>gr==='All'||p.market===gr?(p.units[CUR]||0):0,mxr=Math.max(1,...en.map(un)),ws=p=>gr==='All'?1:un(p)/mxr;
-  const used={},fs=Array(7).fill(0),np={},pn={};
-  en.forEach(p=>{pn[pid(p)]=notesOf(p).map(x=>x[0]);notesOf(p).forEach(([n,w])=>{used[n]=(used[n]||0)+w*ws(p);fs[NF[n]]+=w*ws(p);(np[n]=np[n]||[]).push(pid(p))})});
+  const un=e=>gr==='All'?e.tot:(e.byMkt[gr]||0),mxr=Math.max(1,...en.map(un)),ws=e=>gr==='All'?1:un(e)/mxr;
   const cx=500,RN=330,SL=360/(GNOTES.length+7),pos={},ang=[[],[],[],[],[],[],[]];let slot=0,last=-1;
   GNOTES.forEach(n=>{const f=NF[n];if(last>=0&&f!==last)slot++;last=f;const a=-90+(slot+.5)*SL;pos[n]={a,x:cx+RN*Math.cos(a*Math.PI/180),y:cx+RN*Math.sin(a*Math.PI/180)};ang[f].push(a);slot++});
-  const nn=en.length,rp=nn<4?80:nn<7?130:nn<11?165:195,mu=Math.max(1,...en.map(un));
-  const pp=en.map((e,k)=>{const a=(-90+k*360/nn)*Math.PI/180;return{x:cx+(nn>1?rp*Math.cos(a):0),y:cx+(nn>1?rp*Math.sin(a):0)}});
+  /* place each centre node on the side of the ring where its notes are, so lines cross less */
+  const pref=e=>{let sx=0,sy=0;e.notes.forEach(([n,w])=>{sx+=w*Math.cos(pos[n].a*Math.PI/180);sy+=w*Math.sin(pos[n].a*Math.PI/180)});return Math.atan2(sy,sx)};
+  const order=[...en].sort((a,b)=>pref(a)-pref(b));
+  const nn=order.length,rp=nn<2?0:nn<4?120:nn<7?150:185,mu=Math.max(1,...order.map(un));
+  const start=nn?pref(order[0]):0,pp=order.map((e,k)=>{const a=start+k*2*Math.PI/Math.max(nn,1);return{a,x:cx+rp*Math.cos(a),y:cx+rp*Math.sin(a)}});
+  const used={},fs=Array(7).fill(0),np={};
+  order.forEach(e=>e.notes.forEach(([n,w])=>{used[n]=(used[n]||0)+w*ws(e);fs[NF[n]]+=w*ws(e);(np[n]=np[n]||[]).push(e.id)}));
   const ns=new Set(),ps=new Set();
   if(act&&act.k==='n'){ns.add(act.id);(np[act.id]||[]).forEach(x=>ps.add(x))}
-  if(act&&act.k==='p'){ps.add(act.id);(pn[act.id]||[]).forEach(n=>ns.add(n))}
+  if(act&&act.k==='p'){ps.add(act.id);order.find(e=>e.id===act.id).notes.forEach(([n])=>ns.add(n))}
   if(act&&act.k==='f'){GNOTES.forEach(n=>{if(NF[n]===act.id){ns.add(n);(np[n]||[]).forEach(x=>ps.add(x))}})}
-  const byId=Object.fromEntries(en.map(p=>[pid(p),p]));
-  let info='Hover or tap a note or a product to see how they connect. Click to keep it selected.';
-  if(act&&act.k==='n'){const u=[...ps].map(x=>byId[x].name);info=`${act.id}: ${GF[NF[act.id]].toLowerCase()} family. ${u.length?'Used in '+u.join(', ')+'.':'Not used in any product yet.'}`}
-  if(act&&act.k==='p'){const p=byId[act.id],o=OILS[p.oil];info=`${p.name} uses ${o.name} (${p.oil}). Top: ${o.top.map(x=>x[0]).join(', ')}. Heart: ${o.heart.map(x=>x[0]).join(', ')}. Base: ${o.base.map(x=>x[0]).join(', ')}. ${fmt(un(p))} units${gr==='All'?'':' in '+gr}.`}
-  if(act&&act.k==='f'){const inFam=GNOTES.filter(n=>NF[n]===act.id);info=`${GF[act.id]}: ${inFam.filter(n=>np[n]).length} of ${inFam.length} notes are in use.`}
-  const onEnter=(k,id)=>()=>setHov({k,id}),onLeave=()=>setHov(null),onClick=(k,id)=>()=>setSel(sel&&sel.k===k&&sel.id===id?null:{k,id});
-  const lab={paintOrder:'stroke',stroke:'var(--g-bg)',strokeWidth:'5px',strokeLinejoin:'round'};
-  const lines=[];en.forEach((p,k)=>notesOf(p).forEach(([n,w])=>{const a=pp[k],b=pos[n],mx=(a.x+b.x)/2*.55+cx*.45,my=(a.y+b.y)/2*.55+cx*.45;
-    const ok=!act||(act.k==='n'&&act.id===n)||(act.k==='p'&&act.id===pid(p))||(act.k==='f'&&act.id===NF[n]);
-    lines.push(html`<path key=${pid(p)+n} d=${`M${f1(a.x)} ${f1(a.y)}Q${f1(mx)} ${f1(my)} ${f1(b.x)} ${f1(b.y)}`} fill="none" stroke=${FC[NF[n]]} strokeWidth=${f1(.8+w*ws(p)*7)} style=${{opacity:ok?.85:.04,transition:'opacity .2s'}}/>`)}));
-  const arcs=ang.map((a,f)=>{if(!a.length)return null;const a0=(Math.min(...a)-SL*.35)*Math.PI/180,a1=(Math.max(...a)+SL*.35)*Math.PI/180,r=322,mid=(Math.min(...a)+Math.max(...a))/2*Math.PI/180;
-    return html`<g key=${'f'+f}><path d=${`M${f1(cx+r*Math.cos(a0))} ${f1(cx+r*Math.sin(a0))}A${r} ${r} 0 0 1 ${f1(cx+r*Math.cos(a1))} ${f1(cx+r*Math.sin(a1))}`} fill="none" stroke=${FC[f]} strokeWidth="7" strokeLinecap="round"/>
-      <text x=${f1(cx+292*Math.cos(mid))} y=${f1(cx+292*Math.sin(mid)+4)} textAnchor="middle" style=${{...lab,fill:'var(--g-tx)',font:'600 13px Jost,sans-serif',letterSpacing:'.12em'}}>${GF[f].toUpperCase()}</text></g>`});
-  const notes=GNOTES.map(n=>{const o=pos[n],u=used[n]||0,right=Math.cos(o.a*Math.PI/180)>=0,rot=right?o.a:o.a+180;const op=act?(ns.has(n)?1:.18):(u?1:.5);
-    return html`<g key=${n} style=${{cursor:'pointer',opacity:op,transition:'opacity .2s'}} onMouseEnter=${onEnter('n',n)} onMouseLeave=${onLeave} onClick=${onClick('n',n)} data-hn=${n}>
-      <circle cx=${f1(o.x)} cy=${f1(o.y)} r=${f1(u?4+9*Math.sqrt(Math.min(u,1.3)):3)} fill=${FC[NF[n]]} style=${{stroke:'var(--g-bg)',strokeWidth:'2px'}}/>
+  const byId=Object.fromEntries(order.map(e=>[e.id,e]));
+  let info=`Hover or tap a note, a ${staff?'brand':'product'} or a family to see how they connect. Click to keep it selected.`;
+  if(act&&act.k==='n'){const u=[...ps].map(x=>byId[x].label);info=`${act.id} (${GF[NF[act.id]].toLowerCase()} family). ${u.length?'Used by '+u.join(', ')+'.':'Not used yet: a gap you could fill.'}`}
+  if(act&&act.k==='p'){const e=byId[act.id];info=`${e.label}: ${e.detail} ${fmt(un(e))} units${gr==='All'?'':' in '+gr}.`}
+  if(act&&act.k==='f'){const inFam=GNOTES.filter(n=>NF[n]===act.id);info=`${GF[act.id]}: ${inFam.filter(n=>np[n]).length} of ${inFam.length} notes in use.`}
+  const ev=(k,id)=>({onMouseEnter:()=>setHov({k,id}),onMouseLeave:()=>setHov(null),onClick:()=>setSel(sel&&sel.k===k&&sel.id===id?null:{k,id})});
+  const halo={paintOrder:'stroke',stroke:'var(--g-bg)',strokeWidth:'5px',strokeLinejoin:'round'};
+  const lines=[];order.forEach((e,k)=>e.notes.forEach(([n,w])=>{const a=pp[k],b=pos[n],mx=(a.x+b.x)/2*.55+cx*.45,my=(a.y+b.y)/2*.55+cx*.45;
+    const ok=!act||(act.k==='n'&&act.id===n)||(act.k==='p'&&act.id===e.id)||(act.k==='f'&&act.id===NF[n]);
+    lines.push(html`<path key=${e.id+n} d=${`M${f1(a.x)} ${f1(a.y)}Q${f1(mx)} ${f1(my)} ${f1(b.x)} ${f1(b.y)}`} fill="none" stroke=${FC[NF[n]]} strokeWidth=${f1(.8+w*ws(e)*(staff?4:7))} style=${{opacity:ok?(act?.95:.7):.04,transition:'opacity .2s'}}/>`)}));
+  const arcs=ang.map((a,f)=>{if(!a.length)return null;const a0=(Math.min(...a)-SL*.35)*Math.PI/180,a1=(Math.max(...a)+SL*.35)*Math.PI/180,r=318,mid=(Math.min(...a)+Math.max(...a))/2*Math.PI/180,lx=cx+286*Math.cos(mid),ly=cx+286*Math.sin(mid),tw=GF[f].length*10+18;
+    return html`<g key=${'f'+f} style=${{cursor:'pointer'}} ...${ev('f',f)}><path d=${`M${f1(cx+r*Math.cos(a0))} ${f1(cx+r*Math.sin(a0))}A${r} ${r} 0 0 1 ${f1(cx+r*Math.cos(a1))} ${f1(cx+r*Math.sin(a1))}`} fill="none" stroke=${FC[f]} strokeWidth="7" strokeLinecap="round"/>
+      <rect x=${f1(lx-tw/2)} y=${f1(ly-11)} width=${tw} height="22" rx="11" fill="var(--g-bg)" stroke=${FC[f]} strokeOpacity=".7"/>
+      <text x=${f1(lx)} y=${f1(ly+4.5)} textAnchor="middle" style=${{fill:'var(--g-tx)',font:'600 12px Jost,sans-serif',letterSpacing:'.1em'}}>${GF[f].toUpperCase()}</text></g>`});
+  const notes=GNOTES.map(n=>{const o=pos[n],u=used[n]||0,right=Math.cos(o.a*Math.PI/180)>=0,rot=right?o.a:o.a+180,op=act?(ns.has(n)?1:.15):(u?1:.45);
+    return html`<g key=${n} data-hn=${n} style=${{cursor:'pointer',opacity:op,transition:'opacity .2s'}} ...${ev('n',n)}>
+      <circle cx=${f1(o.x)} cy=${f1(o.y)} r=${f1(u?4+9*Math.sqrt(Math.min(u/(staff?3:1),1.3)):3)} fill=${u?FC[NF[n]]:'none'} stroke=${u?'var(--g-bg)':FC[NF[n]]} strokeWidth="2"/>
       <text transform=${`translate(${f1(o.x)},${f1(o.y)}) rotate(${f1(rot)})`} x=${right?16:-16} y="5" textAnchor=${right?'start':'end'} style=${{fill:u?'var(--g-tx)':'var(--g-mu)',font:`${u?600:400} 15px Jost,sans-serif`}}>${n}</text></g>`});
-  const prods=en.map((p,k)=>{const r=(nn>8?8:10)+(nn>8?11:15)*Math.sqrt(un(p)/mu),a=pp[k],ly=nn>6&&k%2?a.y-r-8:a.y+r+17,id=pid(p);
-    return html`<g key=${id} style=${{cursor:'pointer',opacity:!act||ps.has(id)?1:.2,transition:'opacity .2s'}} onMouseEnter=${onEnter('p',id)} onMouseLeave=${onLeave} onClick=${onClick('p',id)} data-hp=${id}>
-      <circle cx=${f1(a.x)} cy=${f1(a.y)} r=${f1(r)} fill="var(--g-tx)" style=${{stroke:GCOLS[(staff?brandIx[p.brand]:0)%4],strokeWidth:'5px'}}/>
-      <text x=${f1(a.x)} y=${f1(ly)} textAnchor="middle" style=${{...lab,fill:'var(--g-tx)',font:'600 14px Jost,sans-serif'}}>${p.name}</text></g>`});
+  const nodes=order.map((e,k)=>{const r=(staff?16:10)+(staff?14:14)*Math.sqrt(un(e)/mu),a=pp[k],ca=Math.cos(a.a),sa=Math.sin(a.a),out=nn>1;
+    const lx=out?a.x+(r+8)*ca:a.x,ly=out?a.y+(r+8)*sa+(Math.abs(ca)<.45?(sa>0?12:-2):5):a.y+r+18,anc=!out||Math.abs(ca)<.45?'middle':ca>0?'start':'end';
+    return html`<g key=${e.id} data-hp=${e.id} style=${{cursor:'pointer',opacity:!act||ps.has(e.id)?1:.2,transition:'opacity .2s'}} ...${ev('p',e.id)}>
+      <circle cx=${f1(a.x)} cy=${f1(a.y)} r=${f1(r)} fill="var(--g-tx)" stroke=${e.color} strokeWidth="5"/>
+      <text x=${f1(lx)} y=${f1(ly)} textAnchor=${anc} style=${{...halo,fill:'var(--g-tx)',font:'600 14px Jost,sans-serif'}}>${e.label}</text></g>`});
   const fsum=fs.reduce((a,b)=>a+b,0)||1,hi=fs.indexOf(Math.max(...fs)),lo=GF.filter((f,i)=>fs[i]/fsum<.06),nu=Object.keys(used).length;
-  const markets=[...new Set(en.map(p=>p.market))];
-  return html`<div className="head"><div><h1>${staff?'All client products and their notes':'How your range is built'}</h1><p className="lead">${gr==='All'?'Each line joins one of your products (centre) to a note in the oil it uses (outer ring, grouped by scent family). Pick a market to see which notes sell there.':'Showing what sells in '+gr+'. Thicker lines and bigger dots mean more units sold there.'}</p></div></div>
-  <div style=${{display:'flex',gap:'16px',flexWrap:'wrap',alignItems:'center',marginBottom:'12px'}}>
-    <label className="sub">Where <select className="field" style=${{display:'inline-block',width:'auto',marginLeft:'6px'}} value=${gr} onChange=${e=>{setGr(e.target.value);setSel(null)}}><option value="All">All markets</option>${markets.map(m=>html`<option key=${m}>${m}</option>`)}</select></label>
-    <${Seg} value=${sty} set=${setSty} opts=${['Hologram','Classic']} label="Graph style"/></div>
-  <div className="gfam">${GF.map((f,i)=>html`<button key=${f} aria-pressed=${!!(sel&&sel.k==='f'&&sel.id===i)} onMouseEnter=${onEnter('f',i)} onMouseLeave=${onLeave} onClick=${onClick('f',i)}><i style=${{background:FC[i]}}></i>${f}</button>`)}
-    ${staff&&Object.entries(BRANDS).map(([b,n],i)=>html`<span key=${b} className="sub"><i style=${{display:'inline-block',width:'10px',height:'10px',borderRadius:'50%',margin:'0 6px 0 8px',background:GCOLS[i%4]}}></i>${n}</span>`)}</div>
-  <div className=${'gw'+(sty==='Hologram'?' holo':'')}><svg className="gsvg" viewBox="0 0 1000 1000" role="img" aria-label="Olfactory graph: products in the centre joined by lines to their notes, which are grouped by scent family around the ring">${lines}${arcs}${notes}${prods}</svg></div>
+  return html`<div className="gfam">${GF.map((f,i)=>html`<button key=${f} aria-pressed=${!!(sel&&sel.k==='f'&&sel.id===i)} ...${ev('f',i)}><i style=${{background:FC[i]}}></i>${f}</button>`)}</div>
+  <div className=${'gw'+(sty==='Hologram'?' holo':'')}><svg className="gsvg" viewBox="0 0 1000 1000" role="img" aria-label="Olfactory graph: centre nodes joined by lines to their notes, which are grouped by scent family around the ring">${lines}${arcs}${notes}${nodes}</svg></div>
   <div className="gi" aria-live="polite">${info}</div>
-  <div className="ghow"><span><i style=${{width:'18px',height:'18px'}}></i>Inner circles = products (bigger = more units)</span><span>Outer ring = notes, grouped by family</span><span>Bigger dot = note used more</span><span>Faded notes = not used yet</span></div>
+  <div className="ghow"><span><i style=${{width:'18px',height:'18px'}}></i>Centre = ${staff?'brands':'your products'} (bigger = more units)</span><span>Ring = notes, grouped by family</span><span>Filled dot = note in use · hollow dot = not used yet</span><span>Thicker line = bigger part of the formula</span></div>
   <div className="grid2" style=${{marginTop:'20px'}}><section className="card"><h3>Where ${staff?'the market':'your range'} is heavy or light</h3><ul className="list"><li><span><b style=${{fontWeight:500}}>Heaviest family.</b> ${GF[hi]}, ${pct(fs[hi]/fsum)} of the weight${gr==='All'?'':' in '+gr}.</span></li><li><span><b style=${{fontWeight:500}}>Light or missing.</b> ${lo.length?lo.join(', '):'None, every family is covered.'}</span></li><li><span><b style=${{fontWeight:500}}>Notes in use.</b> ${nu} of ${GNOTES.length}.</span></li></ul></section>
-   <section className="card" style=${{background:'var(--wine-soft)',borderColor:'transparent'}}><h3>${staff?'Push an oil that fills a gap':'Fill the gaps'}</h3><p className="sub">${staff?'Feature an oil from a light family so every client sees it.':'See which oils the market uses in the families you are missing.'}</p><button className="btn" style=${{marginTop:'12px'}} onClick=${()=>go(staff?'featured':'market')}>${staff?'Open featured oils':'Open the market view'}</button></section></div>`;
+   <section className="card" style=${{background:'var(--wine-soft)',borderColor:'transparent'}}><h3>${staff?'Push an oil that fills a gap':'Fill the gaps'}</h3><p className="sub">${staff?'Feature an oil from a light family so every client sees it.':'Hollow dots are notes none of your products use yet. See which oils the market uses in those families.'}</p><button className="btn" style=${{marginTop:'12px'}} data-go=${staff?'featured':'market'}>${staff?'Open featured oils':'Open the market view'}</button></section></div>`;
+}
+
+function Graphs({products,role,go}){
+  const staff=role==='staff';const[sty,setSty]=useState('Hologram'),[gr,setGr]=useState('All');
+  const live=(staff?products:products.filter(p=>p.brand===ME)).filter(p=>(p.units[CUR]||0)>0);
+  /* map nodes: one per market */
+  const mk={};live.forEach(p=>{const u=p.units[CUR],r=famRow(p),o=mk[p.market]||(mk[p.market]={m:p.market,tot:0,row:Array(7).fill(0),prods:[]});o.tot+=u;r.forEach((v,i)=>o.row[i]+=v*u);o.prods.push(p)});
+  const nodes=Object.values(mk).map(n=>({...n,rsum:n.row.reduce((a,b)=>a+b,0)})).sort((a,b)=>b.tot-a.tot);
+  const[sel,setSel]=useState(null);const cur=nodes.find(n=>n.m===sel)||nodes[0];
+  /* graph centre nodes: products (client) or brands (staff) */
+  const en=staff?Object.keys(BRANDS).map((b,i)=>{const ps=live.filter(p=>p.brand===b),tot=ps.reduce((s,p)=>s+p.units[CUR],0),agg={},byMkt={};
+      ps.forEach(p=>{byMkt[p.market]=(byMkt[p.market]||0)+p.units[CUR];notesOf(p).forEach(([n,w])=>agg[n]=(agg[n]||0)+w*p.units[CUR]/tot)});
+      return{id:b,label:BRANDS[b].split(' ')[0],color:GCOLS[i%4],tot,byMkt,notes:Object.entries(agg),detail:`${ps.length} products using ${new Set(ps.map(p=>p.oil)).size} of our oils.`}}).filter(e=>e.tot>0)
+    :live.map(p=>{const o=OILS[p.oil];return{id:p.name,label:p.name.replace(/^Aurel /,''),color:GCOLS[0],tot:p.units[CUR],byMkt:{[p.market]:p.units[CUR]},notes:notesOf(p),detail:`${p.name} uses ${o.name} (${p.oil}). Top: ${o.top.map(x=>x[0]).join(', ')}. Heart: ${o.heart.map(x=>x[0]).join(', ')}. Base: ${o.base.map(x=>x[0]).join(', ')}.`}});
+  const lead=nodes.length?GF[nodes.reduce((a,n)=>a.map((v,i)=>v+n.row[i]),Array(7).fill(0)).reduce((b,v,i,arr)=>v>arr[b]?i:b,0)]:'—';
+  const FC=GPAL[sty];
+  return html`<div className="head"><div><h1>${staff?'Where every brand sells, and what is inside':'Where your fragrances sell, and what is inside them'}</h1><p className="lead">The map shows each market, coloured by the scent family that sells most there. The graph below shows which notes your ${staff?'clients\' products':'products'} are built from. Sample data.</p></div>
+    <${Seg} value=${sty} set=${setSty} opts=${['Hologram','Classic']} label="Style for map and graph"/></div>
+  <div className="kpis"><div className="card"><div className="sub">Units, ${CUR}</div><div className="big">${fmt(live.reduce((s,p)=>s+p.units[CUR],0)/1000)}k</div></div><div className="card"><div className="sub">Markets</div><div className="big">${nodes.length}</div></div><div className="card"><div className="sub">Leading family</div><div className="big">${lead}</div></div></div>
+  <h2 style=${{margin:'8px 0 10px'}}>Market map</h2>
+  <div className="hm-grid"><${HoloMap} nodes=${nodes} sty=${sty} sel=${cur&&cur.m} setSel=${setSel}/>
+    <section className="card hm-side">${cur?html`<p className="sub">Selected market</p><h3 style=${{fontSize:'26px'}}>${cur.m}</h3>
+      <p style=${{marginTop:'6px'}}><b style=${{fontWeight:500}}>${fmt(cur.tot)}</b> units, led by <b style=${{fontWeight:500}}>${GF[cur.row.indexOf(Math.max(...cur.row))]}</b>.</p>
+      <h3 style=${{marginTop:'14px',fontSize:'18px'}}>Scent family mix</h3>
+      ${cur.row.map((v,i)=>[i,v/cur.rsum]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).map(([i,q])=>html`<div key=${i} className="hm-mb"><span>${GF[i]}</span><div className="t"><b style=${{width:Math.min(100,q*200)+'%',background:FC[i]}}></b></div><span className="num">${pct(q)}</span></div>`)}
+      <h3 style=${{marginTop:'14px',fontSize:'18px'}}>${staff?'Products sold here':'Your products here'}</h3>
+      <ul className="list">${cur.prods.map(p=>html`<li key=${p.brand+p.name} style=${{padding:'8px 0'}}><span>${p.name}${staff?html`<br/><span className="sub">${BRANDS[p.brand]}</span>`:''}</span><span className="num sub">${fmt(p.units[CUR])}</span></li>`)}</ul>
+      <button className="btn quiet sm" style=${{marginTop:'8px'}} onClick=${()=>setGr(cur.m)}>Show ${cur.m} in the graph below</button>`:html`<p className="sub">No units yet.</p>`}</section></div>
+  <div className="ghow" style=${{marginTop:'10px'}}><span><i style=${{width:'18px',height:'18px'}}></i>Bigger circle = more units</span><span>Colour and % = top scent family</span><span>Click a market for its full mix · drag to move · +/− to zoom</span><span>Lines = supply from our plant (sample)</span></div>
+  <div className="head" style=${{marginTop:'36px',marginBottom:'6px'}}><div><h2>Olfactory graph</h2><p className="sub">${gr==='All'?'All markets. Pick one to see which notes sell there.':'Showing '+gr+'. Thicker lines and bigger dots mean more units sold there.'}</p></div>
+    <label className="sub">Where <select className="field" style=${{display:'inline-block',width:'auto',marginLeft:'6px'}} value=${gr} onChange=${e=>setGr(e.target.value)}><option value="All">All markets</option>${nodes.map(n=>html`<option key=${n.m}>${n.m}</option>`)}</select></label></div>
+  <div onClick=${e=>{const b=e.target.closest&&e.target.closest('[data-go]');if(b)go(b.dataset.go)}}><${OlfGraph} key=${staff?'s':'c'} en=${en} sty=${sty} staff=${staff} gr=${gr}/></div>`;
 }
 
 /* ================= client: requests ================= */
@@ -526,7 +626,7 @@ function Requests({requests,reply}){
 }
 
 /* ================= app shell ================= */
-const NAV={client:[['home','Home','home','Upload your portfolio'],['market','Market view','chart','What the market uses'],['portfolio','Portfolio','box','Your products and oils'],['graph','Olfactory graph','graph','How your range is built'],['oils','Our oils','drop','Catalog and scent'],['ideas','Ask us','idea','Samples and new oils']],staff:[['attention','Needs attention','bell','Your to-do list'],['clients','Clients','users','Brands and settings'],['graph','Olfactory graph','graph','All brands, all notes'],['featured','Featured oils','star','What to push'],['requests','Requests','inbox','Reply to clients']]};
+const NAV={client:[['home','Home','home','Upload your portfolio'],['market','Market view','chart','What the market uses'],['portfolio','Portfolio','box','Your products and oils'],['graph','Graphs','graph','Map and olfactory graph'],['oils','Our oils','drop','Catalog and scent'],['ideas','Ask us','idea','Samples and new oils']],staff:[['attention','Needs attention','bell','Your to-do list'],['clients','Clients','users','Brands and settings'],['graph','Graphs','graph','Map and olfactory graph'],['featured','Featured oils','star','What to push'],['requests','Requests','inbox','Reply to clients']]};
 const stamp=()=>{const d=new Date();return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+' '+d.toTimeString().slice(0,5)};
 const REQ0=[{id:1,client:'Nimbus Hygiene',title:'Sample of a fresher oil for our sport deodorant',cat:'Deodorant',qty:'60,000',status:'Waiting for reply',reply:''},{id:2,client:'Verde Home & Body',title:'Coconut oil with longer-lasting base for soap',cat:'Soap',qty:'200,000',status:'Waiting for reply',reply:''}];
 const ATT0=[{id:'a1',kind:'Request',who:'Nimbus Hygiene',text:'Asked for a sample of a fresher oil for their sport deodorant.',why:'Every new client request appears here.',go:'requests'},{id:'a2',kind:'Account',who:'Coastline Cosmetics',text:`No ${CUR} portfolio uploaded yet.`,why:'Shown when a quarter ends without an upload.',go:'clients'},{id:'a3',kind:'Request',who:'Verde Home & Body',text:'Asked for a coconut oil with a longer-lasting base for soap.',why:'Every new client request appears here.',go:'requests'}];
@@ -544,8 +644,8 @@ function App(){
   let view;
   if(page==='home')view=html`<${Home} products=${products} uploads=${uploads} feat=${feat} onSaved=${onSaved} go=${go}/>`;
   else if(page==='market')view=html`<${Market} products=${products} feat=${feat} ask=${(code,cat)=>addRequest({title:`Sample of ${code} ${OILS[code].name}`+(cat?` for our ${cat.toLowerCase()}`:''),cat:cat||'Deodorant',qty:'—'})}/>`;
-  else if(page==='portfolio')view=html`<${Portfolio} products=${products} useOurSales=${clients[ME].ourSales} setUseOurSales=${v=>{setClients(c=>({...c,[ME]:{...c[ME],ourSales:v}}));log('client@aurel (sample)',`${v?'Allowed':'Stopped'} use of oil sales records to fill in volumes`);say(v?'Saved. We may now fill in your volumes from our sales records.':'Saved. We will only use the numbers you upload.')}}/>`;
-  else if(page==='graph')view=html`<${OlfGraph} products=${products} role=${role} go=${go}/>`;
+  else if(page==='portfolio')view=html`<${Portfolio} go=${go} products=${products} useOurSales=${clients[ME].ourSales} setUseOurSales=${v=>{setClients(c=>({...c,[ME]:{...c[ME],ourSales:v}}));log('client@aurel (sample)',`${v?'Allowed':'Stopped'} use of oil sales records to fill in volumes`);say(v?'Saved. We may now fill in your volumes from our sales records.':'Saved. We will only use the numbers you upload.')}}/>`;
+  else if(page==='graph')view=html`<${Graphs} key=${role} products=${products} role=${role} go=${go}/>`;
   else if(page==='oils')view=html`<${Oils} feat=${feat} products=${products}/>`;
   else if(page==='ideas')view=html`<${Ideas} requests=${requests} addRequest=${addRequest}/>`;
   else if(page==='attention')view=html`<${Attention} items=${att} go=${go} done=${id=>{const i=att.findIndex(a=>a.id===id),it=att[i];setAtt(a=>a.filter(x=>x.id!==id));say('Marked done.',()=>setAtt(a=>{const n=[...a];n.splice(i,0,it);return n}))}}/>`;
@@ -558,7 +658,7 @@ function App(){
     <nav className="nav" aria-label="Sections">${nav.map(([k,l,ic,hint])=>html`<button key=${k} data-tab=${k} aria-current=${page===k?'page':undefined} onClick=${()=>go(k)}><${Icon} n=${ic}/><span>${l}<br/><span className="sub">${hint}</span></span>${k==='attention'&&att.length>0&&html`<span className="count">${att.length}</span>`}</button>`)}</nav>
     <div className="foot">Prototype for review. Four sample brands. Changes reset when you reload.</div></aside>
    <main>${view}</main>
-   <nav className="tabbar" aria-label="Sections">${nav.map(([k,l,ic])=>html`<button key=${k} data-mtab=${k} aria-current=${page===k?'page':undefined} onClick=${()=>go(k)}><${Icon} n=${ic}/>${({'Market view':'Market','Olfactory graph':'Graph','Our oils':'Oils','Needs attention':'To do','Featured oils':'Featured'})[l]||l}</button>`)}</nav>
+   <nav className="tabbar" aria-label="Sections">${nav.map(([k,l,ic])=>html`<button key=${k} data-mtab=${k} aria-current=${page===k?'page':undefined} onClick=${()=>go(k)}><${Icon} n=${ic}/>${({'Market view':'Market','Our oils':'Oils','Needs attention':'To do','Featured oils':'Featured'})[l]||l}</button>`)}</nav>
    ${toast&&html`<div className="toast" role="status">${toast.text}${toast.undo&&html`<button onClick=${()=>{toast.undo();setToast(null)}}>Undo</button>`}</div>`}</div>`;
 }
 ReactDOM.createRoot(document.getElementById('root')).render(html`<${App}/>`);
